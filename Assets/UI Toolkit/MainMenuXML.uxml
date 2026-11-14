@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/UIToolKit.uss?fileID=7433441132597879392&amp;guid=bcbf0ced32f1948438e621ff7ed16ba5&amp;type=3#UIToolKit"/>
     <ui:VisualElement class="container">
-        <ui:VisualElement class="left">
+        <ui:VisualElement name="MenuVisualElement" class="left">
             <ui:Label text="Nameless Space Game" name="Title" class="title"/>
             <ui:VisualElement name="botones">
                 <ui:Button text="Jugar" name="play" class="styleButton"/>
