@@ -1,0 +1,18 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/UiComputer.uss?fileID=7433441132597879392&amp;guid=75c39eb46fa76e44fb77598b9c818cdf&amp;type=3#UiComputer"/>
+    <ui:VisualElement class="background">
+        <ui:Label text="selecciona una mision" class="main-text" style="width: 100%; color: rgb(255, 255, 255); text-shadow: 20px 20px 0 rgb(0, 0, 0);"/>
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; width: 100%; height: 100%;">
+            <ui:VisualElement name="misionOne" class="card" style="background-color: rgba(0, 0, 0, 0.6);">
+                <ui:Button text="Button" name="FirstMision" class="button-style" style="background-image: url(&quot;project://database/Assets/Materials/marslike01lf.tga?fileID=2800000&amp;guid=31ddc024002c9414988c6a7312552e1d&amp;type=3#marslike01lf&quot;);">
+                    <ui:Image name="Image" style="width: 1000px; height: 1000px; background-image: resource(&quot;curiosity-3d-model&quot;); background-size: 80% 60%; align-self: center; justify-content: space-between; align-content: flex-end; flex-wrap: wrap; align-items: flex-start; border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px;"/>
+                </ui:Button>
+                <ui:Label text="Misión #1 - La Recolección" name="SecondMision" class="text-general"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="information" class="card information" style="flex-grow: 1;">
+                <ui:Label text="Información" class="information-text"/>
+                <ui:Label text="Label"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
