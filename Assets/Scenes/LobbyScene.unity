@@ -489,6 +489,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7328221328035289387, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.00388
+      objectReference: {fileID: 0}
+    - target: {fileID: 37108568760241994, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.00448
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
       propertyPath: m_Name
       value: orion_interior_v13
@@ -1692,10 +1700,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5881337200782912924, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5985130657186131427, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
-      propertyPath: m_LinearDamping
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5985130657186131427, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
