@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 1df8c41f782d03b4dbd05e26bc9ba8a3, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1566,11 +1566,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5985130657186131427, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
       propertyPath: m_AngularDamping
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7067957947596924913, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
       propertyPath: thrustForce
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7067957947596924913, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
+      propertyPath: maxVisualPitch
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 7067957947596924913, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
       propertyPath: mouseSensitivity
@@ -1578,8 +1582,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7067957947596924913, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
       propertyPath: visualMouseSensitivity
-      value: 0.8
+      value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 7113573926694119732, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 4214bd2ee4564cd4291bbb6c1e30e561, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
