@@ -1,0 +1,285 @@
+VisualElement {
+    width: 100%;
+    height: 100%;
+}
+
+.styleButton {
+    position: relative;
+    background-color: rgb(203, 203, 203);
+    top: auto;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    -unity-font-definition: url("project://database/Assets/fonts/FutureLight-BW15w.ttf?fileID=12800000&guid=23156b98981a2ae47b81ba77d89f0f34&type=3#FutureLight-BW15w");
+    font-size: 85px;
+    margin-top: 25px;
+    margin-right: 25px;
+    margin-bottom: 25px;
+    margin-left: 25px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out-sine;
+    -unity-font-style: normal;
+}
+
+.styleButton:hover {
+    width: auto;
+    height: auto;
+    background-color: rgb(55, 200, 171);
+    transition-timing-function: ease;
+    transition-duration: 1s;
+    rotate: 0;
+    translate: 0 -25px;
+}
+
+.container {
+    flex-direction: row;
+    align-self: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    -unity-text-align: upper-left;
+    align-items: auto;
+    width: 100%;
+    height: 100%;
+}
+
+.left {
+    min-width: 800px;
+    max-width: 700px;
+    height: 100%;
+    background-color: rgb(28, 28, 28);
+    justify-content: space-between;
+    white-space: normal;
+    -unity-text-align: middle-left;
+    align-self: flex-start;
+    border-right-width: 15px;
+    border-left-color: rgb(0, 133, 255);
+    border-right-color: rgb(55, 200, 171);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(0, 133, 255);
+}
+
+.right {
+    flex-grow: 1;
+    align-self: center;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    background-color: rgba(9, 10, 20, 0.522);
+    translate: 100% 0;
+}
+
+.title {
+    font-size: 160px;
+    -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
+    -unity-text-outline-color: rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+    overflow: hidden;
+    text-overflow: clip;
+    width: initial;
+    -unity-text-align: lower-left;
+    height: auto;
+    white-space: pre-wrap;
+    margin-top: 25px;
+    margin-right: 25px;
+    margin-bottom: 25px;
+    margin-left: 25px;
+    text-shadow: 5px 10px 0 rgb(55, 200, 171);
+}
+
+.resources-title {
+    justify-content: center;
+    align-self: center;
+    width: 100%;
+    font-size: 115px;
+    -unity-font-style: normal;
+    -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
+    -unity-text-align: upper-center;
+    color: rgb(55, 200, 171);
+    -unity-text-outline-width: 0;
+    text-shadow: 5px 0 0 rgb(0, 0, 0);
+}
+
+.resources-subtitle {
+    width: auto;
+    font-size: 60px;
+    -unity-font-style: normal;
+    -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
+    color: rgb(255, 255, 255);
+}
+
+.resources-left {
+    width: 60%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    -unity-text-align: upper-center;
+    align-self: flex-start;
+    justify-content: flex-start;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    height: 100%;
+    align-content: center;
+}
+
+.frame-resource {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-top-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-left-color: rgb(255, 255, 255);
+    border-top-width: 15px;
+    border-right-width: 15px;
+    border-bottom-width: 15px;
+    border-left-width: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 340px;
+    height: 340px;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.resource-button {
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0.68;
+    -unity-background-image-tint-color: rgb(70, 60, 60);
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out;
+}
+
+.resource-stadistic {
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.resources-right {
+    align-self: center;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    width: 40%;
+    -unity-text-align: upper-center;
+    height: 100%;
+    flex-grow: 1;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.label-stadistic {
+    -unity-font-style: bold;
+    font-size: 55px;
+    -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
+    text-shadow: 15px 25px 0 rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    border-left-color: rgb(22, 22, 22);
+    border-right-color: rgb(22, 22, 22);
+    border-top-color: rgb(22, 22, 22);
+    border-bottom-color: rgb(22, 22, 22);
+    -unity-text-outline-color: rgb(0, 0, 0);
+}
+
+.label-value {
+    font-size: 80px;
+    -unity-font-definition: url("project://database/Assets/fonts/FutureLight-BW15w.ttf?fileID=12800000&guid=23156b98981a2ae47b81ba77d89f0f34&type=3#FutureLight-BW15w");
+    -unity-font-style: bold;
+    color: rgb(55, 200, 171);
+    text-shadow: 50px 50px 0 rgb(64, 43, 43);
+}
+
+.resource-button:hover {
+    -unity-background-image-tint-color: rgb(247, 247, 242);
+    rotate: 1 0 1 0;
+    scale: 1.3 1.2 1.2;
+    background-color: rgb(255, 255, 255);
+}
+
+.default-text {
+}
+
+.unity-progress-bar__progress {
+    background-color: rgb(55, 200, 171);
+    height: auto;
+    transition-timing-function: ease-out;
+}
+
+.unity-progress-bar__title-container {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    min-width: 100%;
+    width: 100%;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+    justify-content: space-around;
+    align-items: flex-start;
+    align-self: flex-start;
+    align-content: stretch;
+    height: 100%;
+}
+
+.unity-progress-bar {
+    justify-content: center;
+    width: 100px;
+    flex-grow: 1;
+    flex-basis: 0%;
+    height: 100%;
+    background-size: 100% 100%;
+    flex-direction: column;
+    align-items: stretch;
+    align-self: center;
+}
+
+.unity-progress-bar__background {
+    background-color: rgb(255, 255, 255);
+    height: 100%;
+}
+
+.button-main {
+    background-color: rgb(55, 200, 171);
+    width: auto;
+    height: 100px;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    font-size: 50px;
+    -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
+    -unity-font-style: bold;
+    justify-content: center;
+    -unity-text-align: middle-center;
+    padding-top: 50px;
+    padding-right: 50px;
+    padding-bottom: 50px;
+    padding-left: 50px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}

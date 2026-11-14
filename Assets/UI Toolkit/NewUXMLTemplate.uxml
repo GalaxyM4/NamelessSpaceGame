@@ -1,9 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ui:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ui="UnityEngine.UIElements"
-    xmlns:uie="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd"
->
-    
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/UIToolKit.uss?fileID=7433441132597879392&amp;guid=bcbf0ced32f1948438e621ff7ed16ba5&amp;type=3#UIToolKit"/>
+    <ui:VisualElement class="container">
+        <ui:VisualElement class="left">
+            <ui:Label text="Nameless Space Game" name="Title" class="title"/>
+            <ui:VisualElement name="botones">
+                <ui:Button text="Jugar" name="play" class="styleButton"/>
+                <ui:Button text="Ajustes" name="config" class="styleButton"/>
+                <ui:Button text="Creditos" name="credits" class="styleButton"/>
+                <ui:Button text="Salir" name="exit" class="styleButton"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="footer" style="width: 100%; height: auto;"/>
+        </ui:VisualElement>
+        <ui:VisualElement class="right" style="height: 100%;">
+            <ui:VisualElement name="resources-left" class="resources-left" style="flex-wrap: wrap;">
+                <ui:VisualElement name="frame-resource" class="frame-resource">
+                    <ui:Button text="" name="bobsemple" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=-385655791&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_1&quot;);"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="frame-resource">
+                    <ui:Button name="superacerin" text="" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=1264682343&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_3&quot;);"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="frame-resource">
+                    <ui:Button name="plastimax" text="" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=-195958674&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_4&quot;);"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="frame-resource">
+                    <ui:Button name="plastimaxII" text="" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=1960287262&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_5&quot;);"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="frame-resource">
+                    <ui:Button name="aluminium" text="" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=-5600456472141597053&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_0&quot;);"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="frame-resource" class="frame-resource">
+                    <ui:Button name="fibrividrio" text="" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=1170246500&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_2&quot;);"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="resources-right" class="resources-right" style="height: auto;">
+                <ui:Label text="RECURSOS" class="resources-title"/>
+                <ui:Label name="selected" text="Selecciona uno" class="resources-subtitle"/>
+                <ui:VisualElement name="stadistics" class="resource-stadistic">
+                    <ui:Label text="Capacidad:" class="label-stadistic"/>
+                    <ui:ProgressBar name="capacity" value="22" title=""/>
+                </ui:VisualElement>
+                <ui:VisualElement name="stadistics" class="resource-stadistic">
+                    <ui:Label text="Peso:" class="label-stadistic"/>
+                    <ui:Label name="weight" text="" class="label-value"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="stadistics" class="resource-stadistic">
+                    <ui:Label text="Costo:" class="label-stadistic"/>
+                    <ui:Label name="price" text="" class="label-value"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="stadistics" class="resource-stadistic" style="justify-content: center;">
+                    <ui:Button name="save" text="Seleccionar" class="button-main"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
 </ui:UXML>
