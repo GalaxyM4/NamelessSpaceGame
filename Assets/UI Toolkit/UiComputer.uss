@@ -107,17 +107,58 @@
 }
 
 .information {
-    background-color: rgba(135, 133, 133, 0.651);
+    background-color: rgba(135, 133, 133, 0.745);
     font-size: 150px;
     -unity-text-align: upper-center;
     align-items: center;
-    justify-content: space-between;
-    -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
+    justify-content: flex-start;
+    -unity-font-definition: initial;
     color: rgb(249, 255, 52);
     text-shadow: 20px 15px 0 rgb(0, 0, 0);
     -unity-text-outline-color: rgb(0, 0, 0);
     height: 100%;
+    align-self: flex-start;
 }
 
 .information-text {
+    -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
+}
+
+.info-mision {
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
+    font-size: 50px;
+    white-space: pre-wrap;
+    -unity-text-align: upper-center;
+}
+
+.text-references {
+    -unity-text-align: upper-right;
+    width: 100%;
+    font-size: 30px;
+    -unity-font-style: bold;
+}
+
+.style-button {
+    -unity-font-style: normal;
+    font-size: 100px;
+    -unity-font-definition: url("project://database/Assets/fonts/FutureEdge-G3Zjg.ttf?fileID=12800000&guid=20323de7583e72e4782c50242783d686&type=3#FutureEdge-G3Zjg");
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    padding-top: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    border-top-left-radius: 75px;
+    border-top-right-radius: 75px;
+    border-bottom-right-radius: 75px;
+    border-bottom-left-radius: 75px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(36, 74, 67);
+    background-size: 100% 100%;
+    width: 100%;
+    background-image: resource("frameOne");
+    height: 200px;
 }
