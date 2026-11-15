@@ -4,15 +4,13 @@
         <ui:Label name="screenTitle" text="selecciona una mision" class="main-text"/>
         <ui:VisualElement name="mainContent" class="main-content">
             <ui:VisualElement name="misionOne" class="card" style="display: flex;">
-                <ui:Button text="" name="FirstMision" class="button-style mission-button-bg">
-                    <ui:Image name="Image" class="mission-image"/>
-                </ui:Button>
-                <ui:Label text="Misión #1 - La Recolección" name="SecondMision" class="text-general"/>
+                <ui:Button text="" name="MissionButtonImage" class="button-style mission-button-bg" style="-unity-background-scale-mode: scale-and-crop;"/>
+                <ui:Label text="Misión #1 - La Recolección" name="MissionTitle" class="text-general"/>
             </ui:VisualElement>
             <ui:VisualElement name="information" class="card information" style="display: flex;">
                 <ui:Label text="Información" class="information-text"/>
-                <ui:Label text="Desde que aterrizó en el Planeta Rojo en 2021 para buscar señales de vida antigua, el rover Perseverance Mars de la NASA ha recorrido más lejos y más rápido que cualquier vehículo en la superficie de otro mundo. En octubre. 11, su odómetro alcanzó las 28,10 millas (45,22 kilómetros), superando el récord de 28,06 millas (45,16 kilómetros) del rover Opportunity de la NASA (2004-2018). Y Perseverance ha cubierto el terreno en aproximadamente 5½ años, en comparación con casi 15 de su predecesor. Esta misión destaca la recolección de minerales homenajeando este hito en 2021." class="info-mision"/>
-                <ui:Label text="https://science.nasa.gov/mission/mars-2020-perseverance/" class="text-references"/>
+                <ui:Label text="Desde que aterrizó en el Planeta Rojo en 2021 para buscar señales de vida antigua, el rover Perseverance Mars de la NASA ha recorrido más lejos y más rápido que cualquier vehículo en la superficie de otro mundo. En octubre. 11, su odómetro alcanzó las 28,10 millas (45,22 kilómetros), superando el récord de 28,06 millas (45,16 kilómetros) del rover Opportunity de la NASA (2004-2018). Y Perseverance ha cubierto el terreno en aproximadamente 5½ años, en comparación con casi 15 de su predecesor. Esta misión destaca la recolección de minerales homenajeando este hito en 2021." name="information" class="info-mision"/>
+                <ui:Label text="https://science.nasa.gov/mission/mars-2020-perseverance/" name="urlInfo" class="text-references"/>
                 <ui:Button text="Iniciar misión" name="Button" class="style-button"/>
             </ui:VisualElement>
             <ui:VisualElement name="dashboardRight" class="right panel-hidden" style="display: none;">
