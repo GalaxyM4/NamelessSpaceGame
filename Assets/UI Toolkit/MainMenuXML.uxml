@@ -11,46 +11,5 @@
             </ui:VisualElement>
             <ui:VisualElement name="footer" style="width: 100%; height: auto;"/>
         </ui:VisualElement>
-        <ui:VisualElement class="right" style="height: 100%;">
-            <ui:VisualElement name="resources-left" enabled="true" class="resources-left" style="flex-wrap: wrap; display: flex;">
-                <ui:VisualElement name="frame-resource" class="frame-resource">
-                    <ui:Button text="" name="bobsemple" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=-385655791&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_1&quot;);"/>
-                </ui:VisualElement>
-                <ui:VisualElement class="frame-resource">
-                    <ui:Button name="superacerin" text="" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=1264682343&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_3&quot;);"/>
-                </ui:VisualElement>
-                <ui:VisualElement class="frame-resource">
-                    <ui:Button name="plastimax" text="" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=-195958674&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_4&quot;);"/>
-                </ui:VisualElement>
-                <ui:VisualElement class="frame-resource">
-                    <ui:Button name="plastimaxII" text="" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=1960287262&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_5&quot;);"/>
-                </ui:VisualElement>
-                <ui:VisualElement class="frame-resource">
-                    <ui:Button name="aluminium" text="" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=-5600456472141597053&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_0&quot;);"/>
-                </ui:VisualElement>
-                <ui:VisualElement name="frame-resource" class="frame-resource">
-                    <ui:Button name="fibrividrio" text="" class="resource-button" style="background-image: url(&quot;project://database/Assets/Sprites/sprite1.png?fileID=1170246500&amp;guid=34f6a0807cebb7843b6548a0ebf69ab2&amp;type=3#sprite1_2&quot;);"/>
-                </ui:VisualElement>
-            </ui:VisualElement>
-            <ui:VisualElement name="resources-right" class="resources-right" style="height: auto; display: flex;">
-                <ui:Label text="RECURSOS" class="resources-title"/>
-                <ui:Label name="selected" text="Selecciona uno" class="resources-subtitle"/>
-                <ui:VisualElement name="stadistics" class="resource-stadistic">
-                    <ui:Label text="Capacidad:" class="label-stadistic"/>
-                    <ui:ProgressBar name="capacity" value="22" title=""/>
-                </ui:VisualElement>
-                <ui:VisualElement name="stadistics" class="resource-stadistic">
-                    <ui:Label text="Peso:" class="label-stadistic"/>
-                    <ui:Label name="weight" text="" class="label-value"/>
-                </ui:VisualElement>
-                <ui:VisualElement name="stadistics" class="resource-stadistic">
-                    <ui:Label text="Costo:" class="label-stadistic"/>
-                    <ui:Label name="price" text="" class="label-value"/>
-                </ui:VisualElement>
-                <ui:VisualElement name="stadistics" class="resource-stadistic" style="justify-content: center;">
-                    <ui:Button name="save" text="Seleccionar" class="button-main"/>
-                </ui:VisualElement>
-            </ui:VisualElement>
-        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
