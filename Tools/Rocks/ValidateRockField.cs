@@ -16,8 +16,8 @@ public static class ValidateRockField
         Check(samples.Length == s.samples.count && samples.Select(r => r.placementId).Distinct().Count() == samples.Length,
             "Missing or duplicate samples.");
         MeshRenderer[] renderers = field.GetComponentsInChildren<MeshRenderer>();
-        Check(renderers.Length == s.decoration.count + s.obstacles.count + s.samples.count, "Incorrect rock count.");
-        Check(field.GetComponentsInChildren<Collider>().Length == s.obstacles.count + s.samples.count,
+        Check(renderers.Length == s.DecorationCount + s.ObstacleCount + s.samples.count, "Incorrect rock count.");
+        Check(field.GetComponentsInChildren<Collider>().Length == s.ObstacleCount + s.samples.count,
             "Decorations should not have colliders; every obstacle/sample must have one.");
         foreach (MeshCollider collider in field.GetComponentsInChildren<MeshCollider>())
             Check(collider.convex && collider.sharedMesh != null && !collider.isTrigger, "Invalid rock collision hull.");
@@ -34,7 +34,7 @@ public static class ValidateRockField
         var report = new Report
         {
             passed = true, reproducibleLayout = true, layoutSha256 = repeated.hash,
-            rockCount = renderers.Length, colliderCount = s.obstacles.count + s.samples.count,
+            rockCount = renderers.Length, colliderCount = s.ObstacleCount + s.samples.count,
             sampleCount = samples.Length, reachableCells = repeated.reachableCells
         };
         File.WriteAllText("Tools/Rocks/validation.json", JsonUtility.ToJson(report, true) + "\n");

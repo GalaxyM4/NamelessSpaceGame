@@ -85,6 +85,30 @@ routes; assign explicit exclusion corridors for critical objectives.
 
 ## Assets and performance
 
+### Inspector density and burial controls
+
+Select **Mars Rock Placement** in `MarsScene`. Enable **Use Density** to set
+decorations and obstacles in rocks per hectare (10,000 m² of horizontal terrain
+area). The Inspector shows the resulting rounded target counts. Disable it to use
+the explicit population counts instead. Passive sample candidates always retain
+their own explicit count; these controls add no interaction mechanics.
+
+**Minimum Burial Fraction** and **Maximum Burial Fraction** control sinking as a
+fraction of each scaled mesh's height. The scene uses 0.08–0.35 for varied ground
+contact. Equal endpoints give uniform burial; both zero remove intentional
+sinking. Depths are deterministic and do not consume the placement RNG. Render
+meshes and collision hulls move together; terrain heights remain untouched.
+
+Click **Rebuild Rocks**, then save the scene. This replaces the owned generated
+prefab, so it also affects other instances of that prefab. Changes do not apply
+live as you drag controls. Targets that cannot fit the spacing, slope, exclusion
+or access constraints fail without replacing the previous field. Each population
+is limited to 100,000 rocks; high densities can make baking and rendering costly.
+
+`Tools/Rocks/EnableRockTuning.cs` is a one-time migration helper: preserves current
+target counts as densities, enables the 0.08–0.35 burial range, rebuilds, saves,
+and verifies that TerrainData, terrain material and rover position are unchanged.
+
 ### Martian dust coating
 
 The five shared materials use `Mars/Rock Dust`, keeping their original color and

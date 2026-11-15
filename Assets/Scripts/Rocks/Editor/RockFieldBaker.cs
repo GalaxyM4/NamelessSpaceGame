@@ -20,6 +20,7 @@ public static class RockFieldBaker
         public Quaternion rotation;
         public float diameter;
         public float radius;
+        public float burial;
         public Vector3 approach;
     }
 
@@ -267,10 +268,14 @@ public static class RockFieldBaker
                     Vector3 v = rotation * (vertex * diameter);
                     supportY = Mathf.Max(supportY, Ground(p + new Vector2(v.x, v.z)) - v.y);
                 }
+                // Separate stable depth noise: changing burial does not consume placement RNG.
+                float burialNoise = Mathf.PerlinNoise(p.x * 0.731f + noiseOffset.x, p.y * 0.917f + noiseOffset.y);
+                float burial = Mathf.Lerp(s.burialFraction, s.maximumBurialFraction, burialNoise);
                 var rock = new Placement
                 {
                     role = role, definition = definition, diameter = diameter, radius = rockRadius,
-                    position = new Vector3(p.x, supportY - mesh.bounds.size.y * diameter * s.burialFraction, p.y),
+                    position = new Vector3(p.x, supportY - mesh.bounds.size.y * diameter * burial, p.y),
+                    burial = burial,
                     rotation = rotation, approach = approach
                 };
                 plan.rocks.Add(rock);
@@ -285,7 +290,7 @@ public static class RockFieldBaker
 
         internal Plan Run()
         {
-            Populate(RockRole.Obstacle, s.obstacles, s.obstacles.count);
+            Populate(RockRole.Obstacle, s.obstacles, s.ObstacleCount);
             BuildReachability();
             // Required starter samples cover all models in a small, reachable exploration area.
             int starter = Mathf.Min(s.starterSamples, s.samples.count);
@@ -306,7 +311,7 @@ public static class RockFieldBaker
                 if (!reachable[z, x])
                     throw new InvalidOperationException("A sample blocks another approach route. Change the seed or clearance; previous bake retained.");
             }
-            Populate(RockRole.Decoration, s.decoration, s.decoration.count);
+            Populate(RockRole.Decoration, s.decoration, s.DecorationCount);
             var text = new StringBuilder();
             foreach (Placement rock in plan.rocks)
                 text.AppendFormat(CultureInfo.InvariantCulture, "{0}:{1}:{2:R},{3:R},{4:R}:{5:R},{6:R},{7:R},{8:R}:{9:R};",
@@ -342,6 +347,10 @@ public static class RockFieldBaker
                 !float.IsFinite(p.maximumDiameter) || p.minimumDiameter <= 0 ||
                 p.maximumDiameter < p.minimumDiameter || !float.IsFinite(p.cullDistance) || p.cullDistance <= 0)
                 throw new InvalidOperationException("Invalid population counts, size thresholds or cull distances.");
+        if (s.DecorationCount < 0 || s.ObstacleCount < 0 ||
+            !float.IsFinite(s.decorationDensity) || !float.IsFinite(s.obstacleDensity) ||
+            s.decorationDensity < 0 || s.obstacleDensity < 0)
+            throw new InvalidOperationException("Densities must be finite and nonnegative.");
         if (s.starterSamples < 0 || s.studySites == null || s.exclusions == null ||
             s.studySites.Any(t => t == null) || s.starterSamples + s.studySites.Length > s.samples.count ||
             s.fieldScale < 2 || s.roverClearanceRadius < 0.5f || s.routeGridMeters < 2 ||
@@ -350,9 +359,10 @@ public static class RockFieldBaker
             throw new InvalidOperationException("Invalid field/clearance/sample settings or references from another scene.");
         float[] finite = { s.fieldScale, s.roverClearanceRadius, s.settledRoverHeight, s.routeGridMeters,
             s.minimumGap, s.spawnClearance, s.maximumSlope, s.drivingSlopeLimit, s.clustering,
-            s.burialFraction, s.groundAlignment, s.starterSampleRadius, s.candidateApproachRange };
+            s.burialFraction, s.maximumBurialFraction, s.groundAlignment, s.starterSampleRadius, s.candidateApproachRange };
         if (finite.Any(v => !float.IsFinite(v)) || s.settledRoverHeight <= 0 ||
-            s.clustering < 0 || s.clustering > 1 || s.burialFraction < 0 || s.burialFraction > 0.4f ||
+            s.clustering < 0 || s.clustering > 1 || s.burialFraction < 0 || s.burialFraction > 0.9f ||
+            s.maximumBurialFraction < s.burialFraction || s.maximumBurialFraction > 0.9f ||
             s.groundAlignment < 0 || s.groundAlignment > 1 || s.drivingSlopeLimit <= 0 ||
             s.drivingSlopeLimit > s.maximumSlope || s.maximumSlope > 50 || s.starterSampleRadius <= s.spawnClearance ||
             s.candidateApproachRange < 0.5f)

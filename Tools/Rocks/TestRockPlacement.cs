@@ -19,6 +19,7 @@ public static class TestRockPlacement
         int passed = 0;
         try
         {
+            s.useDensity = false;
             s.decoration.count = 60;
             s.obstacles.count = 30;
             s.samples.count = 6;
@@ -36,6 +37,49 @@ public static class TestRockPlacement
             RockFieldBaker.Plan first = RockFieldBaker.CreatePlan(s);
             RockFieldBaker.Plan second = RockFieldBaker.CreatePlan(s);
             Check(first.hash == second.hash, "Same seed produces identical layout");
+            passed++;
+            s.useDensity = true;
+            s.decorationDensity = 60f / s.AreaHectares;
+            s.obstacleDensity = 30f / s.AreaHectares;
+            Check(s.DecorationCount == 60 && s.ObstacleCount == 30, "Density converts hectares to target counts");
+            Check(RockFieldBaker.CreatePlan(s).hash == first.hash, "Equivalent density preserves layout");
+            s.decorationDensity = 0;
+            s.obstacleDensity = 0;
+            Check(s.DecorationCount == 0 && s.ObstacleCount == 0 && s.samples.count == 6,
+                "Zero density leaves passive sample count independent");
+            s.decorationDensity = float.PositiveInfinity;
+            ExpectFailure(() => RockFieldBaker.CreatePlan(s), "Nonfinite density");
+            s.decorationDensity = 100001f / s.AreaHectares;
+            ExpectFailure(() => RockFieldBaker.CreatePlan(s), "Excessive density");
+            s.useDensity = false;
+            s.decorationDensity = 60f / s.AreaHectares;
+            passed++;
+            float low = s.burialFraction, high = s.maximumBurialFraction;
+            s.burialFraction = 0;
+            s.maximumBurialFraction = 0;
+            RockFieldBaker.Plan unburied = RockFieldBaker.CreatePlan(s);
+            s.burialFraction = 0.08f;
+            s.maximumBurialFraction = 0.35f;
+            RockFieldBaker.Plan buried = RockFieldBaker.CreatePlan(s);
+            Check(buried.rocks.Select(r => r.burial).Distinct().Count() > 1, "Varied burial");
+            for (int i = 0; i < buried.rocks.Count; i++)
+            {
+                var a = unburied.rocks[i]; var b = buried.rocks[i];
+                Check(a.position.x == b.position.x && a.position.z == b.position.z &&
+                    a.rotation == b.rotation && a.diameter == b.diameter, "Burial preserves horizontal layout");
+                float depth = s.definitions[b.definition].mesh.bounds.size.y * b.diameter * b.burial;
+                Check(b.burial >= 0.08f && b.burial <= 0.35f &&
+                    Mathf.Abs(a.position.y - b.position.y - depth) < 0.0001f, "Burial depth matches range");
+            }
+            s.burialFraction = 0.36f;
+            ExpectFailure(() => RockFieldBaker.CreatePlan(s), "Reversed burial range");
+            s.burialFraction = 0.08f;
+            s.maximumBurialFraction = 0.9f;
+            Check(RockFieldBaker.CreatePlan(s).rocks.Count == 96, "Inspector maximum burial of 0.9 is accepted");
+            s.maximumBurialFraction = 0.91f;
+            ExpectFailure(() => RockFieldBaker.CreatePlan(s), "Burial above Inspector maximum");
+            s.burialFraction = low;
+            s.maximumBurialFraction = high;
             passed++;
             s.seed++;
             RockFieldBaker.Plan different = RockFieldBaker.CreatePlan(s);

@@ -17,6 +17,12 @@ public sealed class RockScatterSettings : MonoBehaviour
     public Transform rover;
     public RockDefinition[] definitions;
     public int seed = 24175;
+    [Tooltip("Use terrain-wide target densities for decorations and obstacles. Samples always use their explicit count.")]
+    public bool useDensity;
+    [Min(0f), Tooltip("Target decorations per 10,000 square metres, before spacing/exclusion constraints.")]
+    public float decorationDensity = 23.841858f;
+    [Min(0f), Tooltip("Target obstacles per 10,000 square metres, before spacing/exclusion constraints.")]
+    public float obstacleDensity = 3.814697f;
     public RockPopulation decoration = new RockPopulation
         { count = 10000, minimumDiameter = 0.08f, maximumDiameter = 0.24f, cullDistance = 140f };
     public RockPopulation obstacles = new RockPopulation
@@ -29,7 +35,10 @@ public sealed class RockScatterSettings : MonoBehaviour
     [Range(0f, 50f)] public float maximumSlope = 32f;
     [Min(0f)] public float spawnClearance = 10f;
     [Min(0.1f)] public float minimumGap = 0.15f;
-    [Range(0f, 0.4f)] public float burialFraction = 0.16f;
+    [Tooltip("Minimum burial as a fraction of scaled mesh height. Existing serialized values are preserved.")]
+    [Range(0f, 0.9f)] public float burialFraction = 0.08f;
+    [Tooltip("Maximum burial fraction. Each rock receives a stable depth within this range.")]
+    [Range(0f, 0.9f)] public float maximumBurialFraction = 0.9f;
     [Range(0f, 1f)] public float groundAlignment = 0.45f;
     [Min(0.5f)] public float roverClearanceRadius = 2f;
     [Tooltip("Settled rover-center height, not its potentially airborne Editor spawn position.")]
@@ -46,4 +55,18 @@ public sealed class RockScatterSettings : MonoBehaviour
     public RockExclusionZone[] exclusions = Array.Empty<RockExclusionZone>();
     [HideInInspector] public Transform bakedRoot;
     [HideInInspector] public GameObject layoutPrefab;
+
+    public float AreaHectares => terrain != null && terrain.terrainData != null
+        ? terrain.terrainData.size.x * terrain.terrainData.size.z / 10000f : 0f;
+
+    public int DecorationCount => useDensity ? DensityCount(decorationDensity) : decoration.count;
+    public int ObstacleCount => useDensity ? DensityCount(obstacleDensity) : obstacles.count;
+
+    private int DensityCount(float density)
+    {
+        double count = (double)density * AreaHectares;
+        if (!double.IsFinite(count) || count < 0 || count > 100000)
+            throw new InvalidOperationException("Density must produce between 0 and 100,000 rocks per population.");
+        return (int)Math.Round(count, MidpointRounding.AwayFromZero);
+    }
 }

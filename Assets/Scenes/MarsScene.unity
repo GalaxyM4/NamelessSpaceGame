@@ -524,6 +524,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a854a3d0731221644bffaecfa79d1823, type: 2}
   - {fileID: 11400000, guid: c211b92263044a94f9bc4fb72b76fc8f, type: 2}
   seed: 24175
+  useDensity: 1
+  decorationDensity: 23.841858
+  obstacleDensity: 3.8146973
   decoration:
     count: 10000
     minimumDiameter: 0.08
@@ -544,7 +547,8 @@ MonoBehaviour:
   maximumSlope: 32
   spawnClearance: 10
   minimumGap: 0.15
-  burialFraction: 0.16
+  burialFraction: 0.08
+  maximumBurialFraction: 0.35
   groundAlignment: 0.45
   roverClearanceRadius: 2
   settledRoverHeight: 1.4
@@ -555,7 +559,7 @@ MonoBehaviour:
   starterSamples: 5
   studySites: []
   exclusions: []
-  bakedRoot: {fileID: 1191961539232213287}
+  bakedRoot: {fileID: 5977814712494851241}
   layoutPrefab: {fileID: 984742770822090461, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
 --- !u!4 &1295210085
 Transform:
@@ -690,7 +694,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1576583570584022348, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
   m_PrefabInstance: {fileID: 8865164782067189094}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1191961539232213286
+--- !u!1001 &5977814712494851240
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -751,10 +755,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
---- !u!4 &1191961539232213287 stripped
+--- !u!4 &5977814712494851241 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
-  m_PrefabInstance: {fileID: 1191961539232213286}
+  m_PrefabInstance: {fileID: 5977814712494851240}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8865164782067189094
 PrefabInstance:
@@ -847,4 +851,4 @@ SceneRoots:
   - {fileID: 1308145425}
   - {fileID: 8865164782067189094}
   - {fileID: 1295210085}
-  - {fileID: 1191961539232213286}
+  - {fileID: 5977814712494851240}
