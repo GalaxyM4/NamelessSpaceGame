@@ -153,7 +153,7 @@
     justify-content: center;
     -unity-text-align: middle-center;
     height: auto;
-    width: 40%;
+    width: 50%;
     align-self: center;
     align-items: stretch;
     align-content: center;
@@ -173,4 +173,8 @@
 
 .alerts {
     display: flex;
+}
+
+.alerts-hidden {
+    display: none;
 }
