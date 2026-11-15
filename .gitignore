@@ -112,3 +112,7 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Original HiRISE products are downloaded locally, never imported by Unity.
+/TerrainSources/Original/
+**/__pycache__/
