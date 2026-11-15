@@ -251,6 +251,135 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &1251734365
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1251734367}
+  - component: {fileID: 1251734366}
+  m_Layer: 0
+  m_Name: Audio Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1251734366
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251734365}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.2
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1251734367
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251734365}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.789, y: 1.3, z: 0.97}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 30937578}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1308145422
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +446,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 96ab7c8445f58bf478d5831d3c41ab43, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: e6ad99a61d60c9845bf6a1e9d2242bba, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -340,7 +469,7 @@ Transform:
   m_GameObject: {fileID: 1308145422}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -500, y: 0, z: -500}
+  m_LocalPosition: {x: -1024, y: 0, z: -1024}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -358,32 +487,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da32b0c310ca568479b15eb5e30809da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MarsTerrainGenerator
-  seed: 2026
-  baseElevationMeters: 15
-  maxReliefMeters: 28
-  octaves: 5
-  baseFrequency: 0.0025
-  lacunarity: 2.05
-  persistence: 0.45
-  warpStrength: 45
-  warpFrequency: 0.0018
-  ridgeFrequency: 0.0032
-  ridgeWeight: 0.45
-  ridgeSharpness: 2
-  duneFrequency: 0.045
-  duneAmplitudeMeters: 0.65
-  duneDirectionDegrees: 32
-  microNoiseFrequency: 0.18
-  microNoiseAmplitudeMeters: 0.18
-  craterCount: 24
-  craterRadiusRange: {x: 14, y: 65}
-  craterDepthRatio: 0.16
-  craterRimHeightRatio: 0.055
+  manifestPath: TerrainSources/Prepared/Gale/manifest.json
+  terrainCenterWorldXZ: {x: 0, y: 0}
+  detailLayer: {fileID: 0}
+  detailWeight: 0
+  flattenSpawn: 1
   spawnWorldXZ: {x: 0, y: 0}
-  spawnSafeRadius: 22
-  spawnBlendWidth: 28
+  spawnSafeRadius: 6
+  spawnBlendWidth: 12
   snapTarget: {fileID: 30937578}
   snapHeightOffset: 1.3
+  adjustments: []
 --- !u!1001 &8865164782067189094
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -397,9 +511,21 @@ PrefabInstance:
       value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 2944083529025439385, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
+      propertyPath: endSound
+      value: 
+      objectReference: {fileID: 8300000, guid: cd3d99ef97a3f88409e22941c2e428e1, type: 3}
+    - target: {fileID: 2944083529025439385, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: maxSpeed
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 2944083529025439385, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
+      propertyPath: loopSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 3c58dc4a0b70bc84d82d64f5baeae950, type: 3}
+    - target: {fileID: 2944083529025439385, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
+      propertyPath: startSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 1ff3177daa877ad469beb735bec28cc7, type: 3}
     - target: {fileID: 5409387474644546850, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_Name
       value: Rover
@@ -410,7 +536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8937855599700424506, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.297253
+      value: 20.58
       objectReference: {fileID: 0}
     - target: {fileID: 8937855599700424506, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_LocalPosition.z
@@ -446,7 +572,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8937855599700424506, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 1251734367}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
 --- !u!1660057539 &9223372036854775807

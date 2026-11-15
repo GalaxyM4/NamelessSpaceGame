@@ -1,0 +1,11 @@
+{
+  "checkedUnmodifiedSamples": 4197396,
+  "maximumElevationErrorMeters": 0.00048828125,
+  "connectedDrivingAreaFraction": 0.99190253,
+  "connectedPassableSamples": 261038,
+  "passableSamples": 261038,
+  "farthestConnectedDistanceMeters": 1442.4978,
+  "slopeLimitDegrees": 15,
+  "routeScreeningSpacingMeters": 4,
+  "note": "Slope screening is not a substitute for rover physics testing."
+}

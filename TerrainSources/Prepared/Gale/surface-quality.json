@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "shader": "NamelessSpaceGame/Mars Terrain Detail",
+  "imageUnchanged": true,
+  "colorLayerCount": 1,
+  "filter": "Trilinear",
+  "anisotropy": 16,
+  "colorFormat": "BC7",
+  "normalFormat": "BC5",
+  "detailTileMeters": 3.0,
+  "detailStrength": 0.3,
+  "fadeStartMeters": 12.0,
+  "fadeEndMeters": 45.0,
+  "detailNormalSource": "Assets/Textures/Rock029_8K-JPG_NormalGL.jpg",
+  "note": "Normal detail is artistic lighting detail, not measured terrain or collider displacement."
+}
