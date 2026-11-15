@@ -13,7 +13,7 @@ public static class ApplySurfaceQuality
             throw new InvalidOperationException("Open the saved MarsScene in Edit Mode first.");
         Terrain terrain = UnityEngine.Object.FindAnyObjectByType<MarsTerrainGenerator>().GetComponent<Terrain>();
         string before = HeightHash(terrain);
-        MarsTerrainSurface.Apply(terrain, "Assets/Textures/HiRISE/GaleOrtho.png");
+        MarsTerrainSurface.Apply(terrain);
         string after = HeightHash(terrain);
         if (before != after) throw new Exception("Surface setup unexpectedly changed terrain heights.");
         EditorSceneManager.MarkSceneDirty(scene);

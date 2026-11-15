@@ -3,10 +3,11 @@ Shader "NamelessSpaceGame/Mars Terrain Detail"
     Properties
     {
         [Normal] _MarsDetailNormal("Surface Detail Normal (Artistic)", 2D) = "bump" {}
-        _MarsDetailTileMeters("Detail Tile Size (Metres)", Float) = 3
         _MarsDetailStrength("Detail Strength", Range(0, 1)) = 0.3
         _MarsDetailFadeStart("Detail Fade Start (Metres)", Float) = 12
         _MarsDetailFadeEnd("Detail Fade End (Metres)", Float) = 45
+        _MarsMacroMeters("Broad Color Patch Size (Metres)", Float) = 28
+        _MarsMacroStrength("Broad Color Variation (Artistic)", Range(0, 0.4)) = 0.18
         [HideInInspector] _Control("Control", 2D) = "red" {}
         [HideInInspector] _Splat0("Layer 0", 2D) = "grey" {}
         [HideInInspector] _Splat1("Layer 1", 2D) = "grey" {}

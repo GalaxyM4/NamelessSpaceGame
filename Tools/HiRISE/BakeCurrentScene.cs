@@ -17,8 +17,6 @@ public static class BakeCurrentScene
         RoverController rover = UnityEngine.Object.FindAnyObjectByType<RoverController>();
         if (generator == null || rover == null)
             throw new InvalidOperationException("The existing terrain generator and rover must be present.");
-        const string imagePath = "Assets/Textures/HiRISE/GaleOrtho.png";
-        AssetDatabase.ImportAsset(imagePath, ImportAssetOptions.ForceSynchronousImport);
 
         Undo.RecordObject(generator, "Configure HiRISE Bake");
         generator.manifestPath = "TerrainSources/Prepared/Gale/manifest.json";
@@ -29,8 +27,7 @@ public static class BakeCurrentScene
         generator.spawnBlendWidth = 12f;
         generator.snapTarget = rover.transform;
         generator.snapHeightOffset = 1.3f;
-        generator.detailLayer = null;
-        generator.detailWeight = 0f;
+        generator.surfaceTileMeters = 3f;
         EditorUtility.SetDirty(generator);
         MarsTerrainGeneratorEditor.BakeTerrain(generator);
         EditorSceneManager.SaveScene(scene);

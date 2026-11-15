@@ -43,8 +43,10 @@ public static class ValidateBake
             throw new Exception($"Baked elevations or orientation differ from source: {maxError} m.");
         if (terrain.GetComponent<TerrainCollider>().terrainData != data)
             throw new Exception("TerrainCollider is not using the baked TerrainData.");
-        if (data.terrainLayers[0].tileSize != new Vector2(source.sizeMeters, source.sizeMeters))
-            throw new Exception("Orthoimage UV scale is not registered to terrain bounds.");
+        if (data.terrainLayers.Length != 1 ||
+            UnityEditor.AssetDatabase.GetAssetPath(data.terrainLayers[0].diffuseTexture) != MarsTerrainSurface.ColorPath ||
+            data.terrainLayers[0].tileSize != Vector2.one * generator.surfaceTileMeters)
+            throw new Exception("Expected a repeating artistic rock surface over the real elevations.");
 
         // Conservative connected driving-area screening at 4 m spacing, <=15 degrees.
         int n = (source.resolution - 1) / 4 + 1;

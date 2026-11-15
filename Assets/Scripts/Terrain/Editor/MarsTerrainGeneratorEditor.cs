@@ -33,7 +33,9 @@ public class MarsTerrainGeneratorEditor : Editor
         public Vector3 terrainWorldPosition;
         public bool flattenSpawn;
         public Vector2 spawnWorldXZ;
-        public float spawnSafeRadius, spawnBlendWidth, detailWeight;
+        public float spawnSafeRadius, spawnBlendWidth;
+        public string surfaceMode, surfaceTextureAssetPath;
+        public float surfaceTileMeters;
         public MarsTerrainGenerator.HeightAdjustment[] adjustments;
         public float maximumGameplayHeightChangeMeters;
     }
@@ -43,7 +45,7 @@ public class MarsTerrainGeneratorEditor : Editor
         DrawDefaultInspector();
         EditorGUILayout.Space();
         EditorGUILayout.HelpBox(
-            "Bakes real HiRISE elevation and aligned monochrome imagery into the existing terrain. " +
+            "Bakes real HiRISE elevation with the artistic Mars rock surface. Satellite imagery is not displayed. " +
             "Run the preparation tool first. Source heights are never modified; gameplay edits are reapplied on each bake.",
             MessageType.Info);
         using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode))
@@ -82,14 +84,9 @@ public class MarsTerrainGeneratorEditor : Editor
         int res = source.resolution;
         if (bytes.Length != checked(res * res * sizeof(float)) || Hash(bytes) != source.heightSha256)
             throw new InvalidDataException("Prepared heights are incomplete or differ from the manifest.");
-        string texturePath = Path.GetFullPath(Path.Combine(root, source.textureAssetPath));
-        if (Hash(File.ReadAllBytes(texturePath)) != source.textureSha256)
-            throw new InvalidDataException("Prepared orthoimage differs from the manifest.");
-        Texture2D imagery = AssetDatabase.LoadAssetAtPath<Texture2D>(source.textureAssetPath);
-        if (imagery == null)
-            throw new InvalidDataException("Import the prepared orthoimage into Unity before baking.");
+        // Imagery is retained as provenance only; rebaking requires elevation, not orthoimages.
+        MarsTerrainSurface.Validate(terrain);
         if (!Finite(generator.terrainCenterWorldXZ.x) || !Finite(generator.terrainCenterWorldXZ.y) ||
-            !Finite(generator.detailWeight) || generator.detailWeight < 0f || generator.detailWeight > 0.25f ||
             !Finite(generator.spawnSafeRadius) || generator.spawnSafeRadius < 0f ||
             !Finite(generator.spawnBlendWidth) || generator.spawnBlendWidth <= 0f ||
             !Finite(generator.snapHeightOffset) || generator.snapHeightOffset < 0f)
@@ -165,34 +162,7 @@ public class MarsTerrainGeneratorEditor : Editor
         data.size = new Vector3(size, verticalRange, size);
         data.SetHeights(0, 0, heights);
 
-        const string layerPath = "Assets/Textures/HiRISE/GaleOrtho.terrainlayer";
-        TerrainLayer layer = AssetDatabase.LoadAssetAtPath<TerrainLayer>(layerPath);
-        if (layer == null)
-        {
-            layer = new TerrainLayer();
-            AssetDatabase.CreateAsset(layer, layerPath);
-        }
-        else Undo.RecordObject(layer, "Update HiRISE Surface");
-        layer.diffuseTexture = imagery;
-        layer.tileSize = new Vector2(size, size);
-        layer.tileOffset = Vector2.zero;
-        layer.metallic = 0f;
-        layer.smoothness = 0f;
-        layer.smoothnessSource = TerrainLayerSmoothnessSource.ConstantOnly;
-        data.terrainLayers = generator.detailLayer == null
-            ? new[] { layer } : new[] { layer, generator.detailLayer };
-        data.alphamapResolution = 512;
-        int count = data.terrainLayers.Length;
-        float detail = count == 2 ? generator.detailWeight : 0f;
-        float[,,] weights = new float[512, 512, count];
-        for (int z = 0; z < 512; z++)
-        for (int x = 0; x < 512; x++)
-        {
-            weights[z, x, 0] = 1f - detail;
-            if (count == 2) weights[z, x, 1] = detail;
-        }
-        data.SetAlphamaps(0, 0, weights);
-        MarsTerrainSurface.Apply(terrain, source.textureAssetPath);
+        MarsTerrainSurface.Apply(terrain);
         TerrainCollider collider = terrain.GetComponent<TerrainCollider>();
         if (collider != null)
         {
@@ -208,7 +178,6 @@ public class MarsTerrainGeneratorEditor : Editor
             generator.snapTarget.position = position;
         }
         EditorUtility.SetDirty(data);
-        EditorUtility.SetDirty(layer);
         EditorSceneManager.MarkSceneDirty(generator.gameObject.scene);
         AssetDatabase.SaveAssets();
         BakeReport report = new BakeReport
@@ -220,7 +189,8 @@ public class MarsTerrainGeneratorEditor : Editor
             sizeMeters = size, resolution = res, terrainWorldPosition = terrain.transform.position,
             flattenSpawn = generator.flattenSpawn, spawnWorldXZ = generator.spawnWorldXZ,
             spawnSafeRadius = generator.spawnSafeRadius, spawnBlendWidth = generator.spawnBlendWidth,
-            detailWeight = detail, adjustments = generator.adjustments.ToArray(),
+            surfaceMode = "artistic-rock", surfaceTextureAssetPath = MarsTerrainSurface.ColorPath,
+            surfaceTileMeters = generator.surfaceTileMeters, adjustments = generator.adjustments.ToArray(),
             maximumGameplayHeightChangeMeters = maximumChange
         };
         File.WriteAllText(Path.Combine(Path.GetDirectoryName(manifestPath), "bake-report.json"),
@@ -237,10 +207,7 @@ public class MarsTerrainGeneratorEditor : Editor
             !Finite(source.minimumElevationMeters) || !Finite(source.maximumElevationMeters) ||
             source.maximumElevationMeters < source.minimumElevationMeters ||
             source.orientation != "+X=east,+Z=north; float32 LE rows south-to-north" ||
-            string.IsNullOrEmpty(source.heightFile) || Path.GetFileName(source.heightFile) != source.heightFile ||
-            string.IsNullOrEmpty(source.textureAssetPath) ||
-            !source.textureAssetPath.StartsWith("Assets/Textures/HiRISE/", StringComparison.Ordinal) ||
-            source.textureAssetPath.Contains(".."))
+            string.IsNullOrEmpty(source.heightFile) || Path.GetFileName(source.heightFile) != source.heightFile)
             throw new InvalidDataException("Unsupported or invalid HiRISE manifest.");
     }
 

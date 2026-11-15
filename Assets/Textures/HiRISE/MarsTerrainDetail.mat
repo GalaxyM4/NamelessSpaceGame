@@ -78,6 +78,8 @@ Material:
     - _MarsDetailFadeStart: 12
     - _MarsDetailStrength: 0.3
     - _MarsDetailTileMeters: 3
+    - _MarsMacroMeters: 28
+    - _MarsMacroStrength: 0.18
     - _NumLayersCount: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
