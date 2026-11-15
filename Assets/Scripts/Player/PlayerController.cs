@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public enum ControlMode
 {
@@ -32,10 +33,19 @@ public class PlayerController : MonoBehaviour
     public float maxMouseTorque = 5f;
     public float maxAngularSpeed = 3f;
 
+    [Header("Interacción")]
+    public float interactDistance = 10f;
+    public LayerMask interactLayerMask = ~0;
+    public PanelRenderer hudRenderer;
+
     private Rigidbody rb;
     private Vector3 moveInput;
     private Vector3 rotationInput;
     private bool isBraking;
+    private IInteractable currentInteractable;
+    private Label promptLabel;
+    private Label keyLabel;
+    private bool isInteractingWithUI;
 
     private float visualPitch;
     private float visualYaw;
@@ -56,14 +66,128 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if (hudRenderer == null)
+        {
+            hudRenderer = GetComponentInChildren<PanelRenderer>();
+        }
+
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
+
+        SetupMainScreenInteractables();
+    }
+
+    void OnEnable()
+    {
+        if (hudRenderer == null)
+        {
+            hudRenderer = GetComponentInChildren<PanelRenderer>();
+        }
+        if (hudRenderer != null)
+        {
+            hudRenderer.RegisterUIReloadCallback(OnHUDReload);
+        }
+    }
+
+    private void OnHUDReload(PanelRenderer renderer, VisualElement root, int version)
+    {
+        promptLabel = root.Q<Label>("promptText");
+        keyLabel = root.Q<Label>("keyLabel");
+        UpdatePromptHUD(null);
+    }
+
+    private void UpdatePromptHUD(string text)
+    {
+        if (promptLabel == null) return;
+
+        if (string.IsNullOrEmpty(text))
+        {
+            promptLabel.text = string.Empty;
+            promptLabel.AddToClassList("prompt-hidden");
+            if (keyLabel != null) keyLabel.AddToClassList("prompt-hidden");
+        }
+        else
+        {
+            promptLabel.text = text;
+            promptLabel.RemoveFromClassList("prompt-hidden");
+            if (keyLabel != null) keyLabel.RemoveFromClassList("prompt-hidden");
+        }
+    }
+
+    public void SetInteractingWithUI(bool interacting)
+    {
+        isInteractingWithUI = interacting;
+        if (interacting)
+        {
+            moveInput = Vector3.zero;
+            rotationInput = Vector3.zero;
+            visualPitch = 0f;
+            visualYaw = 0f;
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.isKinematic = true;
+                rb.constraints = RigidbodyConstraints.FreezeAll;
+            }
+            if (cameraTransform != null)
+            {
+                cameraTransform.localPosition = Vector3.zero;
+                cameraTransform.localRotation = Quaternion.identity;
+            }
+            UpdatePromptHUD(null);
+            if (hudRenderer != null)
+            {
+                hudRenderer.enabled = false;
+            }
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
+        }
+        else
+        {
+            if (rb != null)
+            {
+                rb.constraints = RigidbodyConstraints.None;
+                rb.isKinematic = false;
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+            if (hudRenderer != null)
+            {
+                hudRenderer.enabled = true;
+            }
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+            UnityEngine.Cursor.visible = false;
+        }
+    }
+
+    private void SetupMainScreenInteractables()
+    {
+        foreach (Transform t in FindObjectsByType<Transform>())
+        {
+            if (t.name.StartsWith("INT_CMD_MainScreen", StringComparison.OrdinalIgnoreCase))
+            {
+                t.gameObject.tag = "Interactible";
+                if (t.GetComponent<Collider>() == null)
+                {
+                    t.gameObject.AddComponent<BoxCollider>();
+                }
+                if (t.GetComponent<IInteractable>() == null)
+                {
+                    t.gameObject.AddComponent<MainScreenInteractable>();
+                }
+            }
+        }
     }
 
     void OnDisable()
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        if (hudRenderer != null)
+        {
+            hudRenderer.UnregisterUIReloadCallback(OnHUDReload);
+        }
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = true;
     }
 
     void Start()
@@ -73,6 +197,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (isInteractingWithUI) return;
+
         var keyboard = Keyboard.current;
         var mouse = Mouse.current;
         if (keyboard == null || mouse == null) return;
@@ -135,10 +261,46 @@ public class PlayerController : MonoBehaviour
         }
 
         isBraking = keyboard.xKey.isPressed;
+
+        HandleInteraction(keyboard);
+    }
+
+    private void HandleInteraction(Keyboard keyboard)
+    {
+        if (cameraTransform == null) return;
+
+        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+        Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.cyan);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactLayerMask))
+        {
+            if (hit.collider.CompareTag("Interactible") || hit.collider.CompareTag("interactable"))
+            {
+                IInteractable interactable = hit.collider.GetComponent<IInteractable>()
+                    ?? hit.collider.GetComponentInParent<IInteractable>();
+
+                if (interactable != null)
+                {
+                    currentInteractable = interactable;
+                    UpdatePromptHUD(currentInteractable.GetPromptText());
+
+                    if (keyboard.fKey.wasPressedThisFrame)
+                    {
+                        currentInteractable.Interact();
+                    }
+                    return;
+                }
+            }
+        }
+
+        currentInteractable = null;
+        UpdatePromptHUD(null);
     }
 
     void FixedUpdate()
     {
+        if (isInteractingWithUI) return;
+
         if (moveInput.sqrMagnitude > 0.01f)
         {
             rb.AddRelativeForce(moveInput * thrustForce, ForceMode.Force);

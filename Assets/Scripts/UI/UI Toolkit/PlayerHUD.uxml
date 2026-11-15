@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/UI/UI%20Toolkit/PlayerHUD.uss?fileID=7433441132597879392&amp;guid=b2c3d4e5f6a74890ab1c2d3e4f5a6b7c&amp;type=3#PlayerHUD"/>
+    <ui:VisualElement name="hudRoot" picking-mode="Ignore" class="hud-root" style="width: 100%; height: 100%; align-items: center; justify-content: center;">
+        <ui:VisualElement name="crosshair" picking-mode="Ignore" class="crosshair"/>
+        <ui:VisualElement name="promptContainer" picking-mode="Ignore" style="flex-direction: row; align-items: center; justify-content: center; position: absolute; top: 50px;">
+            <ui:Label name="keyLabel" text="F" picking-mode="Ignore" class="prompt-text" style="position: relative; margin-right: 8px; top: auto; left: auto; font-size: 35px;"/>
+            <ui:Label name="promptText" text="INTERACTIBLE" picking-mode="Ignore" class="prompt-text" style="position: relative; top: auto; left: auto; font-size: 35px;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

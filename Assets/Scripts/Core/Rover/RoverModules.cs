@@ -1,29 +1,19 @@
 using System.Collections.Generic;
 
-public class RoverModules
+public class RoverBattery : GenericModule
 {
-    public RoverBattery battery;
-    public RoverArmor armor;
-    public RoverAntenna antenna;
-}
-
-public class RoverBattery
-{
-    public string name;
     public float ah;
     public float price;
 }
 
-public class RoverArmor
+public class RoverArmor: GenericModule
 {
-    public string name;
     public int bangs;
     public float price;
 }
 
-public class RoverAntenna
+public class RoverAntenna: GenericModule
 {
-    public string name;
     public float radius;
     public float speed;
 }

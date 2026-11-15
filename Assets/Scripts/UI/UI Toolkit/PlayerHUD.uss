@@ -1,0 +1,53 @@
+.hud-root {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.crosshair {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-color: rgba(0, 0, 0, 0.7);
+    border-right-color: rgba(0, 0, 0, 0.7);
+    border-bottom-color: rgba(0, 0, 0, 0.7);
+    border-left-color: rgba(0, 0, 0, 0.7);
+}
+
+.prompt-text {
+    margin-top: 16px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 14px;
+    padding-right: 14px;
+    font-size: 24px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(15, 20, 30, 0.75);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-color: rgb(55, 200, 171);
+    border-right-color: rgb(55, 200, 171);
+    border-bottom-color: rgb(55, 200, 171);
+    border-left-color: rgb(55, 200, 171);
+    -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+.prompt-hidden {
+    display: none;
+}
