@@ -1,0 +1,12 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/UI/UI%20Toolkit/UiRobot.uss?fileID=7433441132597879392&amp;guid=9da99fc7c67ba1046b1fcaf504cbedef&amp;type=3#UiRobot"/>
+    <ui:VisualElement class="frame" style="flex-grow: 1;">
+        <ui:VisualElement class="frame-minor" style="flex-grow: 1;">
+            <ui:Image style="width: 150px; height: 150px;"/>
+            <ui:VisualElement class="corner-bottom-left corner"/>
+            <ui:VisualElement class="corner-bottom-right corner"/>
+            <ui:VisualElement class="corner-top-right corner"/>
+            <ui:VisualElement class="corner-top-left corner"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

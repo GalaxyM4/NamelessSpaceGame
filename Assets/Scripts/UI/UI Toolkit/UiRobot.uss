@@ -1,0 +1,76 @@
+:root {
+}
+
+.frame {
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    margin-top: 18px;
+    margin-right: 18px;
+    margin-bottom: 18px;
+    margin-left: 18px;
+    border-top-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.frame-minor {
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    background-color: rgba(0, 0, 0, 0);
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.corner-bottom-left {
+    border-left-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+    width: auto;
+    height: auto;
+}
+
+.corner-bottom-right {
+    border-bottom-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+}
+
+.corner-top-right {
+    border-top-width: 10px;
+    border-top-color: rgb(255, 255, 255);
+    border-left-color: rgba(0, 0, 0, 0.51);
+    border-right-width: 10px;
+    border-right-color: rgb(255, 255, 255);
+}
+
+.corner-top-left {
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-left-width: 10px;
+    border-top-width: 10px;
+    background-position-x: left 0;
+    position: absolute;
+}
+
+.corner {
+    width: 100px;
+    height: 100px;
+}
