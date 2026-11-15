@@ -623,6 +623,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94fe22f072369ab499c6fa52c8428342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIScript
+  durationFade: 2
+  menuAudioSource: {fileID: 1722581789}
 --- !u!1 &1722581787
 GameObject:
   m_ObjectHideFlags: 0
