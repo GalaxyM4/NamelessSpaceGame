@@ -177,6 +177,28 @@ public class PlayerController : MonoBehaviour
                     t.gameObject.AddComponent<MainScreenInteractable>();
                 }
             }
+            else if (t.name.StartsWith("INT_CMD_TouchPanel_01", StringComparison.OrdinalIgnoreCase) ||
+                     t.name.StartsWith("INT_CMD_TouchPanel_1", StringComparison.OrdinalIgnoreCase))
+            {
+                t.gameObject.tag = "Interactible";
+                BoxCollider box = t.GetComponent<BoxCollider>();
+                if (box == null && t.GetComponent<Collider>() == null)
+                {
+                    box = t.gameObject.AddComponent<BoxCollider>();
+                }
+                if (box != null && box.size.z < 0.001f)
+                {
+                    box.size = new Vector3(
+                        Mathf.Max(box.size.x, 0.0042f),
+                        Mathf.Max(box.size.y, 0.0024f),
+                        0.0015f
+                    );
+                }
+                if (t.GetComponent<IInteractable>() == null)
+                {
+                    t.gameObject.AddComponent<BackgroundMusicInteractable>();
+                }
+            }
         }
     }
 
@@ -272,14 +294,21 @@ public class PlayerController : MonoBehaviour
         Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
         Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.cyan);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactLayerMask))
+        RaycastHit[] hits = Physics.RaycastAll(ray, interactDistance, interactLayerMask, QueryTriggerInteraction.Collide);
+        if (hits != null && hits.Length > 0)
         {
-            if (hit.collider.CompareTag("Interactible") || hit.collider.CompareTag("interactable"))
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+            foreach (RaycastHit hit in hits)
             {
+                if (hit.collider == null) continue;
+                if (hit.collider.transform.IsChildOf(transform)) continue;
+
+                bool hasInteractTag = hit.collider.CompareTag("Interactible") || hit.collider.CompareTag("interactable");
                 IInteractable interactable = hit.collider.GetComponent<IInteractable>()
                     ?? hit.collider.GetComponentInParent<IInteractable>();
 
-                if (interactable != null)
+                if (interactable != null && (hasInteractTag || interactable is MonoBehaviour))
                 {
                     currentInteractable = interactable;
                     UpdatePromptHUD(currentInteractable.GetPromptText());
