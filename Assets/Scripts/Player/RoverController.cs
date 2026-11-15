@@ -35,6 +35,14 @@ public class RoverController : MonoBehaviour
     private AudioSource movementSound;
     private bool wasCameraMoving;
 
+    [Header("Audio Llantas")]
+    public AudioClip wheelStartSound;
+    public AudioClip wheelLoopSound;
+    public AudioClip wheelEndSound;
+    public AudioSource wheelAudioSource;
+    public float wheelMoveThreshold = 0.15f;
+    private bool wasWheelMoving;
+
     [Header("Camara")]
     public float cameraSensitivity = 1f;
     public float maxVisualPitch = 85f;
@@ -49,8 +57,26 @@ public class RoverController : MonoBehaviour
     void Start()
     {
         movementSound = GetComponentInChildren<AudioSource>();
-        movementSound.playOnAwake = true;
-        movementSound.Stop();
+        if (movementSound != null)
+        {
+            movementSound.playOnAwake = false;
+            movementSound.Stop();
+        }
+
+        if (wheelAudioSource == null)
+        {
+            wheelAudioSource = gameObject.AddComponent<AudioSource>();
+            wheelAudioSource.playOnAwake = false;
+            wheelAudioSource.loop = false;
+            if (movementSound != null)
+            {
+                wheelAudioSource.spatialBlend = movementSound.spatialBlend;
+                wheelAudioSource.volume = movementSound.volume;
+                wheelAudioSource.outputAudioMixerGroup = movementSound.outputAudioMixerGroup;
+                wheelAudioSource.minDistance = movementSound.minDistance;
+                wheelAudioSource.maxDistance = movementSound.maxDistance;
+            }
+        }
     }
     void Update()
     {
@@ -67,29 +93,77 @@ public class RoverController : MonoBehaviour
 
     private void UpdateSound(bool isCameraMoving)
     {
-        if (movementSound == null) return;
+        UpdateLoopingSound(movementSound, startSound, loopSound, endSound, isCameraMoving, ref wasCameraMoving);
+    }
 
-        if (isCameraMoving && !wasCameraMoving)
+    private void UpdateWheelSound(bool isWheelMoving)
+    {
+        UpdateLoopingSound(wheelAudioSource, wheelStartSound, wheelLoopSound, wheelEndSound, isWheelMoving, ref wasWheelMoving);
+    }
+
+    private void UpdateLoopingSound(
+        AudioSource source,
+        AudioClip startClip,
+        AudioClip loopClip,
+        AudioClip endClip,
+        bool isMoving,
+        ref bool wasMoving)
+    {
+        if (source == null) return;
+
+        if (isMoving && !wasMoving)
         {
-            if (startSound != null)
-                movementSound.PlayOneShot(startSound);
+            source.Stop();
 
-            if (loopSound != null)
+            if (startClip != null)
             {
-                movementSound.clip = loopSound;
-                movementSound.loop = true;
-                movementSound.Play();
+                source.clip = startClip;
+                source.loop = false;
+                source.Play();
             }
-        } else if (!isCameraMoving && wasCameraMoving)
+            else if (loopClip != null)
+            {
+                source.clip = loopClip;
+                source.loop = true;
+                source.Play();
+            }
+        }
+        else if (isMoving && wasMoving)
         {
-            movementSound.PlayOneShot(endSound);
-            movementSound.Stop();
-            movementSound.loop = false;
+            if (!source.isPlaying && loopClip != null)
+            {
+                source.clip = loopClip;
+                source.loop = true;
+                source.Play();
+            }
+        }
+        else if (!isMoving && wasMoving)
+        {
+            source.Stop();
+            source.loop = false;
+            source.clip = null;
 
-            if (endSound != null) movementSound.PlayOneShot(endSound);
+            if (endClip != null)
+            {
+                source.PlayOneShot(endClip);
+            }
         }
 
-        wasCameraMoving = isCameraMoving;
+        wasMoving = isMoving;
+    }
+
+    private bool IsAnyWheelGrounded()
+    {
+        if (axles == null) return false;
+        foreach (RoverAxle axle in axles)
+        {
+            if ((axle.LWColl != null && axle.LWColl.isGrounded) ||
+                (axle.RWColl != null && axle.RWColl.isGrounded))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     void FixedUpdate()
@@ -118,6 +192,11 @@ public class RoverController : MonoBehaviour
         {
             rb.linearVelocity = Vector3.ClampMagnitude(rb.linearVelocity, maxSpeed);
         }
+
+        bool hasMotorInput = Mathf.Abs(moveInput) > 0.01f && !isBraking;
+        bool isRolling = rb.linearVelocity.magnitude > wheelMoveThreshold;
+        bool isWheelMoving = IsAnyWheelGrounded() && (hasMotorInput || isRolling);
+        UpdateWheelSound(isWheelMoving);
 
         foreach (RoverAxle axle in axles)
         {
