@@ -26,11 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-<<<<<<< HEAD
-  m_SkyboxMaterial: {fileID: 2100000, guid: 35361cae151acc848b200e6d42949371, type: 2}
-=======
   m_SkyboxMaterial: {fileID: 2100000, guid: 1df8c41f782d03b4dbd05e26bc9ba8a3, type: 2}
->>>>>>> a989577d73af488346edf1bf4f74b4f48e59832d
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1511,11 +1507,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-<<<<<<< HEAD
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
-=======
   m_LocalEulerAnglesHint: {x: 10, y: -180, z: 0}
->>>>>>> a989577d73af488346edf1bf4f74b4f48e59832d
 --- !u!114 &532162187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1545,90 +1537,12 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
-<<<<<<< HEAD
---- !u!1 &2032527141
-GameObject:
-=======
 --- !u!65 &561020498
 BoxCollider:
->>>>>>> a989577d73af488346edf1bf4f74b4f48e59832d
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2032527143}
-  - component: {fileID: 2032527142}
-  m_Layer: 5
-  m_Name: PanelRenderer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1931382934 &2032527142
-PanelRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2032527141}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  serializedVersion: 1
-  m_PanelSettings: {fileID: 11400000, guid: a3622f6d36f4d574c9b404b78c832bbb, type: 2}
-  sourceAsset: {fileID: 0}
-  m_ParentUI: {fileID: 0}
-  m_WorldSpaceSizeMode: 1
-  m_WorldSpaceWidth: 1920
-  m_WorldSpaceHeight: 1080
-  m_PivotReferenceSize: 0
-  m_Pivot: 0
-  m_Position: 0
---- !u!4 &2032527143
-Transform:
-=======
   m_GameObject: {fileID: 249936607}
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -1646,22 +1560,10 @@ Transform:
   m_Center: {x: 0.0000000018626451, y: 2.220446e-16, z: 0.0000000037252903}
 --- !u!61 &569635538
 BoxCollider2D:
->>>>>>> a989577d73af488346edf1bf4f74b4f48e59832d
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 2032527141}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
   m_GameObject: {fileID: 249936648}
   m_Enabled: 1
   serializedVersion: 3
@@ -2928,15 +2830,10 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.021999996, y: 0.0054999995, z: 0.0010000007}
   m_Center: {x: 2.518295e-10, y: -0.008249998, z: -0.00019999652}
->>>>>>> a989577d73af488346edf1bf4f74b4f48e59832d
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 532162186}
-<<<<<<< HEAD
-  - {fileID: 2032527143}
-=======
   - {fileID: 629673678}
   - {fileID: 249936605}
->>>>>>> a989577d73af488346edf1bf4f74b4f48e59832d

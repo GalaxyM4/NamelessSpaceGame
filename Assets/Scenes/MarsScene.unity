@@ -1353,6 +1353,7 @@ GameObject:
   - component: {fileID: 1850491642}
   - component: {fileID: 1850491641}
   - component: {fileID: 1850491643}
+  - component: {fileID: 1850491644}
   m_Layer: 0
   m_Name: Rover
   m_TagString: Untagged
@@ -1444,6 +1445,19 @@ MonoBehaviour:
   maxVisualPitch: 85
   maxVisualYaw: 120
   cameraReturnSpeed: 8
+--- !u!114 &1850491644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850491640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1b2c3d4e5f64789a0b1c2d3e4f50001, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneGravityOverride
+  gravity: {x: 0, y: -3.72, z: 0}
 --- !u!1 &1916114845
 GameObject:
   m_ObjectHideFlags: 0
@@ -1458,7 +1472,7 @@ GameObject:
   - component: {fileID: 1916114846}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
