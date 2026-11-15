@@ -101,7 +101,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3618020525894007725}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 4214bd2ee4564cd4291bbb6c1e30e561, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -125,7 +125,7 @@ Rigidbody:
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -156,11 +156,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   currentMode: 0
   cameraTransform: {fileID: 0}
-  thrustForce: 0
+  thrustForce: 10
   rollTorque: 5
-  mouseSensitivity: 0.1
-  visualMouseSensitivity: 0.25
-  maxVisualPitch: 85
+  mouseSensitivity: 0.3
+  visualMouseSensitivity: 0.1
+  maxVisualPitch: 80
   maxVisualYaw: 120
   cameraReturnSpeed: 8
   maxSpeed: 20
@@ -234,7 +234,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
