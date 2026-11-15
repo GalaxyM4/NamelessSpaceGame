@@ -11,5 +11,19 @@
             </ui:VisualElement>
             <ui:VisualElement name="footer" style="width: 100%; height: auto;"/>
         </ui:VisualElement>
+        <ui:VisualElement name="VisualElement" class="right">
+            <ui:VisualElement name="settingsPanel" class="menu-panel panel-hidden">
+                <ui:Label text="AJUSTES" class="panel-title"/>
+                <ui:VisualElement class="panel-content">
+                    <ui:Slider label="Volumen Maestro" name="masterVolume" low-value="0" high-value="100" value="80" class="setting-control"/>
+                    <ui:Slider label="Sensibilidad" name="sensitivity" low-value="1" high-value="10" value="5" class="setting-control"/>
+                    <ui:Toggle label="Pantalla Completa" name="fullscreenToggle" value="true" class="setting-control"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="creditsPanel" class="menu-panel panel-hidden">
+                <ui:Label text="CRÉDITOS" class="panel-title"/>
+                <ui:ListView name="creditsList" fixed-item-height="80" class="credits-list"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

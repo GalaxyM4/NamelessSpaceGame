@@ -1,5 +1,5 @@
 using System;
-using UnityEngine;
+using UnityEngine; 
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(PanelRenderer))]
@@ -52,6 +52,8 @@ public class ComputerScript : MonoBehaviour
 
     private void OnEnable()
     {
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = true; 
         if (panelRenderer == null) panelRenderer = GetComponent<PanelRenderer>();
         panelRenderer.RegisterUIReloadCallback(OnUIReload);
     }
@@ -60,6 +62,8 @@ public class ComputerScript : MonoBehaviour
     {
         if (panelRenderer != null)
         {
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+            UnityEngine.Cursor.visible = false;
             panelRenderer.UnregisterUIReloadCallback(OnUIReload);
         }
     }
