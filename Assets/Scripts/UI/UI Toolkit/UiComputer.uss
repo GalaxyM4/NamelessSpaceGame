@@ -6,56 +6,76 @@
     background-image: resource("BackgroundSilver");
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-self: center;
-    align-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    border-top-width: 0;
-    border-right-width: 0;
-    border-bottom-width: 0;
-    border-left-width: 0;
-    padding-top: 60px;
-    padding-right: 60px;
-    padding-bottom: 60px;
-    padding-left: 60px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding-top: 40px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+    padding-left: 40px;
+    display: flex;
+}
+
+.main-text {
+    width: 100%;
+    height: auto;
+    flex-shrink: 0;
+    font-size: 90px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    -unity-font-definition: url("project://database/Assets/fonts/Overmars-Jpdzj.otf?fileID=12800000&guid=80bacaa6c9a67794a9d1e6b734fcfd75&type=3#Overmars-Jpdzj");
+    text-shadow: 10px 10px 0 rgb(0, 0, 0);
+    margin-bottom: 20px;
+}
+
+.main-content {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 0;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
     display: flex;
 }
 
 .card {
-    width: 50%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    min-width: 0;
+    min-height: 0;
     height: 100%;
-    background-color: rgb(150, 151, 150);
-    align-self: center;
-    justify-content: flex-end;
+    background-color: rgba(0, 0, 0, 0.702);
+    justify-content: space-between;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
-    opacity: 1;
-    align-content: center;
     margin-top: 10px;
     margin-right: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
-    padding-top: 15px;
-    padding-right: 15px;
-    padding-bottom: 15px;
-    padding-left: 15px;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
     display: flex;
+    overflow: hidden;
 }
 
 .button-style {
-    justify-content: flex-end;
+    justify-content: center;
     align-self: center;
-    width: 80%;
-    height: 80%;
-    opacity: 1;
+    width: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 0;
     background-color: rgb(0, 0, 0);
-    border-top-width: 15px;
-    border-right-width: 15px;
-    border-bottom-width: 15px;
-    border-left-width: 15px;
+    border-top-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -64,10 +84,33 @@
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
     border-bottom-color: rgb(255, 255, 255);
+    padding-top: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
 }
 
 .button-style:hover {
     background-color: rgb(255, 253, 123);
+}
+
+.mission-button-bg {
+    background-image: url("project://database/Assets/Textures/marslike01lf.tga?fileID=2800000&guid=31ddc024002c9414988c6a7312552e1d&type=3#marslike01lf");
+}
+
+.mission-image {
+    width: 100%;
+    height: 100%;
+    background-image: resource("curiosity-3d-model");
+    -unity-background-scale-mode: scale-to-fit;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 
 .unity-image {
@@ -86,251 +129,200 @@
 .text-general {
     -unity-font-style: bold;
     -unity-text-align: middle-center;
-    font-size: 70px;
+    font-size: 48px;
     -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
-    background-size: auto auto;
     -unity-text-outline-width: 2px;
-    text-shadow: 20px 25px 0 rgb(0, 0, 0);
-    white-space: nowrap;
+    text-shadow: 10px 10px 0 rgb(0, 0, 0);
+    white-space: normal;
     align-self: center;
     justify-content: center;
-    height: 100px;
-    align-items: center;
-    flex-wrap: wrap;
-    align-content: center;
+    height: auto;
+    flex-shrink: 0;
+    margin-top: 12px;
     color: rgb(255, 255, 255);
-}
-
-.main-text {
-    font-size: 150px;
-    -unity-text-align: middle-center;
-    -unity-font-definition: url("project://database/Assets/fonts/Overmars-Jpdzj.otf?fileID=12800000&guid=80bacaa6c9a67794a9d1e6b734fcfd75&type=3#Overmars-Jpdzj");
-    text-shadow: 25px 0 0 rgba(0, 0, 0, 0);
 }
 
 .information {
     background-color: rgba(135, 133, 133, 0.745);
-    font-size: 150px;
     -unity-text-align: upper-center;
-    align-items: center;
-    justify-content: flex-start;
-    -unity-font-definition: initial;
+    align-items: stretch;
+    justify-content: space-between;
     color: rgb(249, 255, 52);
-    text-shadow: 20px 15px 0 rgb(0, 0, 0);
+    text-shadow: 10px 10px 0 rgb(0, 0, 0);
     -unity-text-outline-color: rgb(0, 0, 0);
-    height: 100%;
-    align-self: flex-start;
 }
 
 .information-text {
+    font-size: 120px;
+    height: auto;
+    flex-shrink: 0;
+    -unity-text-align: upper-center;
     -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
+    margin-bottom: 10px;
 }
 
 .info-mision {
     color: rgb(255, 255, 255);
     -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
-    font-size: 50px;
-    white-space: pre-wrap;
-    -unity-text-align: upper-center;
+    font-size: 36px;
+    white-space: normal;
+    -unity-text-align: middle-left;
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 0;
+    overflow: hidden;
+    text-shadow: 3px 3px 0 rgb(0, 0, 0);
 }
 
 .text-references {
     -unity-text-align: upper-right;
     width: 100%;
-    font-size: 30px;
+    height: auto;
+    flex-shrink: 0;
+    font-size: 22px;
     -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 .style-button {
     -unity-font-style: normal;
-    font-size: 100px;
+    font-size: 64px;
     -unity-font-definition: url("project://database/Assets/fonts/FutureEdge-G3Zjg.ttf?fileID=12800000&guid=20323de7583e72e4782c50242783d686&type=3#FutureEdge-G3Zjg");
-    margin-top: 15px;
-    margin-right: 15px;
-    margin-bottom: 15px;
-    margin-left: 15px;
-    padding-top: 15px;
+    margin-top: 10px;
+    padding-top: 10px;
     padding-right: 15px;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
     padding-left: 15px;
-    border-top-left-radius: 75px;
-    border-top-right-radius: 75px;
-    border-bottom-right-radius: 75px;
-    border-bottom-left-radius: 75px;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 50px;
     color: rgb(255, 255, 255);
     background-color: rgb(36, 74, 67);
     background-size: 100% 100%;
     width: 100%;
     background-image: resource("frameOne");
-    height: 200px;
+    height: 120px;
+    flex-shrink: 0;
 }
 
-.resources {
-    justify-content: center;
-    flex-wrap: wrap;
-    flex-direction: row;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    border-bottom-left-radius: 30px;
-}
-
-.button-resource {
-    margin-top: 25px;
-    margin-right: 25px;
-    margin-bottom: 25px;
-    margin-left: 25px;
-    background-size: 100% 100%;
-    height: 100%;
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
-    border-bottom-left-radius: 50px;
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
-}
-
-.card-resource {
-    background-size: 350px 100px;
-    width: 500px;
-    height: 500px;
-}
-
-.text-resource {
-    width: 100%;
-    margin-top: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    margin-left: 5px;
-    font-size: 50px;
-    -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
-    color: rgb(255, 255, 255);
-    -unity-text-align: upper-center;
-}
-
-.scroller {
-    height: 100%;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-end;
-    align-self: flex-start;
-    align-items: center;
-    flex-grow: 1;
-    rotate: 0;
-}
-
-.image-resource {
-    background-image: url("project://database/Assets/Sprites/sprite1.png?fileID=-195958674&guid=34f6a0807cebb7843b6548a0ebf69ab2&type=3#sprite1_4");
-    background-color: rgb(0, 0, 0);
-    width: 100%;
-    height: 500%;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    opacity: 0.38;
-}
-
-.image-resource:hover {
+.panel-hidden {
+    display: none;
 }
 
 .right {
     flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+    min-height: 0;
     width: 100%;
     height: 100%;
-    align-self: center;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: space-between;
     background-color: rgba(9, 10, 20, 0.72);
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
     border-bottom-left-radius: 30px;
-}
-
-.resources-title {
-    justify-content: center;
-    align-self: center;
-    width: 100%;
-    font-size: 115px;
-    -unity-font-style: normal;
-    -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
-    -unity-text-align: upper-center;
-    color: rgb(55, 200, 171);
-    -unity-text-outline-width: 0;
-    text-shadow: 5px 0 0 rgb(0, 0, 0);
-}
-
-.resources-subtitle {
-    width: auto;
-    font-size: 60px;
-    -unity-font-style: normal;
-    -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
-    color: rgb(255, 255, 255);
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
 }
 
 .resources-left {
-    width: 60%;
+    width: 55%;
     height: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    -unity-text-align: upper-center;
-    align-self: flex-start;
-    justify-content: flex-start;
-    align-content: flex-start;
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-}
-
-.frame-resource {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    border-top-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
-    border-left-color: rgb(255, 255, 255);
-    border-top-width: 15px;
-    border-right-width: 15px;
-    border-bottom-width: 15px;
-    border-left-width: 15px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    width: 340px;
-    height: 340px;
-    margin-top: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    margin-left: 5px;
-}
-
-.resource-button {
+    min-height: 0;
     flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
     justify-content: center;
+    margin-right: 15px;
+    align-content: center;
+    align-self: center;
+}
+
+.card-resource {
+    width: 100%;
+    height: 300px;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.button-resource {
+    width: 220px;
+    height: 220px;
+    flex-shrink: 0;
+    background-image: url("project://database/Assets/Textures/plain_starfield_1.png?fileID=2800000&guid=625dabdc324a0454baa65d072fc2415e&type=3#plain_starfield_1");
+    background-size: 100% 100%;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    padding-top: 12px;
+    padding-right: 12px;
+    padding-bottom: 12px;
+    padding-left: 12px;
+}
+
+.image-resource {
     width: 100%;
     height: 100%;
-    opacity: 0.68;
-    -unity-background-image-tint-color: rgb(70, 60, 60);
-    transition-duration: 0.5s;
-    transition-timing-function: ease-out;
+    -unity-background-scale-mode: scale-to-fit;
 }
 
-.resource-button:hover {
-    -unity-background-image-tint-color: rgb(247, 247, 242);
-    opacity: 1;
-    scale: 1.05 1.05 1;
-    background-color: rgb(255, 255, 255);
+.text-resource {
+    width: 100%;
+    height: auto;
+    flex-shrink: 0;
+    margin-top: 8px;
+    font-size: 42px;
+    -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+}
+
+.equipment-tree {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 0;
+    width: 100%;
+    background-color: rgba(20, 24, 34, 0.85);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-color: rgb(55, 200, 171);
+    border-right-color: rgb(55, 200, 171);
+    border-bottom-color: rgb(55, 200, 171);
+    border-left-color: rgb(55, 200, 171);
+}
+
+.tree-cell-label {
+    font-size: 26px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-left;
+    padding-left: 8px;
 }
 
 .sprite-bobsemple {
@@ -357,54 +349,79 @@
     background-image: url("project://database/Assets/Sprites/sprite1.png?fileID=1170246500&guid=34f6a0807cebb7843b6548a0ebf69ab2&type=3#sprite1_2");
 }
 
+.resources-right {
+    align-self: stretch;
+    justify-content: flex-start;
+    align-items: center;
+    width: 45%;
+    height: 100%;
+    min-height: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding-top: 10px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+}
+
+.resources-title {
+    justify-content: center;
+    align-self: center;
+    width: 100%;
+    height: auto;
+    flex-shrink: 0;
+    font-size: 135px;
+    -unity-font-style: normal;
+    -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
+    -unity-text-align: upper-center;
+    color: rgb(55, 200, 171);
+    text-shadow: 5px 0 0 rgb(0, 0, 0);
+}
+
+.resources-subtitle {
+    width: auto;
+    height: auto;
+    flex-shrink: 0;
+    font-size: 50px;
+    -unity-font-style: normal;
+    -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
+    color: rgb(255, 255, 255);
+    margin-bottom: 16px;
+}
+
 .resource-stadistic {
     flex-direction: row;
     width: 100%;
+    height: auto;
+    flex-shrink: 0;
     justify-content: flex-start;
     align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 .resource-stadistic-actions {
     justify-content: center;
-}
-
-.resources-right {
-    align-self: center;
-    align-content: center;
-    justify-content: flex-start;
-    align-items: center;
-    width: 40%;
-    -unity-text-align: upper-center;
-    height: 100%;
-    flex-grow: 1;
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
+    margin-top: auto;
 }
 
 .label-stadistic {
     -unity-font-style: bold;
-    font-size: 55px;
+    font-size: 50px;
+    flex-shrink: 0;
     -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
-    text-shadow: 15px 25px 0 rgb(0, 0, 0);
+    text-shadow: 5px 5px 0 rgb(0, 0, 0);
     color: rgb(255, 255, 255);
-    border-left-color: rgb(22, 22, 22);
-    border-right-color: rgb(22, 22, 22);
-    border-top-color: rgb(22, 22, 22);
-    border-bottom-color: rgb(22, 22, 22);
-    -unity-text-outline-color: rgb(0, 0, 0);
     margin-right: 16px;
 }
 
 .label-value {
     font-size: 80px;
+    flex-shrink: 1;
     -unity-font-definition: url("project://database/Assets/fonts/FutureLight-BW15w.ttf?fileID=12800000&guid=23156b98981a2ae47b81ba77d89f0f34&type=3#FutureLight-BW15w");
     -unity-font-style: bold;
     color: rgb(55, 200, 171);
-    text-shadow: 50px 50px 0 rgb(64, 43, 43);
+    text-shadow: 4px 4px 0 rgb(0, 0, 0);
 }
 
 .unity-progress-bar__progress {
@@ -414,16 +431,13 @@
 }
 
 .unity-progress-bar__title-container {
-    -unity-background-image-tint-color: rgb(255, 255, 255);
     min-width: 100%;
     width: 100%;
     flex-direction: row;
     flex-grow: 1;
     flex-shrink: 1;
     justify-content: space-around;
-    align-items: flex-start;
-    align-self: flex-start;
-    align-content: stretch;
+    align-items: center;
     height: 100%;
 }
 
@@ -432,8 +446,7 @@
     width: 100px;
     flex-grow: 1;
     flex-basis: 0%;
-    height: 100%;
-    background-size: 100% 100%;
+    height: 44px;
     flex-direction: column;
     align-items: stretch;
     align-self: center;
@@ -447,20 +460,18 @@
 .button-main {
     background-color: rgb(55, 200, 171);
     width: auto;
-    height: 100px;
-    margin-top: 20px;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    font-size: 50px;
+    height: 90px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 44px;
     -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
     -unity-font-style: bold;
     justify-content: center;
     -unity-text-align: middle-center;
-    padding-top: 50px;
-    padding-right: 50px;
-    padding-bottom: 50px;
-    padding-left: 50px;
+    padding-top: 15px;
+    padding-right: 40px;
+    padding-bottom: 15px;
+    padding-left: 40px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;

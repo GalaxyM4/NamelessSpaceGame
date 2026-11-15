@@ -1,0 +1,23 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/UI/UI%20Toolkit/UiRobot.uss?fileID=7433441132597879392&amp;guid=9da99fc7c67ba1046b1fcaf504cbedef&amp;type=3#UiRobot"/>
+    <ui:VisualElement class="frame" style="flex-grow: 1;">
+        <ui:VisualElement class="frame-minor" style="flex-grow: 1;">
+            <ui:VisualElement class="corner-bottom-left corner"/>
+            <ui:VisualElement class="corner-bottom-right corner"/>
+            <ui:VisualElement class="corner-top-right corner">
+                <ui:VisualElement style="flex-grow: 1; flex-direction: column; flex-wrap: wrap; width: auto; height: 150px; align-self: flex-end; align-items: flex-start; justify-content: space-evenly; align-content: flex-end;">
+                    <ui:Image source="project://database/Assets/Resources/battery.svg?fileID=7388822144124034973&amp;guid=b3304cf1481263841b6eac657895e4eb&amp;type=3#battery" class="image-battery" style="width: 150px; height: 400px;"/>
+                    <ui:Label text="80%" class="percent-battery"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="corner-top-left corner" style="padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
+                <ui:VisualElement class="alerts" style="flex-grow: 1; flex-direction: column; flex-wrap: wrap; width: auto; height: 150px; align-self: flex-start; align-items: flex-start; justify-content: space-around; align-content: flex-end;">
+                    <ui:Image source="project://database/Assets/Resources/alert.svg?fileID=7388822144124034973&amp;guid=dc66b27270325ff40848a0dd9b85fb68&amp;type=3#alert" tint-color="rgb(255, 55, 36)" class="image-alert" style="width: 150px; height: 400px;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="pointer">
+                <ui:Image name="Image" style="background-image: resource(&quot;crosshair&quot;); width: 120px; height: 120px; -unity-background-image-tint-color: rgb(255, 255, 255);"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
