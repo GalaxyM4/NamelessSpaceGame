@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "region": "Gale MSL landing-site region",
+  "sourcePage": "https://www.uahirise.org/dtm/ESP_024234_1755",
+  "dtmProduct": "DTEEC_024234_1755_024300_1755_U01",
+  "orthoProduct": "ESP_024234_1755_RED_C_01_ORTHO",
+  "credit": "NASA/JPL-Caltech/University of Arizona; DTM produced by USGS",
+  "heightFile": "heights.f32",
+  "heightSha256": "23d28436e686556a13e0e819b6fdbbb8f58df9f6e78ab477442da17acd0804b7",
+  "textureAssetPath": "Assets/Textures/HiRISE/GaleOrtho.png",
+  "textureSha256": "e952732fe0fb181120828fef52414caaeddbbebbedaca69ee8ac1f1a6d7d18bc",
+  "resolution": 2049,
+  "sizeMeters": 2048.0,
+  "minimumElevationMeters": -4491.21435546875,
+  "maximumElevationMeters": -4477.20166015625,
+  "projectedBounds": [
+    373.96810240587,
+    -276309.4658527607,
+    2421.96810240587,
+    -274261.4658527607
+  ],
+  "crsWkt": "PROJCS[\"EQUIRECTANGULAR MARS\",GEOGCS[\"GCS_MARS\",DATUM[\"D_MARS\",SPHEROID[\"MARS_localRadius\",3396190,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Equirectangular\"],PARAMETER[\"standard_parallel_1\",0],PARAMETER[\"central_meridian\",137.24],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+  "orientation": "+X=east,+Z=north; float32 LE rows south-to-north",
+  "imagery": "RED monochrome; linear percentile contrast stretch, not true color",
+  "imageContrastMinimum": 189.8831901550293,
+  "imageContrastMaximum": 214.05915718078614,
+  "slopeMedianDegrees": 3.6304848194122314,
+  "slope90Degrees": 7.40321683883667,
+  "sourceDtmSha256": "f01772662a0f7034ea651d862d59de6e304035ed3948268a0eac06ac66055a4c",
+  "sourceOrthoSha256": "47b4de364f3c57c86e044583c76d85dbc05ad3e2e47ca566e08fcc1e6952cab3"
+}

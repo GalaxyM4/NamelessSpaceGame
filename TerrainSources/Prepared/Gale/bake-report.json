@@ -1,0 +1,33 @@
+{
+    "dtmProduct": "DTEEC_024234_1755_024300_1755_U01",
+    "orthoProduct": "ESP_024234_1755_RED_C_01_ORTHO",
+    "sourceHeightSha256": "23d28436e686556a13e0e819b6fdbbb8f58df9f6e78ab477442da17acd0804b7",
+    "sourceTextureSha256": "e952732fe0fb181120828fef52414caaeddbbebbedaca69ee8ac1f1a6d7d18bc",
+    "orientation": "+X=east,+Z=north; float32 LE rows south-to-north",
+    "credit": "NASA/JPL-Caltech/University of Arizona; DTM produced by USGS",
+    "projectedBounds": [
+        373.9681024058691,
+        -276309.4658527607,
+        2421.968102405869,
+        -274261.4658527607
+    ],
+    "elevationOffsetMeters": -4495.21435546875,
+    "verticalRangeMeters": 22.0126953125,
+    "sizeMeters": 2048.0,
+    "resolution": 2049,
+    "terrainWorldPosition": {
+        "x": -1024.0,
+        "y": 0.0,
+        "z": -1024.0
+    },
+    "flattenSpawn": true,
+    "spawnWorldXZ": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "spawnSafeRadius": 6.0,
+    "spawnBlendWidth": 12.0,
+    "detailWeight": 0.11999999731779099,
+    "adjustments": [],
+    "maximumGameplayHeightChangeMeters": 0.4169921875
+}

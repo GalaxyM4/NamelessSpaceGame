@@ -340,7 +340,7 @@ Transform:
   m_GameObject: {fileID: 1308145422}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -500, y: 0, z: -500}
+  m_LocalPosition: {x: -1024, y: 0, z: -1024}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -358,32 +358,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da32b0c310ca568479b15eb5e30809da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MarsTerrainGenerator
-  seed: 2026
-  baseElevationMeters: 15
-  maxReliefMeters: 28
-  octaves: 5
-  baseFrequency: 0.0025
-  lacunarity: 2.05
-  persistence: 0.45
-  warpStrength: 45
-  warpFrequency: 0.0018
-  ridgeFrequency: 0.0032
-  ridgeWeight: 0.45
-  ridgeSharpness: 2
-  duneFrequency: 0.045
-  duneAmplitudeMeters: 0.65
-  duneDirectionDegrees: 32
-  microNoiseFrequency: 0.18
-  microNoiseAmplitudeMeters: 0.18
-  craterCount: 24
-  craterRadiusRange: {x: 14, y: 65}
-  craterDepthRatio: 0.16
-  craterRimHeightRatio: 0.055
+  manifestPath: TerrainSources/Prepared/Gale/manifest.json
+  terrainCenterWorldXZ: {x: 0, y: 0}
+  detailLayer: {fileID: 8574412962073106934, guid: 6a1cf7bb1f1a8be43a9226a1203f9732, type: 2}
+  detailWeight: 0.12
+  flattenSpawn: 1
   spawnWorldXZ: {x: 0, y: 0}
-  spawnSafeRadius: 22
-  spawnBlendWidth: 28
+  spawnSafeRadius: 6
+  spawnBlendWidth: 12
   snapTarget: {fileID: 30937578}
   snapHeightOffset: 1.3
+  adjustments: []
 --- !u!1001 &8865164782067189094
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -410,7 +395,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8937855599700424506, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.297253
+      value: 13.54719
       objectReference: {fileID: 0}
     - target: {fileID: 8937855599700424506, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_LocalPosition.z
