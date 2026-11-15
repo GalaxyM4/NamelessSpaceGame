@@ -354,6 +354,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89ea71071ffb0744c896d606d506501c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  batteryPercent: 100
+  audioSource: {fileID: 0}
+  cameraEndClip: {fileID: 0}
 --- !u!1 &1251734365
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,6 +486,92 @@ Transform:
   m_Children: []
   m_Father: {fileID: 30937578}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1295210083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1295210085}
+  - component: {fileID: 1295210084}
+  m_Layer: 0
+  m_Name: Mars Rock Placement
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1295210084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295210083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b101dee3492401f49a741cab7ab1d136, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RockScatterSettings
+  terrain: {fileID: 1308145424}
+  rover: {fileID: 30937578}
+  definitions:
+  - {fileID: 11400000, guid: 75ac6bc7769921a47892beffbe3675ae, type: 2}
+  - {fileID: 11400000, guid: 966dd2d9be4157e4c9a7c0f08b68c17a, type: 2}
+  - {fileID: 11400000, guid: 7f9472a2c0ef2814b81fad6287be85a1, type: 2}
+  - {fileID: 11400000, guid: a854a3d0731221644bffaecfa79d1823, type: 2}
+  - {fileID: 11400000, guid: c211b92263044a94f9bc4fb72b76fc8f, type: 2}
+  seed: 24175
+  decoration:
+    count: 10000
+    minimumDiameter: 0.08
+    maximumDiameter: 0.24
+    cullDistance: 140
+  obstacles:
+    count: 1600
+    minimumDiameter: 0.5
+    maximumDiameter: 2.4
+    cullDistance: 450
+  samples:
+    count: 60
+    minimumDiameter: 0.16
+    maximumDiameter: 0.3
+    cullDistance: 180
+  fieldScale: 85
+  clustering: 0.85
+  maximumSlope: 32
+  spawnClearance: 10
+  minimumGap: 0.15
+  burialFraction: 0.16
+  groundAlignment: 0.45
+  roverClearanceRadius: 2
+  settledRoverHeight: 1.4
+  candidateApproachRange: 4.5
+  drivingSlopeLimit: 15
+  routeGridMeters: 4
+  starterSampleRadius: 45
+  starterSamples: 5
+  studySites: []
+  exclusions: []
+  bakedRoot: {fileID: 1191961539232213287}
+  layoutPrefab: {fileID: 984742770822090461, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+--- !u!4 &1295210085
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295210083}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1308145422
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,6 +690,72 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1576583570584022348, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
   m_PrefabInstance: {fileID: 8865164782067189094}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1191961539232213286
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 984742770822090461, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: m_Name
+      value: Baked Mars Rocks
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8652502241876422603, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+      propertyPath: owner
+      value: 
+      objectReference: {fileID: 1295210084}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+--- !u!4 &1191961539232213287 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
+  m_PrefabInstance: {fileID: 1191961539232213286}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8865164782067189094
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -691,3 +846,5 @@ SceneRoots:
   - {fileID: 441658807}
   - {fileID: 1308145425}
   - {fileID: 8865164782067189094}
+  - {fileID: 1295210085}
+  - {fileID: 1191961539232213286}

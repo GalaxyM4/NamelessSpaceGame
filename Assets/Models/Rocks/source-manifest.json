@@ -1,0 +1,72 @@
+[
+  {
+    "source": "COL_ROCK_BroomPoint_Convex",
+    "asset": "Assets/Models/Rocks/COL_ROCK_BroomPoint_Convex.fbx",
+    "vertices": 109,
+    "polygons": 214,
+    "sourceDiameter": 0.6003255844116211
+  },
+  {
+    "source": "COL_ROCK_CheyavaFalls_Convex",
+    "asset": "Assets/Models/Rocks/COL_ROCK_CheyavaFalls_Convex.fbx",
+    "vertices": 102,
+    "polygons": 200,
+    "sourceDiameter": 1.0
+  },
+  {
+    "source": "COL_ROCK_Rochette_Convex",
+    "asset": "Assets/Models/Rocks/COL_ROCK_Rochette_Convex.fbx",
+    "vertices": 86,
+    "polygons": 168,
+    "sourceDiameter": 0.6999998092651367
+  },
+  {
+    "source": "COL_ROCK_Seitah_Convex",
+    "asset": "Assets/Models/Rocks/COL_ROCK_Seitah_Convex.fbx",
+    "vertices": 106,
+    "polygons": 208,
+    "sourceDiameter": 0.5982489585876465
+  },
+  {
+    "source": "COL_ROCK_Singita_Convex",
+    "asset": "Assets/Models/Rocks/COL_ROCK_Singita_Convex.fbx",
+    "vertices": 122,
+    "polygons": 240,
+    "sourceDiameter": 0.8000001907348633
+  },
+  {
+    "source": "SM_ROCK_BroomPoint",
+    "asset": "Assets/Models/Rocks/SM_ROCK_BroomPoint.fbx",
+    "vertices": 302,
+    "polygons": 600,
+    "sourceDiameter": 0.6003255844116211
+  },
+  {
+    "source": "SM_ROCK_CheyavaFalls",
+    "asset": "Assets/Models/Rocks/SM_ROCK_CheyavaFalls.fbx",
+    "vertices": 352,
+    "polygons": 700,
+    "sourceDiameter": 1.0
+  },
+  {
+    "source": "SM_ROCK_Rochette",
+    "asset": "Assets/Models/Rocks/SM_ROCK_Rochette.fbx",
+    "vertices": 200,
+    "polygons": 396,
+    "sourceDiameter": 0.6999998092651367
+  },
+  {
+    "source": "SM_ROCK_Seitah",
+    "asset": "Assets/Models/Rocks/SM_ROCK_Seitah.fbx",
+    "vertices": 252,
+    "polygons": 500,
+    "sourceDiameter": 0.5982489585876465
+  },
+  {
+    "source": "SM_ROCK_Singita",
+    "asset": "Assets/Models/Rocks/SM_ROCK_Singita.fbx",
+    "vertices": 352,
+    "polygons": 700,
+    "sourceDiameter": 0.8000001907348633
+  }
+]

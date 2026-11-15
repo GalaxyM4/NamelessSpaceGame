@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073c7a0e26a1b4a489a77449a591f2d3, type: 3}
+  m_Name: Rochette
+  m_EditorClassIdentifier: Assembly-CSharp::RockDefinition
+  displayName: Rochette
+  mesh: {fileID: 4300000, guid: 5ac0872186641bb4e89d1ca4e7fd09bc, type: 2}
+  collisionMesh: {fileID: 4300000, guid: 7794a9209f18a4e47b4187fd12206309, type: 2}
+  material: {fileID: 2100000, guid: 4eb986dc692492e42be93ec60977949c, type: 2}
+  preferredField: 0.5

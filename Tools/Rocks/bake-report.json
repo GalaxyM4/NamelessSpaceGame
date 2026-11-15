@@ -1,0 +1,8 @@
+{
+    "seed": 24175,
+    "decorativeCount": 10000,
+    "obstacleCount": 1600,
+    "sampleCount": 60,
+    "layoutSha256": "7291ee6022b6dd1b508888f0f908db51471004fdd9ec1ffb9e12eb4cd1a2e646",
+    "terrainSha256": "6f7178e11c3bd09de8f4488867a8e3927fe66b1f56346d8402b9d2ef27f24bc0"
+}

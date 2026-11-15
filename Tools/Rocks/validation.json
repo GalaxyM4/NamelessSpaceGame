@@ -1,0 +1,9 @@
+{
+    "passed": true,
+    "reproducibleLayout": true,
+    "layoutSha256": "7291ee6022b6dd1b508888f0f908db51471004fdd9ec1ffb9e12eb4cd1a2e646",
+    "rockCount": 11660,
+    "colliderCount": 1660,
+    "sampleCount": 60,
+    "reachableCells": 256139
+}

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073c7a0e26a1b4a489a77449a591f2d3, type: 3}
+  m_Name: CheyavaFalls
+  m_EditorClassIdentifier: Assembly-CSharp::RockDefinition
+  displayName: CheyavaFalls
+  mesh: {fileID: 4300000, guid: 13fc7f8b291252643b2a2d552287fbe4, type: 2}
+  collisionMesh: {fileID: 4300000, guid: 8a5818a502c225242899ff9bd17a1df7, type: 2}
+  material: {fileID: 2100000, guid: 96c7ea451d8927d48aeaf8c878b711e0, type: 2}
+  preferredField: 0.4
