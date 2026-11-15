@@ -28,6 +28,12 @@ public class RoverController : MonoBehaviour
     private float turnInput;
     private bool isBraking;
 
+    [Header("Audio")]
+    public AudioClip startSound;
+    public AudioClip loopSound;
+    public AudioClip endSound;
+    private AudioSource movementSound;
+    private bool wasCameraMoving;
 
     [Header("Camara")]
     public float cameraSensitivity = 1f;
@@ -39,6 +45,13 @@ public class RoverController : MonoBehaviour
     private float cameraVerticalInput;
     private float visualPitch;
     private float visualYaw;
+
+    void Start()
+    {
+        movementSound = GetComponentInChildren<AudioSource>();
+        movementSound.playOnAwake = true;
+        movementSound.Stop();
+    }
     void Update()
     {
         var kb = Keyboard.current;
@@ -48,7 +61,35 @@ public class RoverController : MonoBehaviour
         turnInput = (kb.dKey.isPressed ? 1f : 0f) - (kb.aKey.isPressed ? 1f : 0f);
         cameraHorizontalInput = (kb.eKey.isPressed ? 1f : 0f) - (kb.qKey.isPressed ? 1f : 0f);
         cameraVerticalInput = (kb.leftCtrlKey.isPressed ? 1f : 0f) - (kb.leftShiftKey.isPressed ? 1f : 0f);
+
         isBraking = kb.spaceKey.isPressed;
+    }
+
+    private void UpdateSound(bool isCameraMoving)
+    {
+        if (movementSound == null) return;
+
+        if (isCameraMoving && !wasCameraMoving)
+        {
+            if (startSound != null)
+                movementSound.PlayOneShot(startSound);
+
+            if (loopSound != null)
+            {
+                movementSound.clip = loopSound;
+                movementSound.loop = true;
+                movementSound.Play();
+            }
+        } else if (!isCameraMoving && wasCameraMoving)
+        {
+            movementSound.PlayOneShot(endSound);
+            movementSound.Stop();
+            movementSound.loop = false;
+
+            if (endSound != null) movementSound.PlayOneShot(endSound);
+        }
+
+        wasCameraMoving = isCameraMoving;
     }
 
     void FixedUpdate()
@@ -58,8 +99,14 @@ public class RoverController : MonoBehaviour
         float steering = turnInput * maxSteerAngle;
         float brake = isBraking ? brakeTorque : 0f;
 
+        float prevYaw = visualYaw;
+        float prevPitch = visualPitch;
+
         visualYaw += cameraSensitivity * cameraHorizontalInput;
         visualPitch += cameraSensitivity * cameraVerticalInput;
+
+        bool isCameraMoving = !Mathf.Approximately(prevYaw, visualYaw) || !Mathf.Approximately(prevPitch, visualPitch);
+        UpdateSound(isCameraMoving);
 
         visualYaw = Mathf.Clamp(visualYaw, -maxVisualYaw, maxVisualYaw);
         visualPitch = Mathf.Clamp(visualPitch, -maxVisualPitch, maxVisualPitch);
