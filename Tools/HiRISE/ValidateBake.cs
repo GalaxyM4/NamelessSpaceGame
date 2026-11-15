@@ -18,6 +18,16 @@ public static class ValidateBake
         // Read the recorded absolute-elevation offset without requiring the private report type.
         Newtonsoft.Json.Linq.JObject bake = Newtonsoft.Json.Linq.JObject.Parse(bakeJson);
         float offset = (float)bake["elevationOffsetMeters"];
+        if ((string)bake["heightMode"] != "unmodified-source-elevations" ||
+            (float)bake["verticalScale"] != 1f || (bool)bake["flattenSpawn"] ||
+            (float)bake["maximumGameplayHeightChangeMeters"] != 0f)
+            throw new Exception("Expected a source-faithful bake without gameplay height modifications.");
+        if (data.heightmapResolution != source.resolution ||
+            Mathf.Abs(data.size.x - source.sizeMeters) > 0.001f ||
+            Mathf.Abs(data.size.z - source.sizeMeters) > 0.001f ||
+            terrain.transform.lossyScale != Vector3.one || terrain.transform.rotation != Quaternion.identity ||
+            Mathf.Abs(data.size.y - (float)bake["verticalRangeMeters"]) > 0.001f)
+            throw new Exception("Terrain resolution or horizontal/vertical scale differs from the source bake.");
         float maxError = 0f;
         int checkedSamples = 0;
         float[,] actual = data.GetHeights(0, 0, source.resolution, source.resolution);
@@ -27,13 +37,6 @@ public static class ValidateBake
             for (int x = 0; x < source.resolution; x++)
             {
                 float expected = reader.ReadSingle();
-                Vector2 world = new Vector2(terrain.transform.position.x, terrain.transform.position.z) +
-                    new Vector2(x, z) * (source.sizeMeters / (source.resolution - 1));
-                bool edited = generator.flattenSpawn && Vector2.Distance(world, generator.spawnWorldXZ) <
-                    generator.spawnSafeRadius + generator.spawnBlendWidth;
-                foreach (var edit in generator.adjustments)
-                    edited |= Vector2.Distance(world, edit.worldXZ) < edit.radiusMeters + edit.blendMeters;
-                if (edited) continue;
                 float restored = actual[z, x] * data.size.y + offset;
                 maxError = Mathf.Max(maxError, Mathf.Abs(restored - expected));
                 checkedSamples++;
@@ -48,7 +51,7 @@ public static class ValidateBake
             data.terrainLayers[0].tileSize != Vector2.one * generator.surfaceTileMeters)
             throw new Exception("Expected a repeating artistic rock surface over the real elevations.");
 
-        // Conservative connected driving-area screening at 4 m spacing, <=15 degrees.
+        // Informational only: steep or disconnected real terrain is not a bake failure.
         int n = (source.resolution - 1) / 4 + 1;
         bool[,] passable = new bool[n, n];
         int traversable = 0;
@@ -62,9 +65,9 @@ public static class ValidateBake
         }
         int sx = Mathf.RoundToInt((generator.spawnWorldXZ.x - terrain.transform.position.x) / 4f);
         int sz = Mathf.RoundToInt((generator.spawnWorldXZ.y - terrain.transform.position.z) / 4f);
-        if (!passable[sz, sx]) throw new Exception("Spawn is not in the passable driving area.");
+        bool spawnPassable = passable[sz, sx];
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
-        queue.Enqueue(new Vector2Int(sx, sz));
+        if (spawnPassable) queue.Enqueue(new Vector2Int(sx, sz));
         passable[sz, sx] = false;
         int connected = 0;
         float farthestMeters = 0f;
@@ -83,16 +86,16 @@ public static class ValidateBake
                 queue.Enqueue(next);
             }
         }
-        if (farthestMeters < 250f)
-            throw new Exception("No connected 250 m driving route from spawn.");
         object result = new
         {
             checkedUnmodifiedSamples = checkedSamples, maximumElevationErrorMeters = maxError,
+            allSourceSamplesChecked = checkedSamples == source.resolution * source.resolution,
+            spawnPassableAtSlopeLimit = spawnPassable,
             connectedDrivingAreaFraction = connected / (float)(n * n),
             connectedPassableSamples = connected, passableSamples = traversable,
             farthestConnectedDistanceMeters = farthestMeters,
             slopeLimitDegrees = 15, routeScreeningSpacingMeters = 4,
-            note = "Slope screening is not a substitute for rover physics testing."
+            note = "Slopes/connectivity are informational, not traversability requirements. Every height sample is compared to source, including spawn."
         };
         File.WriteAllText(Path.Combine(directory, "validation.json"),
             Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented) + "\n");

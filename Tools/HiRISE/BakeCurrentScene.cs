@@ -21,10 +21,7 @@ public static class BakeCurrentScene
         Undo.RecordObject(generator, "Configure HiRISE Bake");
         generator.manifestPath = "TerrainSources/Prepared/Gale/manifest.json";
         generator.terrainCenterWorldXZ = Vector2.zero;
-        generator.flattenSpawn = true;
         generator.spawnWorldXZ = Vector2.zero;
-        generator.spawnSafeRadius = 6f;
-        generator.spawnBlendWidth = 12f;
         generator.snapTarget = rover.transform;
         generator.snapHeightOffset = 1.3f;
         generator.surfaceTileMeters = 3f;

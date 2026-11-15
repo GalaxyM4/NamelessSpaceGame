@@ -20,16 +20,15 @@
         "y": 0.0,
         "z": -1024.0
     },
-    "flattenSpawn": true,
+    "flattenSpawn": false,
     "spawnWorldXZ": {
         "x": 0.0,
         "y": 0.0
     },
-    "spawnSafeRadius": 6.0,
-    "spawnBlendWidth": 12.0,
-    "adjustments": [],
-    "maximumGameplayHeightChangeMeters": 0.4169921875,
+    "heightMode": "unmodified-source-elevations",
+    "verticalScale": 1.0,
     "surfaceMode": "artistic-rock",
     "surfaceTextureAssetPath": "Assets/Textures/Rock029_8K-JPG_Color.jpg",
-    "surfaceTileMeters": 3.0
+    "surfaceTileMeters": 3.0,
+    "maximumGameplayHeightChangeMeters": 0.0
 }

@@ -361,13 +361,9 @@ MonoBehaviour:
   manifestPath: TerrainSources/Prepared/Gale/manifest.json
   terrainCenterWorldXZ: {x: 0, y: 0}
   surfaceTileMeters: 3
-  flattenSpawn: 1
   spawnWorldXZ: {x: 0, y: 0}
-  spawnSafeRadius: 6
-  spawnBlendWidth: 12
   snapTarget: {fileID: 30937578}
   snapHeightOffset: 1.3
-  adjustments: []
 --- !u!1001 &8865164782067189094
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,12 +2,13 @@
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 import rasterio
 from rasterio.transform import from_origin
 
-from prepare import MARS_SHADOW, MARS_HIGHLIGHT, sample, tint_imagery, validate_heights
+from prepare import MARS_SHADOW, MARS_HIGHLIGHT, prepare, sample, tint_imagery, validate_heights
 
 
 class PreparationTests(unittest.TestCase):
@@ -48,6 +49,10 @@ class PreparationTests(unittest.TestCase):
         for invalid in (np.nan, np.inf, -3.402822655e38):
             with self.assertRaises(ValueError):
                 validate_heights(np.array([[invalid]], dtype="float32"))
+
+    def test_no_automatic_easy_crop_selection(self):
+        with self.assertRaisesRegex(ValueError, "explicit --center"):
+            prepare(SimpleNamespace(inspect=False, center=None))
 
     def test_tint_preserves_layout_and_brightness_order(self):
         grayscale = np.arange(256, dtype="uint8").reshape(16, 16)

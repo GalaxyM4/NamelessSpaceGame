@@ -14,7 +14,6 @@ from PIL import Image
 from rasterio.enums import Resampling
 from rasterio.transform import from_bounds
 from rasterio.warp import reproject
-from rasterio.windows import from_bounds as window_from_bounds
 
 ROOT = Path(__file__).resolve().parents[2]
 DTM = "DTEEC_024234_1755_024300_1755_U01"
@@ -63,39 +62,9 @@ def validate_heights(heights):
         raise ValueError("Crop contains missing or invalid elevations. Select another crop.")
 
 
-def select_crop(dataset, extent):
-    """Screen real, fully covered crops; score low slopes with some visible relief."""
-    candidates = []
-    left, bottom, right, top = dataset.bounds
-    half = extent / 2
-    # Screen a coarse grid, then fully validate the winning candidate.
-    for cy in np.linspace(bottom + half + 4, top - half - 4, 13):
-        for cx in np.linspace(left + half + 4, right - half - 4, 9):
-            bounds = (cx - half, cy - half, cx + half, cy + half)
-            window = window_from_bounds(*bounds, transform=dataset.transform)
-            h = dataset.read(1, window=window, out_shape=(129, 129), masked=True,
-                             resampling=Resampling.bilinear)
-            if np.ma.getmaskarray(h).any():
-                continue
-            h = np.asarray(h)
-            if not np.isfinite(h).all() or np.any(np.abs(h) > 100000):
-                continue
-            dz, dx = np.gradient(h, extent / 128)
-            slopes = np.degrees(np.arctan(np.hypot(dx, dz)))
-            relief = float(np.ptp(h))
-            score = float(np.percentile(slopes, 90)) + abs(relief - 45) * 0.025
-            candidates.append((score, bounds))
-    for _, bounds in sorted(candidates):
-        h = sample(dataset, bounds, 2049)
-        try:
-            validate_heights(h)
-            return bounds, h
-        except ValueError:
-            continue
-    raise ValueError("No fully valid crop found. Choose a smaller extent or explicit bounds.")
-
-
 def prepare(args):
+    if not args.inspect and args.center is None:
+        raise ValueError("Choose an explicit --center; crops are not selected for easy traversal.")
     original = ROOT / "TerrainSources/Original/Gale"
     prepared = ROOT / "TerrainSources/Prepared/Gale"
     textures = ROOT / "Assets/Textures/HiRISE"
@@ -115,13 +84,10 @@ def prepare(args):
             raise ValueError("Both source products require georeferencing; check companion labels.")
         if dtm.crs.linear_units != "metre":
             raise ValueError("DTM must use a projected coordinate system measured in metres.")
-        if args.center:
-            cx, cy = args.center
-            half = args.extent / 2
-            bounds = (cx - half, cy - half, cx + half, cy + half)
-            heights = sample(dtm, bounds, 2049)
-        else:
-            bounds, heights = select_crop(dtm, args.extent)
+        cx, cy = args.center
+        half = args.extent / 2
+        bounds = (cx - half, cy - half, cx + half, cy + half)
+        heights = sample(dtm, bounds, 2049)
         validate_heights(heights)
         image = np.full((args.texture_size, args.texture_size), np.nan, dtype="float32")
         reproject(

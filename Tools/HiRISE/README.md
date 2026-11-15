@@ -13,8 +13,9 @@ The procedural generator has been replaced in `MarsScene` using the existing
 - +X is east; +Z is north. One Unity unit is one projected metre.
 - Approximately 14 m of natural relief, without vertical exaggeration.
 - Scene origin uses a recorded elevation offset, not absolute Martian elevation.
-- A 6 m spawn radius is flattened to the source elevation at spawn, blended over
-  another 12 m. Maximum change in this bake: approximately 0.42 m.
+- Source elevations are used everywhere, including spawn: no flattening, smoothing,
+  localized gameplay offsets, or vertical exaggeration. Rover placement moves the
+  rover above the natural ground; it does not reshape the ground.
 - HiRISE supplies **elevation only**. The displayed surface is the existing warm
   `Rock029_8K-JPG_Color.jpg` at a nominal 3 m scale, with its matching GL normal map.
   Three samples with deterministic random offsets and rotations blend on a smooth
@@ -62,7 +63,9 @@ Original downloads (~471 MB) live in ignored `TerrainSources/Original/Gale`, out
   image hashes are recorded in the manifest. This and `GaleOrtho.terrainlayer`
   remain available as source/reference assets; the active layer is `MarsRock.terrainlayer`.
 
-Omit `--center` to screen candidate crops for valid coverage and moderate slopes.
+An explicit `--center` is required (except with `--inspect`); automatic low-slope
+crop selection has been removed. The current bounds are unchanged. This crop is
+naturally gentle; a more challenging landscape needs a different real crop.
 Use `--inspect` to inspect source georeferencing without writing outputs.
 The orthoimage is reprojected to the DTM crop; their pixel origins are not assumed
 identical. Missing elevation or imagery coverage aborts preparation rather than
@@ -70,9 +73,10 @@ silently filling holes or inventing heights.
 
 In Unity, select `DebugTerrain` and click **Bake HiRISE Mars Terrain**. This replaces
 its existing TerrainData in place, snaps the assigned rover, and writes
-`bake-report.json`. Save the scene afterward. Localized offset edits and spawn
-flattening are reapplied from original prepared heights on each bake, never
-accumulated. Undo covers scene objects, terrain and existing layer changes;
+`bake-report.json`. Save the scene afterward. Every bake uses the original prepared
+elevations without gameplay height edits. `heightMode`, `verticalScale` and
+`maximumGameplayHeightChangeMeters` record source fidelity. Undo covers scene
+objects, terrain and existing layer changes;
 new asset creation and the external report are not undone.
 
 Rebaking reads the prepared elevations, not the orthoimage: missing archived
@@ -86,7 +90,7 @@ For the initial known scene setup, with `MarsScene` open and saved:
 unity command script run --file Tools/HiRISE/BakeCurrentScene.cs --entry BakeCurrentScene.Run
 ```
 
-This explicitly configures the small spawn edit, nominal 3 m stochastic rock surface and
+This explicitly configures source-faithful elevations, nominal 3 m stochastic rock surface and
 rover reference, then bakes and saves the scene. It refuses a
 dirty scene. Do not use it to overwrite subsequent custom bake settings.
 
@@ -99,9 +103,22 @@ unity command script run --file Tools/HiRISE/ValidateSurfaceQuality.cs --entry V
 ```
 
 The Python tests cover vertex sampling, orientation, float byte order and missing
-data rejection. Unity validation compares untouched elevations with the prepared
-source, checks the collider and artistic surface assignment/tiling, and screens connectivity on
-a 4 m grid with a 15° slope limit. Results are in `validation.json`.
+data rejection and refusal to automatically choose a low-slope crop. Unity validation
+compares **every** elevation sample (including spawn) with the prepared source and
+checks resolution, scale, collider and artistic surface assignment/tiling. Connectivity
+at a 15° slope limit on a 4 m grid is reported as information only: steep spawn or
+disconnected driving areas do not reject faithful terrain. Results are in `validation.json`.
+
+### Restore source heights without touching the surface
+
+```powershell
+unity command script run --file Tools/HiRISE/RestoreSourceHeights.cs --entry RestoreSourceHeights.Run
+```
+
+Requires a saved MarsScene in Edit Mode. Rebuilds heights and updates the existing
+collider in place without invoking surface setup or texture reimports. Verifies that
+the material, layer settings/references, paint weights and basemap distance are unchanged.
+Use this rather than the initial-setup script to retain all current texture tuning.
 
 ### Surface quality only
 
