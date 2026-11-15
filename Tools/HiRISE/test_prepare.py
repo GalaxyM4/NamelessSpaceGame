@@ -7,7 +7,7 @@ import numpy as np
 import rasterio
 from rasterio.transform import from_origin
 
-from prepare import sample, validate_heights
+from prepare import MARS_SHADOW, MARS_HIGHLIGHT, sample, tint_imagery, validate_heights
 
 
 class PreparationTests(unittest.TestCase):
@@ -48,6 +48,18 @@ class PreparationTests(unittest.TestCase):
         for invalid in (np.nan, np.inf, -3.402822655e38):
             with self.assertRaises(ValueError):
                 validate_heights(np.array([[invalid]], dtype="float32"))
+
+    def test_tint_preserves_layout_and_brightness_order(self):
+        grayscale = np.arange(256, dtype="uint8").reshape(16, 16)
+        original = grayscale.copy()
+        tinted = tint_imagery(grayscale)
+        self.assertEqual(tinted.shape, (16, 16, 3))
+        np.testing.assert_array_equal(grayscale, original)
+        np.testing.assert_array_equal(tinted[0, 0], MARS_SHADOW)
+        np.testing.assert_array_equal(tinted[-1, -1], MARS_HIGHLIGHT)
+        self.assertTrue(np.all(np.diff(tinted.reshape(-1, 3).astype(int), axis=0) >= 0))
+        self.assertTrue(np.all(tinted[..., 0] > tinted[..., 1]))
+        self.assertTrue(np.all(tinted[..., 1] > tinted[..., 2]))
 
 
 if __name__ == "__main__":

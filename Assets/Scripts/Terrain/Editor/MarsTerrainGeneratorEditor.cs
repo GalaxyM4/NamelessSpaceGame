@@ -178,6 +178,7 @@ public class MarsTerrainGeneratorEditor : Editor
         layer.tileOffset = Vector2.zero;
         layer.metallic = 0f;
         layer.smoothness = 0f;
+        layer.smoothnessSource = TerrainLayerSmoothnessSource.ConstantOnly;
         data.terrainLayers = generator.detailLayer == null
             ? new[] { layer } : new[] { layer, generator.detailLayer };
         data.alphamapResolution = 512;
@@ -191,6 +192,7 @@ public class MarsTerrainGeneratorEditor : Editor
             if (count == 2) weights[z, x, 1] = detail;
         }
         data.SetAlphamaps(0, 0, weights);
+        MarsTerrainSurface.Apply(terrain, source.textureAssetPath);
         TerrainCollider collider = terrain.GetComponent<TerrainCollider>();
         if (collider != null)
         {

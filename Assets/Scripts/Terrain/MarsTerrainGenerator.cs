@@ -11,9 +11,9 @@ public class MarsTerrainGenerator : MonoBehaviour
     public string manifestPath = "TerrainSources/Prepared/Gale/manifest.json";
     public Vector2 terrainCenterWorldXZ = Vector2.zero;
 
-    [Header("Surface Detail")]
+    [Header("Optional Repeating Surface Detail (Disabled By Default)")]
     public TerrainLayer detailLayer;
-    [Range(0f, 0.25f)] public float detailWeight = 0.12f;
+    [Range(0f, 0.25f)] public float detailWeight = 0f;
 
     [Header("Rover Spawn Adjustment")]
     public bool flattenSpawn = true;

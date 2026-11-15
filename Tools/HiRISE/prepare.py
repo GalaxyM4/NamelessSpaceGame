@@ -20,6 +20,18 @@ ROOT = Path(__file__).resolve().parents[2]
 DTM = "DTEEC_024234_1755_024300_1755_U01"
 ORTHO = "ESP_024234_1755_RED_C_01_ORTHO"
 SOURCE_PAGE = "https://www.uahirise.org/dtm/ESP_024234_1755"
+# Artistic sRGB palette inspired by the original warm rock texture.
+# A strictly increasing ramp retains the orthoimage's spatial patterns.
+MARS_SHADOW = (54, 35, 23)
+MARS_HIGHLIGHT = (218, 166, 119)
+
+
+def tint_imagery(grayscale):
+    """Colorize brightness only; no resampling, texture overlay or height changes."""
+    shadow = np.asarray(MARS_SHADOW, dtype="float32")
+    highlight = np.asarray(MARS_HIGHLIGHT, dtype="float32")
+    brightness = grayscale.astype("float32")[..., None] / 255
+    return np.round(shadow + brightness * (highlight - shadow)).astype("uint8")
 
 
 def digest(path):
@@ -133,7 +145,12 @@ def prepare(args):
         # Unity indexes [z,x]: first row south, +X east, +Z north.
         np.flipud(heights).astype("<f4").tofile(height_path)
         texture_path = textures / "GaleOrtho.png"
-        Image.fromarray(grayscale).save(texture_path)
+        grayscale_path = prepared / "ortho-monochrome.png"
+        Image.fromarray(grayscale).save(grayscale_path)
+        # Stage outside Assets so a live Editor cannot import a partially written PNG.
+        staged_texture = prepared / "ortho-color.tmp.png"
+        Image.fromarray(tint_imagery(grayscale)).save(staged_texture)
+        staged_texture.replace(texture_path)
         dz, dx = np.gradient(heights, args.extent / 2048)
         slopes = np.degrees(np.arctan(np.hypot(dx, dz)))
         metadata = {
@@ -148,7 +165,10 @@ def prepare(args):
             "maximumElevationMeters": float(heights.max()),
             "projectedBounds": list(bounds), "crsWkt": dtm.crs.to_wkt(),
             "orientation": "+X=east,+Z=north; float32 LE rows south-to-north",
-            "imagery": "RED monochrome; linear percentile contrast stretch, not true color",
+            "imagery": "RED monochrome; percentile contrast stretch and artistic Mars tint, not true color",
+            "monochromeFile": grayscale_path.name,
+            "monochromeSha256": digest(grayscale_path),
+            "artisticPalette": {"shadowSrgb8": MARS_SHADOW, "highlightSrgb8": MARS_HIGHLIGHT},
             "imageContrastMinimum": float(low), "imageContrastMaximum": float(high),
             "slopeMedianDegrees": float(np.median(slopes)),
             "slope90Degrees": float(np.percentile(slopes, 90)),

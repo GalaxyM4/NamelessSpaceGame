@@ -317,7 +317,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 96ab7c8445f58bf478d5831d3c41ab43, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: e6ad99a61d60c9845bf6a1e9d2242bba, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -360,8 +360,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MarsTerrainGenerator
   manifestPath: TerrainSources/Prepared/Gale/manifest.json
   terrainCenterWorldXZ: {x: 0, y: 0}
-  detailLayer: {fileID: 8574412962073106934, guid: 6a1cf7bb1f1a8be43a9226a1203f9732, type: 2}
-  detailWeight: 0.12
+  detailLayer: {fileID: 0}
+  detailWeight: 0
   flattenSpawn: 1
   spawnWorldXZ: {x: 0, y: 0}
   spawnSafeRadius: 6

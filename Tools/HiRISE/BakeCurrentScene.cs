@@ -19,14 +19,6 @@ public static class BakeCurrentScene
             throw new InvalidOperationException("The existing terrain generator and rover must be present.");
         const string imagePath = "Assets/Textures/HiRISE/GaleOrtho.png";
         AssetDatabase.ImportAsset(imagePath, ImportAssetOptions.ForceSynchronousImport);
-        TextureImporter texture = (TextureImporter)AssetImporter.GetAtPath(imagePath);
-        texture.textureType = TextureImporterType.Default;
-        texture.maxTextureSize = 4096;
-        texture.wrapMode = TextureWrapMode.Clamp;
-        texture.mipmapEnabled = true;
-        texture.sRGBTexture = true;
-        texture.textureCompression = TextureImporterCompression.CompressedHQ;
-        texture.SaveAndReimport();
 
         Undo.RecordObject(generator, "Configure HiRISE Bake");
         generator.manifestPath = "TerrainSources/Prepared/Gale/manifest.json";
@@ -37,8 +29,8 @@ public static class BakeCurrentScene
         generator.spawnBlendWidth = 12f;
         generator.snapTarget = rover.transform;
         generator.snapHeightOffset = 1.3f;
-        generator.detailLayer = AssetDatabase.LoadAssetAtPath<TerrainLayer>("Assets/Textures/NewLayer 1.terrainlayer");
-        generator.detailWeight = 0.12f;
+        generator.detailLayer = null;
+        generator.detailWeight = 0f;
         EditorUtility.SetDirty(generator);
         MarsTerrainGeneratorEditor.BakeTerrain(generator);
         EditorSceneManager.SaveScene(scene);

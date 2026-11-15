@@ -8,7 +8,7 @@
   "heightFile": "heights.f32",
   "heightSha256": "23d28436e686556a13e0e819b6fdbbb8f58df9f6e78ab477442da17acd0804b7",
   "textureAssetPath": "Assets/Textures/HiRISE/GaleOrtho.png",
-  "textureSha256": "e952732fe0fb181120828fef52414caaeddbbebbedaca69ee8ac1f1a6d7d18bc",
+  "textureSha256": "e0217959c17575681392454b045824aa3f18ad6de3572c95f54cd6bf1a187d78",
   "resolution": 2049,
   "sizeMeters": 2048.0,
   "minimumElevationMeters": -4491.21435546875,
@@ -21,7 +21,21 @@
   ],
   "crsWkt": "PROJCS[\"EQUIRECTANGULAR MARS\",GEOGCS[\"GCS_MARS\",DATUM[\"D_MARS\",SPHEROID[\"MARS_localRadius\",3396190,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Equirectangular\"],PARAMETER[\"standard_parallel_1\",0],PARAMETER[\"central_meridian\",137.24],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
   "orientation": "+X=east,+Z=north; float32 LE rows south-to-north",
-  "imagery": "RED monochrome; linear percentile contrast stretch, not true color",
+  "imagery": "RED monochrome; percentile contrast stretch and artistic Mars tint, not true color",
+  "monochromeFile": "ortho-monochrome.png",
+  "monochromeSha256": "e952732fe0fb181120828fef52414caaeddbbebbedaca69ee8ac1f1a6d7d18bc",
+  "artisticPalette": {
+    "shadowSrgb8": [
+      54,
+      35,
+      23
+    ],
+    "highlightSrgb8": [
+      218,
+      166,
+      119
+    ]
+  },
   "imageContrastMinimum": 189.8831901550293,
   "imageContrastMaximum": 214.05915718078614,
   "slopeMedianDegrees": 3.6304848194122314,
