@@ -32675,7 +32675,6 @@ GameObject:
   - component: {fileID: 1308145424}
   - component: {fileID: 1308145423}
   - component: {fileID: 1308145426}
-  - component: {fileID: 1308145427}
   m_Layer: 0
   m_Name: DebugTerrain
   m_TagString: Untagged
@@ -32798,35 +32797,6 @@ MonoBehaviour:
   spawnBlendWidth: 28
   snapTarget: {fileID: 30937578}
   snapHeightOffset: 1.3
---- !u!114 &1308145427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1308145422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 004ba02eebee5fc4f85468d30738dd4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MarsRockScatterer
-  seed: 4042
-  rockCount: 450
-  marginMeters: 12
-  plainScaleRange: {x: 0.28, y: 0.95}
-  slopeBoulderScaleRange: {x: 0.95, y: 2.8}
-  steepSlopeDegrees: 8
-  slopeNormalAlign: 0.35
-  embedDepthRatio: 0.25
-  colliderMinScale: 0.65
-  spawnWorldXZ: {x: 0, y: 0}
-  spawnSafeRadius: 24
-  rockMeshes:
-  - {fileID: 4300000, guid: bab0be590e93224458232115f92d6c14, type: 2}
-  - {fileID: 4300000, guid: cb04f68cf8b67644a8400849d9ec1a48, type: 2}
-  - {fileID: 4300000, guid: e441874edad8b4d4fa02ca470b04d0be, type: 2}
-  - {fileID: 4300000, guid: 01c1375c9c06e32428e1924a3bc86418, type: 2}
-  rockMaterial: {fileID: 2100000, guid: a10c6082bea35d744bef32c67fc05473, type: 2}
 --- !u!1 &1319367674
 GameObject:
   m_ObjectHideFlags: 0
