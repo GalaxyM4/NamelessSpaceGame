@@ -169,3 +169,6 @@ Packages/packages-lock.json linguist-generated
 
 # Exceptions for .asset files such as lightning pre-baking
 LightingData.asset     binary
+
+# Binary-serialized TerrainData: must never get line-ending conversion (eol=lf corrupted it once)
+Assets/Models/Maps/MarsTerrain.asset binary -eol

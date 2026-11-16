@@ -1,6 +1,6 @@
-// RoverRockScanner.cs — en el rover. Detecta la roca más cercana (preferentemente delante), muestra el aviso
-// "F · ANALIZAR ..." y abre/cierra la ventana con la tecla. La ventana se cierra sola si el rover se aleja.
-// Rocas: las del campo de rocas del terreno (RockRegistry, lo rellena RocasMarteBootstrap).
+// RoverRockScanner.cs — on the rover. Detects the closest rock (preferably in front), shows the
+// "F · ANALYZE" prompt and opens/closes the window with the key. The window closes if the rover moves away.
+// Rocks: those of the terrain rock field (RockRegistry, filled by RocasMarteBootstrap).
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -11,19 +11,19 @@ namespace RocasMarte
     public class RoverRockScanner : MonoBehaviour
     {
         public RockInfoUI ui;
-        [Tooltip("Punto del rover desde el que se mide. Por defecto, el propio rover.")]
+        [Tooltip("Point of the rover distances are measured from. Defaults to the rover itself.")]
         public Transform scanOrigin;
-        [Tooltip("Distancia horizontal máxima desde el centro del rover hasta el borde de la roca (m).")]
+        [Tooltip("Maximum horizontal distance from the scan origin to the edge of the rock (m).")]
         public float range = 4f;
 #if ENABLE_INPUT_SYSTEM
-        public Key interactKey = Key.F;   // E/Q giran la cámara del rover
+        public Key interactKey = Key.F;   // E/Q rotate the rover camera
         public Key closeKey = Key.Escape;
 #else
         public KeyCode interactKey = KeyCode.F;
         public KeyCode closeKey = KeyCode.Escape;
 #endif
 
-        /// <summary>Se abrió la ficha de una roca (centro de la roca, ventana). Otros sistemas pueden añadir datos.</summary>
+        /// <summary>A rock panel was opened (rock center, window). Other systems can add data.</summary>
         public static event System.Action<Vector3, RockInfoUI> Inspected;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -50,10 +50,10 @@ namespace RocasMarte
         void Consider(ref Target best, ref float bestScore, Vector3 origin, Vector3 fwd, Vector3 pos, float radius, string id)
         {
             var to = pos - origin;
-            to.y = 0;                                   // distancia en horizontal: el centro del rover va alto
+            to.y = 0;                                   // horizontal distance: the rover center sits high
             float d = to.magnitude - radius;
             if (d > range) return;
-            float score = d + (Vector3.Dot(to.normalized, fwd) < 0.2f ? range : 0f); // delante del rover primero
+            float score = d + (Vector3.Dot(to.normalized, fwd) < 0.2f ? range : 0f); // rocks in front of the rover first
             if (score < bestScore) { bestScore = score; best = new Target { valid = true, id = id, pos = pos, radius = radius }; }
         }
 
@@ -71,7 +71,7 @@ namespace RocasMarte
 
             if (ui.IsOpen)
             {
-                // se mantiene abierta mientras la roca abierta siga al alcance
+                // stays open while the opened rock is still in reach
                 var dx = _opened.pos - origin; dx.y = 0;
                 bool stillNear = _opened.valid && dx.magnitude - _opened.radius <= range;
                 if (Pressed(true) || Pressed(false) || !stillNear) { ui.Hide(); _opened = default; }

@@ -1,8 +1,8 @@
-// SimpleSamplingInteractor.cs — perforador PROVISIONAL (el rover aún no tiene sistema de perforación).
-// Cuando la punta (INT_ROV_Drill_Tip, o el rover / la cámara) está cerca de una roca muestreable aparece
-// "Mantén [R] para perforar". Mantener R llena la barra en 2 s × dureza; soltar antes cancela.
-// Al terminar guarda la muestra en un tubo (10 tubos) y llama a RockSampleTarget.TryCompleteSample().
-// No toca RoverController: es un componente aparte. Se comunica por eventos (la UI los escucha).
+// SimpleSamplingInteractor.cs — PROVISIONAL drill (the rover has no drilling system yet).
+// When the tip (INT_ROV_Drill_Tip, or the rover / camera) is close to a sampleable rock, "Hold [R] to drill"
+// appears. Holding R fills the bar in 2 s × hardness; releasing early cancels.
+// When done it stores the sample in a tube (10 tubes) and calls RockSampleTarget.TryCompleteSample().
+// It does not touch RoverController: it is a separate component. It talks through events (the UI listens).
 using System;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
@@ -13,13 +13,13 @@ namespace Game.Missions
 {
     public class SimpleSamplingInteractor : MonoBehaviour
     {
-        [Tooltip("Punta del taladro. Vacío = busca INT_ROV_Drill_Tip en los hijos; si no hay, el propio objeto.")]
+        [Tooltip("Drill tip. Empty = looks for INT_ROV_Drill_Tip in the children; if missing, this object.")]
         public Transform tip;
-        [Tooltip("Alcance horizontal desde la punta del taladro (o el centro del rover) hasta el borde de la roca (m). Igual que el de la ventana de análisis.")]
+        [Tooltip("Horizontal reach from the drill tip (or rover center) to the edge of the rock (m). Same as the analysis window.")]
         public float reach = 4f;
-        [Tooltip("Segundos de perforación por punto de dureza.")]
+        [Tooltip("Drilling seconds per hardness point.")]
         public float secondsPerHardness = 2f;
-        [Tooltip("Tubos de muestra del rover.")]
+        [Tooltip("Rover sample tubes.")]
         public int tubeCapacity = MissionDefinition.RoverTubeCapacity;
 #if ENABLE_INPUT_SYSTEM
         public Key drillKey = Key.R;
@@ -27,7 +27,7 @@ namespace Game.Missions
 
         public RockSampleTarget Target { get; private set; }
         public RockSampleTarget Drilling { get; private set; }
-        public float Progress { get; private set; }           // 0..1 de la perforación en curso
+        public float Progress { get; private set; }           // 0..1 of the drilling in progress
         public int TubesUsed { get; private set; }
         public int TubesLeft => tubeCapacity - TubesUsed;
         public string KeyLabel =>
@@ -37,11 +37,11 @@ namespace Game.Missions
             "R";
 #endif
 
-        /// <summary>La roca al alcance cambió (null = ninguna).</summary>
+        /// <summary>The rock in reach changed (null = none).</summary>
         public event Action<RockSampleTarget> TargetChanged;
-        /// <summary>Progreso de la perforación (0..1). Se lanza también con 0 al cancelar.</summary>
+        /// <summary>Drilling progress (0..1). Also raised with 0 on cancel.</summary>
         public event Action<float> ProgressChanged;
-        /// <summary>Mensaje breve para el jugador (cancelado, sin tubos, muestra guardada…).</summary>
+        /// <summary>Short message for the player (cancelled, no tubes, sample stored…).</summary>
         public event Action<string> Message;
 
         readonly Collider[] _hits = new Collider[64];
@@ -58,7 +58,7 @@ namespace Game.Missions
 
         void Start()
         {
-            // al comenzar cada misión se vacían los tubos
+            // tubes are emptied when each mission starts
             _manager = FindAnyObjectByType<MissionManager>();
             if (_manager != null) _manager.OnMissionStarted += OnMissionStarted;
         }
@@ -72,7 +72,7 @@ namespace Game.Missions
 
         void OnDisable() => Cancel(false);
 
-        /// <summary>Vacía los tubos (al empezar o reintentar una misión).</summary>
+        /// <summary>Empties the tubes (when starting or retrying a mission).</summary>
         public void ResetTubes() => TubesUsed = 0;
 
         bool DrillHeld()
@@ -92,7 +92,7 @@ namespace Game.Missions
 
             bool held = DrillHeld();
 
-            // perforación en curso
+            // drilling in progress
             if (Drilling != null)
             {
                 if (!held || Drilling != Target) { Cancel(true); return; }
@@ -103,8 +103,8 @@ namespace Game.Missions
                 return;
             }
 
-            // empezar: basta con mantener R (aunque se pulsara antes de llegar a la roca);
-            // los avisos de "ya muestreada" / "sin tubos" solo al pulsar, para no repetirlos cada frame
+            // start: holding R is enough (even if it was pressed before reaching the rock);
+            // "already sampled" / "no tubes" messages only on press, so they don't repeat every frame
             if (held && Target != null)
             {
                 bool pressed = WasPressedThisFrame();
@@ -119,7 +119,7 @@ namespace Game.Missions
             }
 
 #if UNITY_EDITOR || DEBUG
-            // F9: completa la roca muestreable más cercana (depuración)
+            // F9: completes the nearest sampleable rock (debug)
             if (DebugKeyDown()) DebugCompleteNearest();
 #endif
         }
@@ -139,9 +139,9 @@ namespace Game.Missions
             var rock = Drilling;
             Drilling = null;
             Progress = 0f;
-            bool ok = rock.TryCompleteSample();       // primero se marca como muestreada…
+            bool ok = rock.TryCompleteSample();       // first it is marked as sampled…
             if (ok) TubesUsed++;
-            ProgressChanged?.Invoke(0f);              // …y luego se avisa, así el HUD ya ve "Roca ya muestreada"
+            ProgressChanged?.Invoke(0f);              // …then notified, so the HUD already shows "Rock already sampled"
             if (ok) Say(string.Format(MissionTexts.SampleStored, TubesUsed, tubeCapacity));
             if (ok && _manager != null) _manager.ReportTubesLeft(TubesLeft);
         }
@@ -162,9 +162,9 @@ namespace Game.Missions
         }
 
         /// <summary>
-        /// La roca más cercana a la punta dentro del alcance (distancia a su superficie), con preferencia por la que
-        /// está delante del rover (la misma que elige la ventana de análisis). Busca en colliders/triggers y en las
-        /// rocas del campo de rocas del terreno (FieldRockIndex), que no tienen collider.
+        /// The closest rock to the tip within reach (distance to its surface), preferring the one in front of the
+        /// rover (the same one the analysis window picks). Searches colliders/triggers and the terrain rock field
+        /// (FieldRockIndex), whose rocks have no collider.
         /// </summary>
         RockSampleTarget FindTarget()
         {
@@ -175,7 +175,7 @@ namespace Game.Missions
             FieldRockIndex.Entry bestEntry = default;
             bool bestIsEntry = false;
 
-            int n = Physics.OverlapSphereNonAlloc(p, reach + 1.5f, _hits, ~0, QueryTriggerInteraction.Collide);   // margen vertical
+            int n = Physics.OverlapSphereNonAlloc(p, reach + 1.5f, _hits, ~0, QueryTriggerInteraction.Collide);   // vertical margin
             for (int i = 0; i < n; i++)
             {
                 var t = _hits[i].GetComponentInParent<RockSampleTarget>();
@@ -190,7 +190,7 @@ namespace Game.Missions
             for (int i = 0; i < entries.Count; i++)
             {
                 var e = entries[i];
-                var h = e.center - p; h.y = 0;              // horizontal, como la ventana de análisis
+                var h = e.center - p; h.y = 0;              // horizontal, like the analysis window
                 float d = h.magnitude - e.radius;
                 if (d > reach) continue;
                 float s = Score(p, fwd, e.center, e.radius);

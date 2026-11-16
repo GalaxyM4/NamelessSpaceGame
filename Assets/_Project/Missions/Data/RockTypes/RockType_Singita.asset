@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: RockType_Singita
   m_EditorClassIdentifier: Game.Missions::Game.Missions.RockTypeData
   id: Singita
-  displayName: Gabro (Singita)
-  shortName: Gabro
+  displayName: Gabbro (Singita)
+  shortName: Gabbro
   icon: {fileID: 0}
   uiColor: {r: 0.9, g: 0.88, b: 0.8, a: 1}
   hardness: 5
-  prefab: {fileID: 4963043358641942613, guid: 24161e5d70fd86347ac22c390808e368, type: 3}

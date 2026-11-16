@@ -1,10 +1,11 @@
-// MissionProgress.cs — cuenta las muestras de una misión en curso (lógica pura, sin MonoBehaviour).
-// Los objetivos repetidos del mismo tipo se suman. Una roca no pedida, o de un tipo ya completo, no suma.
+// MissionProgress.cs — counts the samples of a mission in progress (pure logic, no MonoBehaviour).
+// Repeated objectives of the same type are added together. A rock that was not requested,
+// or of a type that is already complete, does not count.
 using System.Collections.Generic;
 
 namespace Game.Missions
 {
-    public enum SampleCountResult { Contada, NoPedida, YaCompleto }
+    public enum SampleCountResult { Counted, NotRequested, AlreadyComplete }
 
     public class ObjectiveProgress
     {
@@ -38,14 +39,14 @@ namespace Game.Missions
             return null;
         }
 
-        /// <summary>Intenta sumar una muestra de este tipo. Nunca supera la cantidad pedida.</summary>
+        /// <summary>Tries to count one sample of this type. Never exceeds the requested amount.</summary>
         public SampleCountResult TryAdd(RockTypeData type)
         {
             var o = type != null ? Find(type) : null;
-            if (o == null) return SampleCountResult.NoPedida;
-            if (o.IsComplete) return SampleCountResult.YaCompleto;
+            if (o == null) return SampleCountResult.NotRequested;
+            if (o.IsComplete) return SampleCountResult.AlreadyComplete;
             o.collected++;
-            return SampleCountResult.Contada;
+            return SampleCountResult.Counted;
         }
 
         public bool AllComplete
@@ -58,16 +59,16 @@ namespace Game.Missions
             }
         }
 
-        /// <summary>Rocas válidas conseguidas (las que suman a algún objetivo).</summary>
+        /// <summary>Valid rocks collected (the ones that count towards an objective).</summary>
         public int ValidCollected
         {
             get { int n = 0; foreach (var o in _objectives) n += o.collected; return n; }
         }
 
-        /// <summary>Rocas que aún faltan para completar la misión.</summary>
+        /// <summary>Rocks still missing to complete the mission.</summary>
         public int Remaining => TotalRequired - ValidCollected;
 
-        /// <summary>True si con estos tubos libres todavía se puede completar la misión.</summary>
+        /// <summary>True if the mission can still be completed with this many free tubes.</summary>
         public bool CanStillComplete(int tubesLeft) => Remaining <= tubesLeft;
 
         public int TotalRequired

@@ -6,18 +6,18 @@ using UnityEngine.UIElements;
 
 public class BackgroundMusicInteractable : MonoBehaviour, IInteractable
 {
-    [Header("Interacción y Cámara")]
-    public string promptText = "Panel de Música";
+    [Header("Interaction and camera")]
+    public string promptText = "Music Panel";
     public float transitionDuration = 0.4f;
     public float screenDistanceMultiplier = 1.25f;
 
-    [Header("Audio de Fondo")]
+    [Header("Background audio")]
     public AudioSource musicAudioSource;
     public List<AudioClip> backgroundTracks = new List<AudioClip>();
     [Range(0f, 1f)]
     public float initialVolume = 0.7f;
 
-    [Header("UI del Panel")]
+    [Header("Panel UI")]
     public PanelRenderer touchPanelRenderer;
 
     private PlayerController playerController;
@@ -252,7 +252,7 @@ public class BackgroundMusicInteractable : MonoBehaviour, IInteractable
         container.style.borderLeftColor = new Color(0.35f, 0.78f, 0.98f, 0.35f);
         container.style.borderRightColor = new Color(0.35f, 0.78f, 0.98f, 0.35f);
 
-        var header = new Label("AUDIO // SISTEMA DE MÚSICA") { name = "headerLabel" };
+        var header = new Label("AUDIO // MUSIC SYSTEM") { name = "headerLabel" };
         header.style.fontSize = 28;
         header.style.color = new Color(0.51f, 0.82f, 1f, 0.8f);
         header.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -281,7 +281,7 @@ public class BackgroundMusicInteractable : MonoBehaviour, IInteractable
         trackBox.style.alignItems = Align.Center;
         trackBox.style.justifyContent = Justify.Center;
 
-        var status = new Label("REPRODUCIENDO") { name = "statusLabel" };
+        var status = new Label("NOW PLAYING") { name = "statusLabel" };
         status.style.fontSize = 24;
         status.style.color = new Color(0.35f, 0.86f, 0.63f, 1f);
         status.style.marginBottom = 10;
@@ -289,7 +289,7 @@ public class BackgroundMusicInteractable : MonoBehaviour, IInteractable
         status.style.unityTextAlign = TextAnchor.MiddleCenter;
         trackBox.Add(status);
 
-        var title = new Label("Cargando pista...") { name = "trackTitleLabel" };
+        var title = new Label("Loading track...") { name = "trackTitleLabel" };
         title.style.fontSize = 54;
         title.style.color = new Color(0.96f, 0.97f, 1f, 1f);
         title.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -306,7 +306,7 @@ public class BackgroundMusicInteractable : MonoBehaviour, IInteractable
         controlsRow.style.width = Length.Percent(90);
 
         var prev = CreateStyledButton("prevButton", "ANT", 180, 96, false);
-        var playPause = CreateStyledButton("playPauseButton", "PAUSAR", 280, 96, true);
+        var playPause = CreateStyledButton("playPauseButton", "PAUSE", 280, 96, true);
         var next = CreateStyledButton("nextButton", "SIG", 180, 96, false);
 
         controlsRow.Add(prev);
@@ -353,7 +353,7 @@ public class BackgroundMusicInteractable : MonoBehaviour, IInteractable
         volumeRow.Add(volLbl);
         container.Add(volumeRow);
 
-        var footer = new Label("[A / D] Cambiar pista   [Espacio] Play/Pausa   [W / S] Volumen   [ESC / F] Salir")
+        var footer = new Label("[A / D] Change track   [Space] Play/Pause   [W / S] Volume   [ESC / F] Exit")
         {
             name = "footerLabel"
         };
@@ -520,13 +520,13 @@ public class BackgroundMusicInteractable : MonoBehaviour, IInteractable
             }
             else
             {
-                trackTitleLabel.text = "Sin pistas";
+                trackTitleLabel.text = "No tracks";
             }
         }
 
         if (statusLabel != null)
         {
-            statusLabel.text = isPaused ? "EN PAUSA" : "REPRODUCIENDO";
+            statusLabel.text = isPaused ? "PAUSED" : "NOW PLAYING";
             statusLabel.style.color = isPaused
                 ? new Color(1f, 0.75f, 0.3f, 1f)
                 : new Color(0.35f, 0.86f, 0.63f, 1f);
@@ -534,7 +534,7 @@ public class BackgroundMusicInteractable : MonoBehaviour, IInteractable
 
         if (playPauseButton != null)
         {
-            playPauseButton.text = isPaused ? "REPRODUCIR" : "PAUSAR";
+            playPauseButton.text = isPaused ? "PLAY" : "PAUSE";
         }
 
         int pct = Mathf.RoundToInt(currentVolume * 100f);
@@ -551,7 +551,7 @@ public class BackgroundMusicInteractable : MonoBehaviour, IInteractable
 
     private string FormatTrackName(string rawName)
     {
-        if (string.IsNullOrEmpty(rawName)) return "Pista Desconocida";
+        if (string.IsNullOrEmpty(rawName)) return "Unknown Track";
         return rawName.Replace("-", " ").Replace("_", " ");
     }
 

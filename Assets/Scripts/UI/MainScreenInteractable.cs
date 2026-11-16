@@ -7,12 +7,12 @@ using UnityEngine.UIElements;
 
 public class MainScreenInteractable : MonoBehaviour, IInteractable
 {
-    [Header("Interacción y Cámara")]
-    public string promptText = "Usar Pantalla";
+    [Header("Interaction and camera")]
+    public string promptText = "Use Screen";
     public float transitionDuration = 0.4f;
     public float screenDistanceMultiplier = 1.15f;
 
-    [Header("UI de la Pantalla")]
+    [Header("Screen UI")]
     public PanelRenderer screenPanelRenderer;
 
     private PlayerController playerController;
@@ -315,7 +315,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
 
         AddCategorySection("Armor", BuildArmorCards());
         AddCategorySection("Battery", BuildBatteryCards());
-        AddCategorySection("Antena", BuildAntennaCards());
+        AddCategorySection("Antenna", BuildAntennaCards());
     }
 
     private void AddCategorySection(string title, List<ModuleCardData> items)
@@ -370,9 +370,9 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
             {
                 Name = armor.name,
                 Category = "Armor",
-                StatTitle = "Resistencia:",
-                DetailTitle = "Golpes:",
-                Stats = $"{armor.bangs} golpes",
+                StatTitle = "Resistance:",
+                DetailTitle = "Hits:",
+                Stats = $"{armor.bangs} hits",
                 Price = $"{armor.price}$",
                 ProgressValue = armor.bangs,
                 ProgressMax = 20f,
@@ -391,7 +391,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
             {
                 Name = battery.name,
                 Category = "Battery",
-                StatTitle = "Capacidad:",
+                StatTitle = "Capacity:",
                 DetailTitle = "Carga:",
                 Stats = $"{battery.ah / 1000f:0.#}kAh",
                 Price = $"{battery.price}$",
@@ -411,9 +411,9 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
             list.Add(new ModuleCardData
             {
                 Name = antenna.name,
-                Category = "Antena",
-                StatTitle = "Alcance:",
-                DetailTitle = "Señal:",
+                Category = "Antenna",
+                StatTitle = "Range:",
+                DetailTitle = "Signal:",
                 Stats = $"{antenna.radius}cm / {antenna.speed}Hz",
                 Price = "N/D",
                 ProgressValue = antenna.radius,
@@ -438,7 +438,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         currentSelectedModule = data.Module;
         if (saveButton != null)
         {
-            saveButton.text = "Seleccionar";
+            saveButton.text = "Select";
         }
 
         if (resourcesTitleLabel != null) resourcesTitleLabel.text = data.Category.ToUpperInvariant();
@@ -483,7 +483,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
 
         if (missionTitleLabel != null)
         {
-            missionTitleLabel.text = $"Misión #{currentMissionIndex + 1} - {current.name}";
+            missionTitleLabel.text = $"Mission #{currentMissionIndex + 1} - {current.name}";
         }
 
         if (missionInfoLabel != null)

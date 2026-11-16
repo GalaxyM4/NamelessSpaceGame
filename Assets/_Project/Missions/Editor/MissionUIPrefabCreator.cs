@@ -1,6 +1,6 @@
 // MissionUIPrefabCreator.cs — Tools/Missions/Create Mission UI Prefab
-// Crea: iconos ✓ y ✗ (PNG dibujados por código, así nunca hay cuadrados vacíos por glifos que falten),
-// el tema y los Panel Settings (1920×1080 con escalado) y el prefab MissionUI (UIDocument + MissionUIController).
+// Creates: ✓ and ✗ icons (PNGs drawn by code, so there are never empty squares for missing glyphs),
+// the theme and Panel Settings (1920×1080 with scaling) and the MissionUI prefab (UIDocument + MissionUIController).
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -19,7 +19,7 @@ namespace Game.Missions.EditorTools
         {
             var prefab = Create();
             Selection.activeObject = prefab;
-            EditorUtility.DisplayDialog("Misiones", "Prefab de UI creado:\n" + PrefabPath, "OK");
+            EditorUtility.DisplayDialog("Missions", "UI prefab created:\n" + PrefabPath, "OK");
         }
 
         public static GameObject Create()
@@ -54,21 +54,21 @@ namespace Game.Missions.EditorTools
                 var ui = go.AddComponent<MissionUIController>();
                 ui.checkIcon = check;
                 ui.crossIcon = cross;
-                // fuentes del proyecto (Assets/fonts) y Titillium de la ventana de rocas para el texto pequeño
+                // project fonts (Assets/fonts) and Titillium from the rock window for small text
                 ui.titleFont = AssetDatabase.LoadAssetAtPath<Font>("Assets/fonts/Overmars-Jpdzj.otf");
                 ui.headFont = AssetDatabase.LoadAssetAtPath<Font>("Assets/fonts/FutureNowRegular-25Bl.ttf");
                 ui.bodyFont = AssetDatabase.LoadAssetAtPath<Font>("Assets/RocasMarte_UI/Resources/Fonts/Libres/TitilliumWeb-SemiBold.ttf");
                 var prefab = PrefabUtility.SaveAsPrefabAsset(go, PrefabPath);
                 Object.DestroyImmediate(go);
                 go = null;
-                RuntimeSettingsCreator.CreateOrUpdate();   // el juego usa este prefab en MarsScene
+                RuntimeSettingsCreator.CreateOrUpdate();   // the game uses this prefab in MarsScene
                 return prefab;
             }
             finally { if (go != null) Object.DestroyImmediate(go); }
         }
 
         // ---------- iconos ----------
-        delegate float Shape(Vector2 p);   // distancia (en px) a la figura
+        delegate float Shape(Vector2 p);   // distance (px) to the shape
 
         static Texture2D Icon(string name, Color color, Shape shape)
         {
@@ -78,7 +78,7 @@ namespace Game.Missions.EditorTools
                 for (int x = 0; x < S; x++)
                 {
                     float d = shape(new Vector2(x + 0.5f, y + 0.5f));
-                    float a = Mathf.Clamp01(5.5f - d);          // trazo de ~11 px con borde suave
+                    float a = Mathf.Clamp01(5.5f - d);          // ~11 px stroke with a soft edge
                     tex.SetPixel(x, y, new Color(color.r, color.g, color.b, a));
                 }
             var path = $"{IconFolder}/{name}.png";

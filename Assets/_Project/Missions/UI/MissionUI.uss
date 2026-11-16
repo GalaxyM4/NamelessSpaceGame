@@ -1,4 +1,4 @@
-/* MissionUI.uss — misiones: zonas negras, bordes de acero y texto verde agua (mismo estilo que la ventana de rocas). */
+/* MissionUI.uss — missions: black panels, steel borders and aqua text (same style as the rock analysis window). */
 :root {
     --aqua: #3DF5D0;
     --aqua-soft: #8FFBE6;
@@ -16,7 +16,7 @@
 
 /* ---------- HUD ---------- */
 .hud {
-    /* debajo de la esquina blanca y del icono de alerta de la cámara del rover */
+    /* below the white corner and the alert icon of the rover camera UI */
     position: absolute; left: 64px; top: 190px; width: 300px;
     padding: 8px 14px;
     transition-property: top, left; transition-duration: 0.15s;
@@ -25,7 +25,7 @@
     border-color: var(--steel) var(--steel-dark) var(--steel-dark) var(--steel);
     border-left-width: 6px; border-left-color: var(--aqua);
 }
-/* con la ficha de análisis abierta la cámara del rover se oculta: el HUD sube para no tapar la ficha */
+/* with the analysis panel open the rover camera UI is hidden: the HUD moves up so it does not cover the panel */
 .hud--inspecting { top: 24px; left: 24px; }
 .hud__title { font-size: 17px; color: var(--aqua-soft); letter-spacing: 1px; }
 .hud__timer { font-size: 46px; color: var(--aqua); margin: 0 0 2px 0; }
@@ -37,7 +37,7 @@
 .hud-row--done .hud-row__label { color: var(--ok); }
 .hud-row--done .hud-row__check { display: flex; }
 
-/* ---------- mensajes ---------- */
+/* ---------- messages ---------- */
 .messages { position: absolute; top: 32px; left: 0; right: 0; align-items: center; }
 .msg {
     font-size: 22px; color: var(--aqua);
@@ -48,7 +48,7 @@
 }
 .msg--out { opacity: 0; }
 
-/* ---------- perforación ---------- */
+/* ---------- drilling ---------- */
 .drill {
     position: absolute; bottom: 20%; left: 0; right: 0; align-items: center;
     opacity: 1; transition-property: opacity; transition-duration: 0.15s;
@@ -65,12 +65,12 @@
 }
 .drill__fill { height: 100%; width: 0%; background-color: var(--aqua); }
 .tubes {
-    position: absolute; right: 110px; bottom: 130px;   /* por encima de las esquinas de la cámara del rover */
+    position: absolute; right: 110px; bottom: 130px;   /* above the corners of the rover camera UI */
     font-size: 18px; color: var(--aqua-soft);
     padding: 6px 12px; background-color: var(--black-soft); border-radius: 3px;
 }
 
-/* ---------- tarjetas (briefing / resultados) ---------- */
+/* ---------- cards (briefing / results) ---------- */
 .overlay {
     position: absolute; left: 0; top: 0; right: 0; bottom: 0;
     background-color: rgba(0, 0, 0, 0.55);
@@ -113,7 +113,7 @@
 .btn--primary { color: #041010; background-color: var(--aqua); border-color: var(--aqua-soft); }
 .btn--primary:hover { background-color: var(--aqua-soft); }
 
-/* ---------- resultados ---------- */
+/* ---------- results ---------- */
 .res-body { flex-direction: row; }
 .res-left { width: 300px; align-items: center; justify-content: center; }
 .res-right { flex-grow: 1; padding-left: 30px; }
@@ -137,3 +137,33 @@
 .score-row__label { font-size: 20px; color: #DDEFEB; }
 .score-row__value { font-size: 20px; color: var(--aqua); }
 .score-row--total .score-row__label, .score-row--total .score-row__value { font-size: 26px; color: var(--aqua); }
+
+/* ---------- tutorial ---------- */
+.tutorial {
+    position: absolute; top: 90px; left: 0; right: 0;
+    align-self: center; align-items: center;
+    display: none;
+}
+.tutorial__step {
+    font-size: 18px; color: var(--aqua-dim); letter-spacing: 2px;
+    padding: 4px 14px; background-color: var(--black-soft);
+    border-top-left-radius: 4px; border-top-right-radius: 4px;
+}
+.tutorial__text {
+    font-size: 30px; color: var(--aqua);
+    padding: 12px 28px;
+    background-color: var(--black);
+    border-width: 2px; border-radius: 4px;
+    border-color: var(--steel) var(--steel-dark) var(--steel-dark) var(--steel);
+    border-left-width: 6px; border-left-color: var(--aqua);
+    -unity-text-align: middle-center;
+}
+.tutorial__sub { font-size: 22px; color: var(--aqua-soft); margin-top: 6px; padding: 4px 14px; background-color: var(--black-soft); border-radius: 3px; }
+.tutorial__skip { font-size: 16px; color: #9AA0A6; margin-top: 8px; }
+.tutorial--done .tutorial__text { color: #4CE08A; border-left-color: #4CE08A; }
+/* with the analysis panel open the tutorial card moves to the top edge and keeps only the instruction */
+.tutorial--inspecting { top: 8px; }
+.tutorial--inspecting .tutorial__step,
+.tutorial--inspecting .tutorial__sub,
+.tutorial--inspecting .tutorial__skip { display: none; }
+.tutorial__sub--empty { display: none; }

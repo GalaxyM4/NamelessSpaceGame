@@ -2,64 +2,73 @@
     <Style src="MissionUI.uss" />
     <ui:VisualElement name="root" class="root" picking-mode="Ignore">
 
-        <!-- HUD durante la misión -->
+        <!-- HUD during the mission -->
         <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
-            <ui:Label name="hud-title" text="MISIÓN" class="hud__title f-head" />
+            <ui:Label name="hud-title" text="MISSION" class="hud__title f-head" />
             <ui:Label name="hud-timer" text="00:00" class="hud__timer f-title" />
             <ui:VisualElement name="hud-objectives" class="hud__objectives" picking-mode="Ignore" />
         </ui:VisualElement>
 
-        <!-- mensajes breves -->
+        <!-- short messages -->
         <ui:VisualElement name="messages" class="messages" picking-mode="Ignore" />
 
-        <!-- perforación (interactor provisional) -->
+        <!-- drilling (provisional drill) -->
         <ui:VisualElement name="drill" class="drill drill--hidden" picking-mode="Ignore">
-            <ui:Label name="drill-text" text="Mantén [R] para perforar" class="drill__text f-body" />
+            <ui:Label name="drill-text" text="Hold [R] to drill" class="drill__text f-body" />
             <ui:VisualElement class="drill__bar"><ui:VisualElement name="drill-fill" class="drill__fill" /></ui:VisualElement>
         </ui:VisualElement>
-        <ui:Label name="tubes" text="TUBOS 0/10" class="tubes f-body" picking-mode="Ignore" />
+        <ui:Label name="tubes" text="TUBES 0/10" class="tubes f-body" picking-mode="Ignore" />
+
+        <!-- Controls tutorial (before the briefing) -->
+        <ui:VisualElement name="tutorial" class="tutorial" picking-mode="Ignore">
+            <ui:Label name="tut-step" text="TUTORIAL" class="tutorial__step f-head" picking-mode="Ignore" />
+            <ui:Label name="tut-text" text="Drive the rover with W A S D" class="tutorial__text f-body" picking-mode="Ignore" />
+            <ui:Label name="tut-sub" text="" class="tutorial__sub f-body" picking-mode="Ignore" />
+            <ui:Label name="tut-skip" text="[TAB] Skip tutorial" class="tutorial__skip f-body" picking-mode="Ignore" />
+        </ui:VisualElement>
 
         <!-- Briefing -->
         <ui:VisualElement name="briefing" class="overlay">
             <ui:VisualElement class="card">
-                <ui:Label text="BRIEFING DE MISIÓN" name="briefing-header" class="card__kicker f-head" />
-                <ui:Label name="briefing-title" text="Título" class="card__title f-title" />
-                <ui:Label name="briefing-desc" text="Descripción" class="card__desc f-body" />
-                <ui:Label text="OBJETIVOS" name="briefing-obj-header" class="section f-head" />
+                <ui:Label text="MISSION BRIEFING" name="briefing-header" class="card__kicker f-head" />
+                <ui:Label name="briefing-title" text="Title" class="card__title f-title" />
+                <ui:Label name="briefing-desc" text="Description" class="card__desc f-body" />
+                <ui:Label text="OBJECTIVES" name="briefing-obj-header" class="section f-head" />
                 <ui:VisualElement name="briefing-objectives" class="obj-list" />
                 <ui:Label name="briefing-limit" text="" class="card__note f-body" />
-                <ui:Label name="briefing-record" text="Sin marca previa" class="card__note f-body" />
+                <ui:Label name="briefing-battery" text="" class="card__note f-body" />
+                <ui:Label name="briefing-record" text="No previous record" class="card__note f-body" />
                 <ui:VisualElement class="buttons">
-                    <ui:Button name="btn-start" text="COMENZAR" class="btn btn--primary f-head" />
-                    <ui:Button name="btn-briefing-exit" text="SALIR" class="btn f-head" />
+                    <ui:Button name="btn-start" text="START" class="btn btn--primary f-head" />
+                    <ui:Button name="btn-briefing-exit" text="EXIT" class="btn f-head" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
 
-        <!-- Resultados -->
+        <!-- Results -->
         <ui:VisualElement name="results" class="overlay">
             <ui:VisualElement class="card card--results">
-                <ui:Label name="res-status" text="MISIÓN COMPLETADA" class="card__kicker f-head" />
-                <ui:Label name="res-title" text="Título" class="card__title f-title" />
+                <ui:Label name="res-status" text="MISSION COMPLETE" class="card__kicker f-head" />
+                <ui:Label name="res-title" text="Title" class="card__title f-title" />
                 <ui:VisualElement class="res-body">
                     <ui:VisualElement class="res-left">
                         <ui:Label name="res-grade" text="A" class="grade f-title" />
-                        <ui:Label name="res-record" text="¡Nuevo récord!" class="record f-head" />
+                        <ui:Label name="res-record" text="New record!" class="record f-head" />
                     </ui:VisualElement>
                     <ui:VisualElement class="res-right">
-                        <ui:Label name="res-time-label" text="TIEMPO" class="section f-head" />
+                        <ui:Label name="res-time-label" text="TIME" class="section f-head" />
                         <ui:Label name="res-time" text="00:00.00" class="res-time f-title" />
                         <ui:Label name="res-thresholds" text="" class="res-thresholds f-body" />
-                        <ui:Label name="res-score-label" text="PUNTAJE" class="section f-head" />
+                        <ui:Label name="res-score-label" text="SCORE" class="section f-head" />
                         <ui:VisualElement name="res-score" class="score" />
-                        <ui:Label name="res-samples-label" text="MUESTRAS" class="section f-head" />
+                        <ui:Label name="res-samples-label" text="SAMPLES" class="section f-head" />
                         <ui:VisualElement name="res-objectives" class="obj-list" />
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement class="buttons">
-                    <ui:Button name="btn-retry" text="REINTENTAR" class="btn f-head" />
-                    <ui:Button name="btn-next" text="SIGUIENTE MISIÓN" class="btn btn--primary f-head" />
-                    <ui:Button name="btn-exit" text="SALIR" class="btn f-head" />
+                    <ui:Button name="btn-retry" text="RETRY" class="btn f-head" />
+                    <ui:Button name="btn-next" text="NEXT MISSION" class="btn btn--primary f-head" />
+                    <ui:Button name="btn-exit" text="EXIT" class="btn f-head" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

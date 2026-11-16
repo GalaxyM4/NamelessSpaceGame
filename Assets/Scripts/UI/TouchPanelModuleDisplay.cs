@@ -103,18 +103,18 @@ public class TouchPanelModuleDisplay : MonoBehaviour
 
             if (module is RoverArmor armor)
             {
-                ApplyValues("ARMOR", armor.name, armor.spriteClass, "Resistencia:", armor.bangs, 20f, $"{armor.bangs} golpes", $"{armor.price}$");
+                ApplyValues("ARMOR", armor.name, armor.spriteClass, "Resistance:", armor.bangs, 20f, $"{armor.bangs} hits", $"{armor.price}$");
                 return;
             }
             if (module is RoverBattery battery)
             {
                 float kAh = battery.ah / 1000f;
-                ApplyValues("BATTERY", battery.name, battery.spriteClass, "Capacidad:", kAh, 30f, $"{kAh:0.#}kAh", $"{battery.price}$");
+                ApplyValues("BATTERY", battery.name, battery.spriteClass, "Capacity:", kAh, 30f, $"{kAh:0.#}kAh", $"{battery.price}$");
                 return;
             }
             if (module is RoverAntenna antenna)
             {
-                ApplyValues("ANTENA", antenna.name, antenna.spriteClass, "Alcance:", antenna.radius, 100f, $"{antenna.radius}cm / {antenna.speed}Hz", "N/D");
+                ApplyValues("ANTENNA", antenna.name, antenna.spriteClass, "Range:", antenna.radius, 100f, $"{antenna.radius}cm / {antenna.speed}Hz", "N/A");
                 return;
             }
         }
@@ -122,15 +122,15 @@ public class TouchPanelModuleDisplay : MonoBehaviour
         switch (slot)
         {
             case RoverModuleSlot.Armor:
-                ApplyValues("ARMOR", "Armor", "aluminium-armor", "Resistencia:", 0f, 20f, "-", "0.00$");
+                ApplyValues("ARMOR", "Armor", "aluminium-armor", "Resistance:", 0f, 20f, "-", "0.00$");
                 break;
 
             case RoverModuleSlot.Battery:
-                ApplyValues("BATTERY", "Battery", "niquelin-material", "Capacidad:", 0f, 30f, "-", "0.00$");
+                ApplyValues("BATTERY", "Battery", "niquelin-material", "Capacity:", 0f, 30f, "-", "0.00$");
                 break;
 
             case RoverModuleSlot.Antenna:
-                ApplyValues("ANTENA", "Antena", "tp-radin", "Alcance:", 0f, 100f, "-", "N/D");
+                ApplyValues("ANTENNA", "Antenna", "tp-radin", "Range:", 0f, 100f, "-", "N/A");
                 break;
         }
     }

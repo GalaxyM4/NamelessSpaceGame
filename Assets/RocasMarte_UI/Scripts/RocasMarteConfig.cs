@@ -1,19 +1,19 @@
-// RocasMarteConfig.cs — referencias de la ventana de rocas (Resources/RocasMarte_Config.asset).
+// RocasMarteConfig.cs — references of the rock window (Resources/RocasMarte_Config.asset).
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace RocasMarte
 {
-    [CreateAssetMenu(menuName = "Rocas Marte/Config", fileName = "RocasMarte_Config")]
+    [CreateAssetMenu(menuName = "Mars Rocks/Config", fileName = "RocasMarte_Config")]
     public class RocasMarteConfig : ScriptableObject
     {
-        [Tooltip("Si está activo, al cargar una escena con rover y campo de rocas se monta todo solo.")]
+        [Tooltip("When on, everything is set up automatically when a scene with a rover and a rock field loads.")]
         public bool autoSetup = true;
         public PanelSettings panelSettings;
         public VisualTreeAsset panel;
-        [Tooltip("Fuentes del proyecto (Assets/fonts). El texto pequeño usa Titillium (Resources/Fonts/Libres).")]
+        [Tooltip("Project fonts (Assets/fonts). Small text uses Titillium (Resources/Fonts/Free).")]
         public Font titleFont, headFont;
-        [Tooltip("Distancia máxima del rover a la superficie de la roca para poder analizarla (m).")]
+        [Tooltip("Maximum horizontal distance from the drill tip (or rover) to the rock edge to analyze it (m).")]
         public float range = 4f;
     }
 }

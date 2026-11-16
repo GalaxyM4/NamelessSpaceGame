@@ -1,5 +1,5 @@
 // RuntimeSettingsCreator.cs — Tools/Missions/Create Runtime Settings
-// Crea o actualiza Resources/MissionsRuntimeSettings con la base de datos y los 5 tipos de roca.
+// Creates or updates Resources/MissionsRuntimeSettings with the database and the 5 rock types.
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace Game.Missions.EditorTools
         {
             var s = CreateOrUpdate();
             Selection.activeObject = s;
-            Debug.Log("[Misiones] Runtime settings: " + Path);
+            Debug.Log("[Missions] Runtime settings: " + Path);
         }
 
         public static MissionsRuntimeSettings CreateOrUpdate()
@@ -28,7 +28,7 @@ namespace Game.Missions.EditorTools
 
             s.database = AssetDatabase.LoadAssetAtPath<MissionDatabase>(MissionsEditorPaths.DatabasePath);
             s.missionUIPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(MissionUIPrefabCreator.PrefabPath);
-            if (s.roverReach < 4f) s.roverReach = 4f;   // mismo alcance que la ventana de análisis
+            if (s.roverReach < 4f) s.roverReach = 4f;   // same reach as the analysis window
             s.rockTypes = new List<RockTypeData>();
             foreach (var id in Ids)
             {

@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f662dfae6e13f4f46b2307715516132a, type: 3}
-  m_Name: Mission_03_PistasVidaAntigua
+  m_Name: Mission_04_ImpactScars
   m_EditorClassIdentifier: Game.Missions::Game.Missions.MissionDefinition
-  id: 03_PistasVidaAntigua
-  title: Pistas de vida antigua
-  description: "Toma tres muestras de lutita como Cheyava Falls: lodo endurecido en agua con \xABmanchas de leopardo\xBB, una posible biofirma."
+  id: 04_ImpactScars
+  title: Impact scars
+  description: Drill four impact breccias like Broom Point, rocks shattered and welded by the asteroids that hit early Mars.
   objectives:
-  - rockType: {fileID: 11400000, guid: 125b556ae3d76664eb318b73e813f7b4, type: 2}
-    amount: 3
+  - rockType: {fileID: 11400000, guid: ac3f2db993c283c4facd89a7e82b83ea, type: 2}
+    amount: 4
   gradeThresholds:
-    a: 150
-    b: 260
-    c: 420
+    a: 220
+    b: 360
+    c: 560
   timeLimit: 0

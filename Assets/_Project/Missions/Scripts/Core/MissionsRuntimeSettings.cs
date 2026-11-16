@@ -1,5 +1,5 @@
-// MissionsRuntimeSettings.cs — ajustes de las misiones que se leen en runtime (Resources/MissionsRuntimeSettings).
-// Lo crea el menú Tools/Missions/Create Runtime Settings.
+// MissionsRuntimeSettings.cs — mission settings read at runtime (Resources/MissionsRuntimeSettings).
+// Created by the menu Tools/Missions/Create Runtime Settings.
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,20 +12,29 @@ namespace Game.Missions
         public MissionDatabase database;
         public List<RockTypeData> rockTypes = new List<RockTypeData>();
 
-        [Header("Escenas del juego")]
-        [Tooltip("Al cargar una escena con rover y campo de rocas: añade el perforador al rover y hace muestreables las rocas 'Sample'.")]
+        [Header("Game scenes")]
+        [Tooltip("When a scene with a rover and a rock field loads: adds the drill to the rover and makes the field rocks drillable.")]
         public bool autoSetupInGameScenes = true;
-        [Tooltip("Además, crea MissionManager + MissionUI en esas escenas si no existen (muestra el briefing de la primera misión).")]
+        [Tooltip("Also creates MissionManager + MissionUI in those scenes if they don't exist.")]
         public bool missionsInGameScenes = true;
-        [Tooltip("Prefab de la UI de misiones (lo asigna Tools/Missions/Create Mission UI Prefab).")]
+        [Tooltip("Mission UI prefab (assigned by Tools/Missions/Create Mission UI Prefab).")]
         public GameObject missionUIPrefab;
+        [Tooltip("Show the controls tutorial before the mission briefing.")]
+        public bool showTutorial = true;
 
-        [Header("Perforación")]
-        [Tooltip("Distancia horizontal desde el centro del rover hasta el borde de la roca para poder perforar (m). Igual que la de la ventana de análisis.")]
+        [Header("Drilling")]
+        [Tooltip("Horizontal distance from the drill tip (or rover center) to the edge of the rock to be able to drill (m). Same as the analysis window.")]
         public float roverReach = 4f;
-        [Tooltip("Segundos de perforación por punto de dureza (dureza 5 = 10 s).")]
+        [Tooltip("Drilling seconds per hardness point (hardness 5 = 10 s).")]
         public float secondsPerHardness = 2f;
 
+        [Header("Battery")]
+        [Tooltip("Minutes of continuous driving per 1000 Ah of battery capacity (Niquelin 5 kAh = 5 × this value).")]
+        public float driveMinutesPerKAh = 1.5f;
+        [Tooltip("Drilling drain as a fraction of driving drain (small).")]
+        [Range(0f, 1f)] public float drillDrainFactor = 0.15f;
+        [Tooltip("Capacity used when the scene is played without choosing a battery in the lobby (Ah).")]
+        public float defaultBatteryAh = 15000f;
 
         public static MissionsRuntimeSettings Load() => Resources.Load<MissionsRuntimeSettings>(ResourcePath);
     }

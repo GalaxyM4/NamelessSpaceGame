@@ -1,12 +1,12 @@
-// RockInspectionSampleStatus.cs — conecta las misiones con la ventana de análisis de rocas (RocasMarte_UI):
-// si la roca que se inspecciona ya fue muestreada, la ficha lo indica ("MUESTREADA") en la etiqueta de la esquina.
+// RockInspectionSampleStatus.cs — connects missions with the rock analysis window (RocasMarte_UI):
+// if the inspected rock was already sampled, the panel shows it ("SAMPLED") in the corner tag.
 using UnityEngine;
 
 namespace Game.Missions
 {
     public static class RockInspectionSampleStatus
     {
-        const float MatchDistance = 0.6f;   // m entre el centro de la roca inspeccionada y la roca muestreada
+        const float MatchDistance = 0.6f;   // m between the inspected rock center and the sampled rock
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Init()

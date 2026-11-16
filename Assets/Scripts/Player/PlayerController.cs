@@ -13,28 +13,28 @@ public enum ControlMode
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Modo de Vista")]
+    [Header("View mode")]
     public ControlMode currentMode = ControlMode.Rotational;
     public Transform cameraTransform;
 
-    [Header("Fuerzas para movimiento")]
+    [Header("Movement forces")]
     public float thrustForce = 10f;
     public float rollTorque = 5f;
     public float mouseSensitivity = 0.1f;
 
-    [Header("Camara Visual")]
+    [Header("Visual camera")]
     public float visualMouseSensitivity = 0.25f;
     public float maxVisualPitch = 85f;
     public float maxVisualYaw = 120f;
     public float cameraReturnSpeed = 8f;
 
-    [Header("Límites y Estabilizador")]
+    [Header("Limits and stabilizer")]
     public float maxSpeed = 20f;
     public float brakeStrength = 3f;
     public float maxMouseTorque = 5f;
     public float maxAngularSpeed = 3f;
 
-    [Header("Interacción")]
+    [Header("Interaction")]
     public float interactDistance = 10f;
     public LayerMask interactLayerMask = ~0;
     public PanelRenderer hudRenderer;
@@ -151,14 +151,14 @@ public class PlayerController : MonoBehaviour
         tutorialContainer.style.alignItems = Align.Center;
         tutorialContainer.style.justifyContent = Justify.Center;
 
-        var phaseLbl = new Label("Fase 1:") { name = "tutorialPhaseLabel", pickingMode = PickingMode.Ignore };
+        var phaseLbl = new Label("Phase 1:") { name = "tutorialPhaseLabel", pickingMode = PickingMode.Ignore };
         phaseLbl.AddToClassList("tutorial-phase-label");
         phaseLbl.style.fontSize = 20;
         phaseLbl.style.color = teal;
         phaseLbl.style.marginBottom = 6;
         phaseLbl.style.unityTextAlign = TextAnchor.MiddleCenter;
 
-        var textLbl = new Label("WASD, movimiento básico del personaje") { name = "tutorialTextLabel", pickingMode = PickingMode.Ignore };
+        var textLbl = new Label("WASD: basic character movement") { name = "tutorialTextLabel", pickingMode = PickingMode.Ignore };
         textLbl.AddToClassList("tutorial-text-label");
         textLbl.style.fontSize = 26;
         textLbl.style.color = Color.white;
@@ -510,7 +510,7 @@ public class PlayerController : MonoBehaviour
 
         if (tutorialPhaseLabel != null)
         {
-            tutorialPhaseLabel.text = $"Fase {tutorialPhase}:";
+            tutorialPhaseLabel.text = $"Phase {tutorialPhase}:";
         }
 
         if (tutorialTextLabel != null)
@@ -518,16 +518,16 @@ public class PlayerController : MonoBehaviour
             switch (tutorialPhase)
             {
                 case 1:
-                    tutorialTextLabel.text = "WASD, movimiento básico del personaje";
+                    tutorialTextLabel.text = "WASD: basic character movement";
                     break;
                 case 2:
-                    tutorialTextLabel.text = "Q, E: Movimiento rotacional";
+                    tutorialTextLabel.text = "Q, E: rotational movement";
                     break;
                 case 3:
-                    tutorialTextLabel.text = "Space, Ctrl o C: Movimiento vertical";
+                    tutorialTextLabel.text = "Space, Ctrl or C: vertical movement";
                     break;
                 case 4:
-                    tutorialTextLabel.text = "X: Frenar al personaje";
+                    tutorialTextLabel.text = "X: brake the character";
                     break;
             }
         }

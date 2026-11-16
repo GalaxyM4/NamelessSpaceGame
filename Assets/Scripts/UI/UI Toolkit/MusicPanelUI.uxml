@@ -2,8 +2,8 @@
     <Style src="project://database/Assets/Scripts/UI/UI%20Toolkit/MusicPanelUI.uss?fileID=7433441132597879392&amp;guid=b2c3d4e5f6a74890ab12cd34ef56ab78&amp;type=3#MusicPanelUI"/>
     <ui:VisualElement name="musicPlayerRoot" class="music-root" style="padding-top: 150px; padding-bottom: 150px;">
         <ui:VisualElement name="trackBox" class="music-track-box">
-            <ui:Label name="statusLabel" text="REPRODUCIENDO" class="music-status" style="-unity-font-definition: url(&quot;project://database/Assets/Fonts/FutureLight-BW15w.ttf?fileID=12800000&amp;guid=23156b98981a2ae47b81ba77d89f0f34&amp;type=3#FutureLight-BW15w&quot;);"/>
-            <ui:Label name="trackTitleLabel" text="Cargando pista..." class="music-title" style="-unity-font-definition: url(&quot;project://database/Assets/Fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&amp;guid=39f20f318685a9c488b3b0c8210c6e89&amp;type=3#FutureNowRegular-25Bl&quot;);"/>
+            <ui:Label name="statusLabel" text="NOW PLAYING" class="music-status" style="-unity-font-definition: url(&quot;project://database/Assets/Fonts/FutureLight-BW15w.ttf?fileID=12800000&amp;guid=23156b98981a2ae47b81ba77d89f0f34&amp;type=3#FutureLight-BW15w&quot;);"/>
+            <ui:Label name="trackTitleLabel" text="Loading track..." class="music-title" style="-unity-font-definition: url(&quot;project://database/Assets/Fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&amp;guid=39f20f318685a9c488b3b0c8210c6e89&amp;type=3#FutureNowRegular-25Bl&quot;);"/>
         </ui:VisualElement>
         <ui:VisualElement name="controlsRow" class="music-controls-row">
             <ui:Button name="prevButton" text="A" class="music-btn" style="-unity-font-definition: url(&quot;project://database/Assets/Fonts/FutureLight-BW15w.ttf?fileID=12800000&amp;guid=23156b98981a2ae47b81ba77d89f0f34&amp;type=3#FutureLight-BW15w&quot;); font-size: 50px;"/>

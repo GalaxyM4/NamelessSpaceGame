@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: RockType_Seitah
   m_EditorClassIdentifier: Game.Missions::Game.Missions.RockTypeData
   id: Seitah
-  displayName: "Cumulado de olivino (S\xE9\xEDtah)"
-  shortName: Olivino
+  displayName: "Olivine cumulate (S\xE9\xEDtah)"
+  shortName: Olivine
   icon: {fileID: 0}
   uiColor: {r: 0.47, g: 0.66, b: 0.33, a: 1}
   hardness: 3
-  prefab: {fileID: 5123673066401986169, guid: 46f797d8ff01e1f4b9208c57b3679ea3, type: 3}

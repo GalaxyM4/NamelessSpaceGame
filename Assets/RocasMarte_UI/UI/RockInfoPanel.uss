@@ -15,7 +15,7 @@
 
 .root { position: absolute; left: 0; top: 0; right: 0; bottom: 0; align-items: center; justify-content: center; }
 
-/* ---------- ventana ---------- */
+/* ---------- window ---------- */
 .panel {
     width: 1240px;
     padding: 16px;
@@ -90,7 +90,7 @@
 .close-button:hover { border-color: var(--aqua); background-color: #0A1C19; }
 .close-button:active { background-color: var(--aqua-deep); }
 
-/* ---------- cuerpo en 3 columnas ---------- */
+/* ---------- 3-column body ---------- */
 .panel__body { flex-direction: row; align-items: stretch; height: 440px; }
 .column {
     background-color: var(--black-soft);
@@ -115,7 +115,7 @@
     border-bottom-color: var(--aqua-deep);
 }
 
-/* ---------- escaneo 3D ---------- */
+/* ---------- 3D scan ---------- */
 .scan-view {
     width: 330px; height: 300px;
     align-self: center;
@@ -146,7 +146,7 @@
 .scan-info { flex-direction: row; justify-content: space-between; align-items: center; margin-top: 12px; }
 .scan-info__value { font-size: 20px; color: var(--aqua); margin: 0; padding: 0; }
 
-/* ---------- características ---------- */
+/* ---------- characteristics ---------- */
 .row { margin-bottom: 14px; }
 .row__label { font-size: 17px; color: var(--aqua-soft); letter-spacing: 1px; margin: 0; padding: 0; }
 .row__value {
@@ -180,7 +180,7 @@
     opacity: 0.9;
 }
 
-/* ---------- descripción y pie ---------- */
+/* ---------- description and footer ---------- */
 .panel__description {
     margin-top: 12px;
     padding: 14px 20px;
@@ -193,7 +193,7 @@
 .panel__footer { flex-direction: row; justify-content: space-between; margin-top: 10px; padding: 0 8px; }
 .footer__text { font-size: 15px; color: #0A1414; letter-spacing: 1px; margin: 0; padding: 0; }
 
-/* ---------- aviso "E ANALIZAR" ---------- */
+/* ---------- "F ANALYZE" prompt ---------- */
 .prompt {
     position: absolute;
     bottom: 11%;

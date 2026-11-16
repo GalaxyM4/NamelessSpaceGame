@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: RockType_CheyavaFalls
   m_EditorClassIdentifier: Game.Missions::Game.Missions.RockTypeData
   id: CheyavaFalls
-  displayName: Lutita de Bright Angel (Cheyava Falls)
-  shortName: Lutita
+  displayName: Bright Angel mudstone (Cheyava Falls)
+  shortName: Mudstone
   icon: {fileID: 0}
   uiColor: {r: 0.8, g: 0.42, b: 0.3, a: 1}
   hardness: 2
-  prefab: {fileID: 2585700934596402904, guid: f8a2c11e843c01642abd1c6d64f0a4e2, type: 3}

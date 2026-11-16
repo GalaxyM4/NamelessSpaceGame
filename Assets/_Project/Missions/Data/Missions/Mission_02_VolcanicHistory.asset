@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f662dfae6e13f4f46b2307715516132a, type: 3}
-  m_Name: Mission_01_PrimerNucleo
+  m_Name: Mission_02_VolcanicHistory
   m_EditorClassIdentifier: Game.Missions::Game.Missions.MissionDefinition
-  id: 01_PrimerNucleo
-  title: "Primer n\xFAcleo"
-  description: "Perfora cinco rocas de basalto de la formaci\xF3n M\xE1az, como Rochette, de donde salieron las dos primeras muestras de Perseverance."
+  id: 02_VolcanicHistory
+  title: Volcanic history
+  description: "Collect igneous rocks from the floor of Jezero: three olivine cumulates from S\xE9\xEDtah and two M\xE1az basalts to rebuild the crater's volcanic history."
   objectives:
+  - rockType: {fileID: 11400000, guid: 44888d1cd5ae9f042aaca84449c4a01a, type: 2}
+    amount: 3
   - rockType: {fileID: 11400000, guid: 18e4ba9d8f3d2b6428c82b87561bba5f, type: 2}
-    amount: 5
+    amount: 2
   gradeThresholds:
-    a: 180
-    b: 300
-    c: 480
+    a: 200
+    b: 330
+    c: 520
   timeLimit: 0

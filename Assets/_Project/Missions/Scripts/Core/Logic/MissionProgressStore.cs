@@ -1,4 +1,4 @@
-// MissionProgressStore.cs — récords por misión (mejor tiempo, calificación y puntaje) en PlayerPrefs como JSON.
+// MissionProgressStore.cs — per-mission records (best time, grade and score) stored in PlayerPrefs as JSON.
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +12,7 @@ namespace Game.Missions
     public class MissionRecord
     {
         public string missionId;
-        public bool hasTime;     // solo cuenta el tiempo de misiones completadas
+        public bool hasTime;     // only completed missions count for best time
         public float bestTime;
         public Grade bestGrade = Grade.D;
         public int bestScore;
@@ -38,11 +38,11 @@ namespace Game.Missions
             PlayerPrefs.Save();
         }
 
-        /// <summary>Récord guardado de una misión (null si nunca se jugó).</summary>
+        /// <summary>Saved record of a mission (null if never played).</summary>
         public static MissionRecord Get(string missionId) =>
             Load().records.Find(r => r.missionId == missionId);
 
-        /// <summary>Guarda el resultado y devuelve qué récords se batieron.</summary>
+        /// <summary>Saves the result and returns which records were beaten.</summary>
         public static RecordFlags Submit(MissionResult result)
         {
             if (result?.mission == null) return RecordFlags.None;
@@ -62,7 +62,5 @@ namespace Game.Missions
             Save(list);
             return flags;
         }
-
-        public static void ClearAll() { PlayerPrefs.DeleteKey(Key); PlayerPrefs.Save(); }
     }
 }

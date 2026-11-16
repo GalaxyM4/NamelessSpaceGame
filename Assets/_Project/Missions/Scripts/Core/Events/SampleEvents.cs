@@ -1,5 +1,5 @@
-// SampleEvents.cs — canal de eventos global de la toma de muestras.
-// Quien muestrea una roca (RockSampleTarget) lo anuncia aquí; las misiones y la UI escuchan sin conocerse entre sí.
+// SampleEvents.cs — global event channel for sample collection.
+// Whoever samples a rock (RockSampleTarget) announces it here; missions and UI listen without knowing each other.
 using System;
 using UnityEngine;
 
@@ -7,13 +7,13 @@ namespace Game.Missions
 {
     public static class SampleEvents
     {
-        /// <summary>Se lanza una vez por roca cuando su muestra queda guardada en un tubo.</summary>
+        /// <summary>Raised once per rock when its sample is stored in a tube.</summary>
         public static event Action<RockTypeData, RockSampleTarget> OnSampleCollected;
 
         internal static void RaiseSampleCollected(RockTypeData type, RockSampleTarget target) =>
             OnSampleCollected?.Invoke(type, target);
 
-        // Con "Enter Play Mode" sin recarga de dominio, los eventos estáticos sobreviven entre partidas: se limpian aquí.
+        // With "Enter Play Mode" without domain reload, static events survive between sessions: clear them here.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void ResetStatics() => OnSampleCollected = null;
     }

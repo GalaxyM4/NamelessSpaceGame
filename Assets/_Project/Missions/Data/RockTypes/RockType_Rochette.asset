@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: RockType_Rochette
   m_EditorClassIdentifier: Game.Missions::Game.Missions.RockTypeData
   id: Rochette
-  displayName: "Basalto de M\xE1az (Rochette)"
-  shortName: Basalto
+  displayName: "M\xE1az basalt (Rochette)"
+  shortName: Basalt
   icon: {fileID: 0}
   uiColor: {r: 0.55, g: 0.58, b: 0.62, a: 1}
   hardness: 3
-  prefab: {fileID: 6697508569464978265, guid: 021da44d0551eb04fac891ee4737df8e, type: 3}

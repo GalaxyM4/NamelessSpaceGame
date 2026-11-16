@@ -1,4 +1,4 @@
-// MissionProgressTests.cs — tests EditMode del conteo de muestras de una misión.
+// MissionProgressTests.cs — EditMode tests for counting the samples of a mission.
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -8,14 +8,14 @@ namespace Game.Missions.Tests
     public class MissionProgressTests
     {
         readonly List<Object> _created = new List<Object>();
-        RockTypeData _basalto, _olivino, _gabro;
+        RockTypeData _basalt, _olivine, _gabbro;
 
         [SetUp]
         public void SetUp()
         {
-            _basalto = Rock("Rochette");
-            _olivino = Rock("Seitah");
-            _gabro = Rock("Singita");
+            _basalt = Rock("Rochette");
+            _olivine = Rock("Seitah");
+            _gabbro = Rock("Singita");
         }
 
         [TearDown]
@@ -43,80 +43,80 @@ namespace Game.Missions.Tests
         }
 
         [Test]
-        public void RocaNoPedida_NoSuma()
+        public void NotRequestedRock_DoesNotCount()
         {
-            var p = new MissionProgress(Mission((_basalto, 5)));
-            Assert.AreEqual(SampleCountResult.NoPedida, p.TryAdd(_gabro));
+            var p = new MissionProgress(Mission((_basalt, 5)));
+            Assert.AreEqual(SampleCountResult.NotRequested, p.TryAdd(_gabbro));
             Assert.AreEqual(0, p.ValidCollected);
             Assert.IsFalse(p.AllComplete);
         }
 
         [Test]
-        public void RocaNula_NoSuma()
+        public void NullRock_DoesNotCount()
         {
-            var p = new MissionProgress(Mission((_basalto, 1)));
-            Assert.AreEqual(SampleCountResult.NoPedida, p.TryAdd(null));
+            var p = new MissionProgress(Mission((_basalt, 1)));
+            Assert.AreEqual(SampleCountResult.NotRequested, p.TryAdd(null));
             Assert.AreEqual(0, p.ValidCollected);
         }
 
         [Test]
-        public void NoSuperaLaCantidadPedida()
+        public void NeverExceedsRequestedAmount()
         {
-            var p = new MissionProgress(Mission((_basalto, 2)));
-            Assert.AreEqual(SampleCountResult.Contada, p.TryAdd(_basalto));
-            Assert.AreEqual(SampleCountResult.Contada, p.TryAdd(_basalto));
-            Assert.AreEqual(SampleCountResult.YaCompleto, p.TryAdd(_basalto));
-            Assert.AreEqual(2, p.Find(_basalto).collected);
+            var p = new MissionProgress(Mission((_basalt, 2)));
+            Assert.AreEqual(SampleCountResult.Counted, p.TryAdd(_basalt));
+            Assert.AreEqual(SampleCountResult.Counted, p.TryAdd(_basalt));
+            Assert.AreEqual(SampleCountResult.AlreadyComplete, p.TryAdd(_basalt));
+            Assert.AreEqual(2, p.Find(_basalt).collected);
             Assert.AreEqual(2, p.ValidCollected);
             Assert.IsTrue(p.AllComplete);
         }
 
         [Test]
-        public void VariosTipos_SoloCompletaConTodos()
+        public void SeveralTypes_CompleteOnlyWithAll()
         {
-            var p = new MissionProgress(Mission((_olivino, 3), (_basalto, 2)));
-            for (int i = 0; i < 3; i++) p.TryAdd(_olivino);
-            Assert.IsTrue(p.Find(_olivino).IsComplete);
+            var p = new MissionProgress(Mission((_olivine, 3), (_basalt, 2)));
+            for (int i = 0; i < 3; i++) p.TryAdd(_olivine);
+            Assert.IsTrue(p.Find(_olivine).IsComplete);
             Assert.IsFalse(p.AllComplete);
 
-            p.TryAdd(_basalto);
+            p.TryAdd(_basalt);
             Assert.IsFalse(p.AllComplete);
-            p.TryAdd(_basalto);
+            p.TryAdd(_basalt);
             Assert.IsTrue(p.AllComplete);
             Assert.AreEqual(5, p.ValidCollected);
             Assert.AreEqual(5, p.TotalRequired);
         }
 
         [Test]
-        public void TipoCompleto_NoSuma_MientrasOtroSigueAbierto()
+        public void CompleteType_DoesNotCount_WhileAnotherIsOpen()
         {
-            var p = new MissionProgress(Mission((_olivino, 1), (_basalto, 2)));
-            p.TryAdd(_olivino);
-            Assert.AreEqual(SampleCountResult.YaCompleto, p.TryAdd(_olivino));
+            var p = new MissionProgress(Mission((_olivine, 1), (_basalt, 2)));
+            p.TryAdd(_olivine);
+            Assert.AreEqual(SampleCountResult.AlreadyComplete, p.TryAdd(_olivine));
             Assert.AreEqual(1, p.ValidCollected);
         }
 
         [Test]
-        public void ObjetivosRepetidosDelMismoTipo_SeSuman()
+        public void RepeatedObjectivesOfSameType_AreAdded()
         {
-            var p = new MissionProgress(Mission((_basalto, 2), (_basalto, 3)));
+            var p = new MissionProgress(Mission((_basalt, 2), (_basalt, 3)));
             Assert.AreEqual(1, p.Objectives.Count);
-            Assert.AreEqual(5, p.Find(_basalto).required);
+            Assert.AreEqual(5, p.Find(_basalt).required);
         }
 
         [Test]
-        public void SinTubosSuficientes_NoSePuedeCompletar()
+        public void NotEnoughTubes_CannotComplete()
         {
-            var p = new MissionProgress(Mission((_basalto, 5)));
-            p.TryAdd(_basalto); p.TryAdd(_basalto);          // faltan 3
+            var p = new MissionProgress(Mission((_basalt, 5)));
+            p.TryAdd(_basalt); p.TryAdd(_basalt);          // 3 missing
             Assert.AreEqual(3, p.Remaining);
-            Assert.IsTrue(p.CanStillComplete(3));            // justo los necesarios
+            Assert.IsTrue(p.CanStillComplete(3));            // exactly enough
             Assert.IsTrue(p.CanStillComplete(8));
-            Assert.IsFalse(p.CanStillComplete(2));           // ya no alcanza
+            Assert.IsFalse(p.CanStillComplete(2));           // not enough anymore
         }
 
         [Test]
-        public void MisionSinObjetivos_NuncaEstaCompleta()
+        public void MissionWithoutObjectives_IsNeverComplete()
         {
             var p = new MissionProgress(Mission());
             Assert.IsFalse(p.AllComplete);

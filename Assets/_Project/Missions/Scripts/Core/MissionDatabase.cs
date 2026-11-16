@@ -1,4 +1,4 @@
-// MissionDatabase.cs — lista ordenada de misiones del juego.
+// MissionDatabase.cs — ordered list of the game's missions.
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,12 +11,11 @@ namespace Game.Missions
 
         public int IndexOf(MissionDefinition mission) => missions.IndexOf(mission);
 
-        /// <summary>La misión siguiente en la lista, o null si es la última (o no está).</summary>
+        /// <summary>The next mission in the list, or null if this is the last one (or not in the list).</summary>
         public MissionDefinition GetNext(MissionDefinition mission)
         {
             int i = IndexOf(mission);
             return i >= 0 && i + 1 < missions.Count ? missions[i + 1] : null;
         }
-
     }
 }

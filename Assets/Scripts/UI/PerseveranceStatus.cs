@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(PanelRenderer))]
 public class PerseveranceStatus : MonoBehaviour
 {
-    [Header("Batería")]
+    [Header("Battery")]
     [Range(0f, 100f)]
     [SerializeField] private float batteryPercent = 100f;
 

@@ -1,4 +1,4 @@
-// MissionsEditorPaths.cs — rutas comunes de los menús Tools/Missions.
+// MissionsEditorPaths.cs — common paths for the Tools/Missions menus.
 using System.IO;
 using UnityEditor;
 
@@ -11,7 +11,7 @@ namespace Game.Missions.EditorTools
         public const string DataMissions = Root + "/Data/Missions";
         public const string DatabasePath = Root + "/Data/MissionDatabase.asset";
 
-        /// <summary>Crea la carpeta (y sus padres) en el AssetDatabase si no existe.</summary>
+        /// <summary>Creates the folder (and its parents) in the AssetDatabase if it doesn't exist.</summary>
         public static void EnsureFolder(string path)
         {
             if (AssetDatabase.IsValidFolder(path)) return;

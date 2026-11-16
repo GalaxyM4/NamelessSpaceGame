@@ -1,5 +1,5 @@
-// RockInfoUI.cs — controla la ventana de análisis de rocas (UI Toolkit).
-// Ponlo en el mismo GameObject que el UIDocument que usa RockInfoPanel.uxml.
+// RockInfoUI.cs — controls the rock analysis window (UI Toolkit).
+// Put it on the same GameObject as the UIDocument that uses RockInfoPanel.uxml.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +14,8 @@ namespace RocasMarte
         public string id, name, type, location, size, composition, sample, age;
         public int water_level, hardness, astro_interest;
         public string water_text, description, source;
-        public string tag;   // texto en lugar de "ID · id" (rocas genéricas: "SIN CATALOGAR")
-        public string scan;  // carpeta de RockWire a usar (por defecto, el id)
+        public string tag;   // text instead of "ID · id" (generic rocks: "UNCATALOGUED")
+        public string scan;  // RockWire folder to use (defaults to the id)
         public bool estimated;
     }
 
@@ -25,27 +25,27 @@ namespace RocasMarte
     [RequireComponent(typeof(UIDocument))]
     public class RockInfoUI : MonoBehaviour
     {
-        [Tooltip("JSON con los datos (por defecto Resources/rocks_info.json).")]
+        [Tooltip("JSON with the data (defaults to Resources/rocks_info.json).")]
         public TextAsset rocksJson;
         public int meterSegments = 5;
-        [Tooltip("Fotogramas por segundo del giro del escaneo 3D.")]
+        [Tooltip("Frames per second of the 3D scan rotation.")]
         public float scanFps = 12f;
 
-        [Header("Fuentes (opcional: si se dejan vacías se cargan solas desde Resources/Fonts)")]
+        [Header("Fonts (optional: if empty they are loaded from Resources/Fonts)")]
         public Font titleFont, headFont, labelFont, valueFont, bodyFont, italicFont;
 
         public bool IsOpen { get; private set; }
         public event Action<bool> OpenChanged;
 
-        // tus fuentes (Resources/Fonts) y, si no están, las libres de respaldo (Resources/Fonts/Libres)
+        // your fonts (Resources/Fonts) and, if missing, the free fallback ones (Resources/Fonts/Free)
         static readonly (string cls, string mine, string free)[] FontRoles =
         {
             ("f-title",  "Overmars-Jpdzj",             "TitilliumWeb-SemiBold"),
             ("f-head",   "FutureNowRegular-25Bl",      "TitilliumWeb-SemiBold"),
-            ("f-label",  "Libres/TitilliumWeb-SemiBold", "TitilliumWeb-SemiBold"),
-            ("f-value",  "Libres/TitilliumWeb-SemiBold", "TitilliumWeb-SemiBold"),
-            ("f-body",   "Libres/TitilliumWeb-SemiBold", "TitilliumWeb-SemiBold"),
-            ("f-italic", "Libres/TitilliumWeb-SemiBold", "TitilliumWeb-SemiBold"),
+            ("f-label",  "Free/TitilliumWeb-SemiBold", "TitilliumWeb-SemiBold"),
+            ("f-value",  "Free/TitilliumWeb-SemiBold", "TitilliumWeb-SemiBold"),
+            ("f-body",   "Free/TitilliumWeb-SemiBold", "TitilliumWeb-SemiBold"),
+            ("f-italic", "Free/TitilliumWeb-SemiBold", "TitilliumWeb-SemiBold"),
         };
 
         readonly Dictionary<string, RockInfo> _rocks = new(StringComparer.OrdinalIgnoreCase);
@@ -76,17 +76,17 @@ namespace RocasMarte
 
         void OnDisable() => _scanTick?.Pause();
 
-        // ---------- datos ----------
+        // ---------- data ----------
         void LoadData()
         {
             _rocks.Clear();
             var json = rocksJson != null ? rocksJson : Resources.Load<TextAsset>("rocks_info");
-            if (json == null) { Debug.LogError("[RockInfoUI] No encuentro rocks_info.json en Resources."); return; }
+            if (json == null) { Debug.LogError("[RockInfoUI] rocks_info.json not found in Resources."); return; }
             foreach (var r in JsonUtility.FromJson<RockInfoList>(json.text).rocks) _rocks[r.id] = r;
         }
 
 
-        // ---------- fuentes ----------
+        // ---------- fonts ----------
         void ApplyFonts()
         {
             var manual = new Dictionary<string, Font>
@@ -96,20 +96,20 @@ namespace RocasMarte
             };
             foreach (var (cls, mine, free) in FontRoles)
             {
-                // (sin ?? : los campos vacíos de Unity son "falsos null" y ?? no los detecta)
+                // (no ?? : empty Unity fields are "fake null" and ?? does not detect them)
                 Font font = manual[cls];
                 if (font == null) font = Resources.Load<Font>("Fonts/" + mine);
-                if (font == null) font = Resources.Load<Font>("Fonts/Libres/" + free);
+                if (font == null) font = Resources.Load<Font>("Fonts/Free/" + free);
                 if (font == null) continue;
                 var def = MakeCrispFont(font);
                 _root.Query(className: cls).ForEach(e => e.style.unityFontDefinition = def);
             }
         }
 
-        // Fuente SDF: se mantiene nítida aunque la ventana se reduzca (la fuente normal
-        // se rasteriza a un tamaño fijo y al escalar se ve borrosa / "doble").
-        // Caché por instancia (no static): con 'Reload Domain' desactivado, una caché static guardaba
-        // fuentes ya destruidas de la partida anterior y Unity mostraba su letra por defecto.
+        // SDF font: stays sharp even when the window is scaled down (a regular font is rasterized
+        // at a fixed size and looks blurry / "doubled" when scaled).
+        // Per-instance cache (not static): with 'Reload Domain' disabled, a static cache kept fonts
+        // destroyed in the previous session and Unity fell back to its default font.
         readonly Dictionary<Font, FontDefinition> _sdfCache = new Dictionary<Font, FontDefinition>();
         FontDefinition MakeCrispFont(Font font)
         {
@@ -126,7 +126,7 @@ namespace RocasMarte
             return def;
         }
 
-        // Overmars no tiene tildes ni Ñ: el título se escribe sin ellas (como "SELECCIONA UNA MISION").
+        // Overmars has no accented letters: the title is written without them.
         static string SinTildes(string s)
         {
             if (string.IsNullOrEmpty(s)) return s;
@@ -157,7 +157,7 @@ namespace RocasMarte
             _root.Q<Label>(num).text = $"{value}/{meterSegments}";
         }
 
-        // ---------- escaneo 3D (fotogramas renderizados en Blender: Resources/RockWire/<Id>/) ----------
+        // ---------- 3D scan (frames rendered in Blender: Resources/RockWire/<Id>/) ----------
         Texture2D[] FramesFor(string id)
         {
             if (!_scanFrames.TryGetValue(id, out var f))
@@ -177,12 +177,12 @@ namespace RocasMarte
                 int f = (int)(_scanT * scanFps) % _frames.Length;
                 if (f != _frame) { _frame = f; _scanImage.style.backgroundImage = new StyleBackground(_frames[f]); }
             }
-            // línea de barrido que baja y vuelve a empezar
+            // scan line that moves down and starts again
             float h = _scanLine.parent.resolvedStyle.height;
             if (h > 0) _scanLine.style.top = (_scanT * 90f) % h;
         }
 
-        // ---------- aviso ----------
+        // ---------- prompt ----------
         public void SetPrompt(string rockId, string key = "E")
         {
             bool show = rockId != null && !IsOpen && _rocks.ContainsKey(rockId);
@@ -190,7 +190,7 @@ namespace RocasMarte
             if (show)
             {
                 _prompt.Q<Label>("prompt-key").text = key;
-                _promptText.text = "ANALIZAR";   // sin el nombre: se descubre al abrir la ficha
+                _promptText.text = "ANALYZE";   // without the name: it is revealed when the panel opens
             }
         }
 
@@ -198,10 +198,11 @@ namespace RocasMarte
         // ---------- abrir / cerrar ----------
         public void Show(string rockId, string sizeOverride = null)
         {
-            if (!_rocks.TryGetValue(rockId, out var r)) { Debug.LogWarning($"[RockInfoUI] Roca desconocida: {rockId}"); return; }
+            if (!_rocks.TryGetValue(rockId, out var r)) { Debug.LogWarning($"[RockInfoUI] Unknown rock: {rockId}"); return; }
             _root.Q<Label>("rock-name").text = SinTildes(r.name);
             _root.Q<Label>("rock-type").text = r.type;
-            _root.Q<Label>("rock-id").text = string.IsNullOrEmpty(r.tag) ? "ID · " + r.id : r.tag;
+            _defaultTag = string.IsNullOrEmpty(r.tag) ? "ID · " + r.id : r.tag;
+            _root.Q<Label>("rock-id").text = _defaultTag;
             _root.Q<Label>("v-location").text = r.location;
             _root.Q<Label>("v-size").text = string.IsNullOrEmpty(sizeOverride) ? r.size : sizeOverride;
             _root.Q<Label>("v-composition").text = r.composition;
@@ -227,11 +228,19 @@ namespace RocasMarte
             OpenChanged?.Invoke(true);
         }
 
-        /// <summary>Cambia la etiqueta de la esquina de la ficha abierta (p. ej. "MUESTREADA").</summary>
+        /// <summary>Changes the corner tag of the open panel (e.g. "SAMPLED").</summary>
         public void SetTag(string text)
         {
             if (IsOpen && !string.IsNullOrEmpty(text)) _root.Q<Label>("rock-id").text = text;
         }
+
+        /// <summary>Restores the corner tag the open panel had when it was opened.</summary>
+        public void ResetTag()
+        {
+            if (IsOpen && _defaultTag != null) _root.Q<Label>("rock-id").text = _defaultTag;
+        }
+
+        string _defaultTag;
 
         public void Hide()
         {

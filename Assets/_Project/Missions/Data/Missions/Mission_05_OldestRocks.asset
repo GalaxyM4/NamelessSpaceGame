@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f662dfae6e13f4f46b2307715516132a, type: 3}
-  m_Name: Mission_05_RocasMasAntiguas
+  m_Name: Mission_05_OldestRocks
   m_EditorClassIdentifier: Game.Missions::Game.Missions.MissionDefinition
-  id: 05_RocasMasAntiguas
-  title: "Las rocas m\xE1s antiguas"
-  description: "Consigue dos gabros como Singita, de las rocas m\xE1s antiguas y duras de Marte, y una muestra de cada uno de los otros tipos."
+  id: 05_OldestRocks
+  title: The oldest rocks
+  description: Get two gabbros like Singita, among the oldest and hardest rocks on Mars, and one sample of each of the other types.
   objectives:
   - rockType: {fileID: 11400000, guid: 053e99f4d9c3d284f8da6cf14c7a6eee, type: 2}
     amount: 2

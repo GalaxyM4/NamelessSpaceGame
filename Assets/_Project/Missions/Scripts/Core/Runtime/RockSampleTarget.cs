@@ -1,31 +1,31 @@
-// RockSampleTarget.cs — en la raíz de cada roca muestreable.
-// Estados: Disponible -> EnMuestreo -> Muestreada. Una roca solo se muestrea una vez; al hacerlo deja
-// un agujero de perforación (disco oscuro de ~3 cm) en su DrillTarget y avisa por SampleEvents.
+// RockSampleTarget.cs — on the root of every rock that can be sampled.
+// States: Available -> Sampling -> Sampled. A rock can only be sampled once; when it is, it leaves
+// a drill hole (dark disc of ~3 cm) on its DrillTarget and announces it through SampleEvents.
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Missions
 {
-    public enum SampleState { Disponible, EnMuestreo, Muestreada }
+    public enum SampleState { Available, Sampling, Sampled }
 
     [DisallowMultipleComponent]
     public class RockSampleTarget : MonoBehaviour
     {
         public RockTypeData rockType;
-        [Tooltip("Punto donde se perfora. Si está vacío se busca un hijo *_DrillTarget; si no hay, la propia roca.")]
+        [Tooltip("Point where the rock is drilled. Empty = a child named *_DrillTarget, or the rock itself.")]
         public Transform drillTarget;
-        [Tooltip("Diámetro del agujero de perforación (m).")]
+        [Tooltip("Drill hole diameter (m).")]
         public float drillHoleDiameter = 0.03f;
 
-        [SerializeField] SampleState state = SampleState.Disponible;
+        [SerializeField] SampleState state = SampleState.Available;
         GameObject _hole;
 
         public SampleState State => state;
-        public bool IsSampled => state == SampleState.Muestreada;
-        public bool CanSample => state == SampleState.Disponible && rockType != null;
+        public bool IsSampled => state == SampleState.Sampled;
+        public bool CanSample => state == SampleState.Available && rockType != null;
         public Vector3 DrillPoint => drillTarget ? drillTarget.position : transform.position;
 
-        /// <summary>Rocas muestreables activas (registro sin búsquedas por escena).</summary>
+        /// <summary>Active sampleable rocks (registry, no scene searches).</summary>
         public static readonly List<RockSampleTarget> All = new List<RockSampleTarget>();
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -42,36 +42,36 @@ namespace Game.Missions
                 if (t != transform && t.name.EndsWith("_DrillTarget")) { drillTarget = t; return; }
         }
 
-        /// <summary>Empieza a perforar. Falla si ya está muestreada o en muestreo.</summary>
+        /// <summary>Starts drilling. Fails if already sampled or being sampled.</summary>
         public bool BeginSampling()
         {
             if (!CanSample) return false;
-            SetState(SampleState.EnMuestreo);
+            SetState(SampleState.Sampling);
             return true;
         }
 
-        /// <summary>Cancela una perforación a medias: la roca vuelve a estar disponible.</summary>
+        /// <summary>Cancels an unfinished drilling: the rock becomes available again.</summary>
         public void CancelSampling()
         {
-            if (state == SampleState.EnMuestreo) SetState(SampleState.Disponible);
+            if (state == SampleState.Sampling) SetState(SampleState.Available);
         }
 
-        /// <summary>Completa la muestra. Devuelve false si la roca ya estaba muestreada o no tiene tipo.</summary>
+        /// <summary>Completes the sample. Returns false if the rock was already sampled or has no type.</summary>
         public bool TryCompleteSample()
         {
-            if (state == SampleState.Muestreada || rockType == null) return false;
-            SetState(SampleState.Muestreada);
+            if (state == SampleState.Sampled || rockType == null) return false;
+            SetState(SampleState.Sampled);
             CreateDrillHole();
             SampleEvents.RaiseSampleCollected(rockType, this);
             return true;
         }
 
-        /// <summary>Deja la roca como nueva (para reintentar una misión).</summary>
+        /// <summary>Resets the rock (to retry a mission).</summary>
         public void ResetSample()
         {
             if (_hole) Destroy(_hole);
             _hole = null;
-            SetState(SampleState.Disponible);
+            SetState(SampleState.Available);
         }
 
         void SetState(SampleState s)
@@ -79,14 +79,14 @@ namespace Game.Missions
             state = s;
         }
 
-        // ---------- agujero de perforación ----------
+        // ---------- drill hole ----------
         static Material _holeMaterial;
 
         void CreateDrillHole()
         {
             var p = DrillPoint;
             var normal = Vector3.up;
-            // se apoya sobre la superficie real de la roca (sus colliders sólidos)
+            // placed on the real surface of the rock (its solid colliders)
             var ray = new Ray(p + Vector3.up * 0.5f, Vector3.down);
             float best = float.MaxValue;
             foreach (var col in GetComponentsInChildren<Collider>())
@@ -101,7 +101,7 @@ namespace Game.Missions
             _hole.transform.SetParent(drillTarget ? drillTarget : transform, true);
             _hole.transform.position = p + normal * 0.001f;
             _hole.transform.up = normal;
-            _hole.transform.localScale = Vector3.one; // escala del mundo, independiente del padre
+            _hole.transform.localScale = Vector3.one; // world scale, independent of the parent
             var s = _hole.transform.lossyScale;
             _hole.transform.localScale = new Vector3(drillHoleDiameter / s.x, 0.0015f / s.y, drillHoleDiameter / s.z);
 

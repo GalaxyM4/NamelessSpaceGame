@@ -1,6 +1,6 @@
-// MissionDebugShortcuts.cs — atajos de depuración (solo Editor y Development Build (símbolo DEBUG)).
-//   F9  completa la roca muestreable más cercana (lo hace SimpleSamplingInteractor).
-//   F10 termina la misión en curso con el tiempo actual.
+// MissionDebugShortcuts.cs — debug shortcuts (Editor and Development Build only, DEBUG symbol).
+//   F9  completes the nearest sampleable rock (done by SimpleSamplingInteractor).
+//   F10 ends the mission in progress with the current time.
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;

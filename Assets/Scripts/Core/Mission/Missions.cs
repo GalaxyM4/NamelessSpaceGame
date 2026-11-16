@@ -16,8 +16,8 @@ public static class MissionsImplement
     public static IReadOnlyList<Mission> GetMissions = new Mission[]
     {
         new () {
-            name = "La Recolección",
-            information = "Desde que aterrizó en el Planeta Rojo en 2021 para buscar señales de vida antigua, el rover Perseverance Mars de la NASA ha recorrido más lejos y más rápido que cualquier vehículo en la superficie de otro mundo. En octubre. 11, su odómetro alcanzó las 28,10 millas (45,22 kilómetros), superando el récord de 28,06 millas (45,16 kilómetros) del rover Opportunity de la NASA (2004-2018). Y Perseverance ha cubierto el terreno en aproximadamente 5½ años, en comparación con casi 15 de su predecesor. Esta misión destaca la recolección de minerales homenajeando este hito en 2021.",
+            name = "The Collection",
+            information = "Since landing on the Red Planet in 2021 to search for signs of ancient life, NASA's Perseverance Mars rover has driven farther and faster than any vehicle on the surface of another world. On Oct. 11, its odometer reached 28.10 miles (45.22 kilometers), beating the 28.06-mile (45.16-kilometer) record of NASA's Opportunity rover (2004-2018). And Perseverance covered that ground in about 5½ years, compared with almost 15 for its predecessor. This mission highlights mineral collection, honoring this milestone from 2021.",
             imageReference = Resources.Load<Texture2D>("marslike01ft"),
             urlInformation = "https://science.nasa.gov/mission/mars-2020-perseverance/",
             budget = 300,
@@ -27,8 +27,8 @@ public static class MissionsImplement
         },
         
         new () {
-            name = "La Recolección 2",
-            information = "Desde que aterrizó en el Planeta Rojo en 2021 para buscar señales de vida antigua, el rover Perseverance Mars de la NASA ha recorrido más lejos y más rápido que cualquier vehículo en la superficie de otro mundo. En octubre. 11, su odómetro alcanzó las 28,10 millas (45,22 kilómetros), superando el récord de 28,06 millas (45,16 kilómetros) del rover Opportunity de la NASA (2004-2018). Y Perseverance ha cubierto el terreno en aproximadamente 5½ años, en comparación con casi 15 de su predecesor. Esta misión destaca la recolección de minerales homenajeando este hito en 2021.",
+            name = "The Collection 2",
+            information = "Since landing on the Red Planet in 2021 to search for signs of ancient life, NASA's Perseverance Mars rover has driven farther and faster than any vehicle on the surface of another world. On Oct. 11, its odometer reached 28.10 miles (45.22 kilometers), beating the 28.06-mile (45.16-kilometer) record of NASA's Opportunity rover (2004-2018). And Perseverance covered that ground in about 5½ years, compared with almost 15 for its predecessor. This mission highlights mineral collection, honoring this milestone from 2021.",
             imageReference = Resources.Load<Texture2D>("marslike01ft"),
             urlInformation = "https://science.nasa.gov/mission/mars-2020-perseverance/",
             budget = 300,

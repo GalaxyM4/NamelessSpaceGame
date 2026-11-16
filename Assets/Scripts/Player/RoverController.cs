@@ -15,10 +15,10 @@ public class RoverController : MonoBehaviour
         public bool hasMotor;
     }
 
-    [Header("Ruedas")]
+    [Header("Wheels")]
     public RoverAxle[] axles;
     
-    [Header("Motor")]
+    [Header("Engine")]
     public float maxMotorTorque = 400f;
     public float maxSteerAngle = 30f;
     public float maxSpeed = 30f;
@@ -35,7 +35,7 @@ public class RoverController : MonoBehaviour
     private AudioSource movementSound;
     private bool wasCameraMoving;
 
-    [Header("Audio Llantas")]
+    [Header("Tire audio")]
     public AudioClip wheelStartSound;
     public AudioClip wheelLoopSound;
     public AudioClip wheelEndSound;
@@ -43,7 +43,7 @@ public class RoverController : MonoBehaviour
     public float wheelMoveThreshold = 0.15f;
     private bool wasWheelMoving;
 
-    [Header("Camara")]
+    [Header("Camera")]
     public float cameraSensitivity = 1f;
     public float maxVisualPitch = 85f;
     public float maxVisualYaw = 120f;

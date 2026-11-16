@@ -1,6 +1,6 @@
 // RockTypeImporter.cs — Tools/Missions/Import Rock Types From rocks.json
-// Lee el JSON de rocas y crea o actualiza los 5 RockTypeData (id, nombres en español, color y dureza).
-// Fuente por defecto: rocks_info.json de la ventana de rocas; si no está, busca cualquier rocks.json del proyecto.
+// Reads the rocks JSON and creates or updates the 5 RockTypeData (id, display names, color and hardness).
+// Default source: rocks_info.json from the rock window; otherwise any rocks.json in the project.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,19 +13,19 @@ namespace Game.Missions.EditorTools
     {
         const string DefaultJson = "Assets/RocasMarte_UI/Resources/rocks_info.json";
 
-        // Solo leemos lo necesario; JsonUtility ignora el resto de campos.
+        // Only what is needed is read; JsonUtility ignores the other fields.
         [Serializable] class JsonRock { public string id; public int hardness; }
         [Serializable] class JsonRockList { public JsonRock[] rocks; }
 
-        // Nombres en español y color de UI de cada tipo (los textos de juego se ajustan aquí).
+        // Display names and UI color of each type (game texts are tuned here).
         static readonly Dictionary<string, (string display, string shortName, Color color)> Names =
             new Dictionary<string, (string, string, Color)>
         {
-            ["Rochette"]     = ("Basalto de Máaz (Rochette)",            "Basalto", new Color(0.55f, 0.58f, 0.62f)),
-            ["Seitah"]       = ("Cumulado de olivino (Séítah)",          "Olivino", new Color(0.47f, 0.66f, 0.33f)),
-            ["CheyavaFalls"] = ("Lutita de Bright Angel (Cheyava Falls)", "Lutita",  new Color(0.80f, 0.42f, 0.30f)),
-            ["BroomPoint"]   = ("Brecha de impacto (Broom Point)",       "Brecha",  new Color(0.85f, 0.72f, 0.45f)),
-            ["Singita"]      = ("Gabro (Singita)",                       "Gabro",   new Color(0.90f, 0.88f, 0.80f)),
+            ["Rochette"]     = ("Máaz basalt (Rochette)",                 "Basalt",  new Color(0.55f, 0.58f, 0.62f)),
+            ["Seitah"]       = ("Olivine cumulate (Séítah)",             "Olivine", new Color(0.47f, 0.66f, 0.33f)),
+            ["CheyavaFalls"] = ("Bright Angel mudstone (Cheyava Falls)", "Mudstone", new Color(0.80f, 0.42f, 0.30f)),
+            ["BroomPoint"]   = ("Impact breccia (Broom Point)",          "Breccia", new Color(0.85f, 0.72f, 0.45f)),
+            ["Singita"]      = ("Gabbro (Singita)",                      "Gabbro",  new Color(0.90f, 0.88f, 0.80f)),
         };
 
         [MenuItem("Tools/Missions/Import Rock Types From rocks.json", priority = 1)]
@@ -34,24 +34,24 @@ namespace Game.Missions.EditorTools
             var path = FindJson();
             if (path == null)
             {
-                EditorUtility.DisplayDialog("Misiones", "No encuentro rocks_info.json ni rocks.json en el proyecto.", "OK");
+                EditorUtility.DisplayDialog("Missions", "Could not find rocks_info.json or rocks.json in the project.", "OK");
                 return;
             }
             int n = Import(path);
-            EditorUtility.DisplayDialog("Misiones", $"{n} tipos de roca importados desde\n{path}", "OK");
+            EditorUtility.DisplayDialog("Missions", $"{n} rock types imported from\n{path}", "OK");
         }
 
-        /// <summary>Importa y devuelve cuántos tipos se crearon o actualizaron.</summary>
+        /// <summary>Imports and returns how many types were created or updated.</summary>
         public static int Import(string jsonPath)
         {
             var list = JsonUtility.FromJson<JsonRockList>(File.ReadAllText(jsonPath));
-            if (list?.rocks == null) { Debug.LogError("[Misiones] JSON sin lista 'rocks': " + jsonPath); return 0; }
+            if (list?.rocks == null) { Debug.LogError("[Missions] JSON without a 'rocks' list: " + jsonPath); return 0; }
 
             MissionsEditorPaths.EnsureFolder(MissionsEditorPaths.DataRockTypes);
             int n = 0;
             foreach (var r in list.rocks)
             {
-                // las entradas genéricas de la ventana de rocas (Generic_*) no son tipos de misión
+                // generic entries of the rock window (Generic_*) are not mission types
                 if (string.IsNullOrEmpty(r.id) || !Names.TryGetValue(r.id, out var names)) continue;
 
                 var assetPath = $"{MissionsEditorPaths.DataRockTypes}/RockType_{r.id}.asset";
@@ -64,14 +64,14 @@ namespace Game.Missions.EditorTools
                 data.shortName = names.shortName;
                 data.uiColor = names.color;
                 data.hardness = Mathf.Clamp(r.hardness, 1, 5);
-                // el icono no se toca: se conserva si ya estaba asignado
+                // the icon is not touched: it is kept if already assigned
 
                 if (isNew) AssetDatabase.CreateAsset(data, assetPath);
                 else EditorUtility.SetDirty(data);
                 n++;
             }
             AssetDatabase.SaveAssets();
-            Debug.Log($"[Misiones] {n} RockTypeData importados desde {jsonPath}");
+            Debug.Log($"[Missions] {n} RockTypeData imported from {jsonPath}");
             return n;
         }
 
@@ -86,7 +86,7 @@ namespace Game.Missions.EditorTools
             return null;
         }
 
-        /// <summary>Carga el RockTypeData de un id (null si no existe).</summary>
+        /// <summary>Loads the RockTypeData of an id (null if missing).</summary>
         public static RockTypeData Load(string id) =>
             AssetDatabase.LoadAssetAtPath<RockTypeData>($"{MissionsEditorPaths.DataRockTypes}/RockType_{id}.asset");
     }

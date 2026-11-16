@@ -10,18 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f662dfae6e13f4f46b2307715516132a, type: 3}
-  m_Name: Mission_02_HistoriaVolcanica
+  m_Name: Mission_01_FirstCore
   m_EditorClassIdentifier: Game.Missions::Game.Missions.MissionDefinition
-  id: 02_HistoriaVolcanica
-  title: "Historia volc\xE1nica"
-  description: "Re\xFAne rocas \xEDgneas del fondo de Jezero: tres cumulados de olivino de S\xE9\xEDtah y dos basaltos de M\xE1az para reconstruir la historia volc\xE1nica del cr\xE1ter."
+  id: 01_FirstCore
+  title: First core
+  description: "Drill five basalt rocks of the M\xE1az formation, like Rochette, where Perseverance's first two samples came from."
   objectives:
-  - rockType: {fileID: 11400000, guid: 44888d1cd5ae9f042aaca84449c4a01a, type: 2}
-    amount: 3
   - rockType: {fileID: 11400000, guid: 18e4ba9d8f3d2b6428c82b87561bba5f, type: 2}
-    amount: 2
+    amount: 5
   gradeThresholds:
-    a: 200
-    b: 330
-    c: 520
+    a: 180
+    b: 300
+    c: 480
   timeLimit: 0

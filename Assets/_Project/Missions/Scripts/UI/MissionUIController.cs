@@ -1,5 +1,5 @@
-// MissionUIController.cs — UI de misiones en UI Toolkit: briefing, HUD (cronómetro, objetivos, mensajes,
-// barra de perforación) y pantalla de resultados. Solo escucha eventos de MissionManager y del perforador.
+// MissionUIController.cs — mission UI in UI Toolkit: tutorial, briefing, HUD (timer, objectives, messages,
+// drill bar) and results screen. It only listens to events from MissionManager, the drill, the battery and the tutorial.
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,23 +10,25 @@ namespace Game.Missions
     public class MissionUIController : MonoBehaviour
     {
         public MissionManager manager;
-        [Tooltip("Perforador (opcional). Vacío = se busca en la escena.")]
+        [Tooltip("Drill (optional). Empty = found in the scene.")]
         public SimpleSamplingInteractor interactor;
 
-        [Header("Iconos (los crea Tools/Missions/Create Mission UI Prefab)")]
+        [Header("Icons (created by Tools/Missions/Create Mission UI Prefab)")]
         public Texture2D checkIcon;
         public Texture2D crossIcon;
 
-        [Header("Fuentes")]
+        [Header("Fonts")]
         public Font titleFont;
         public Font headFont;
         public Font bodyFont;
 
-        [Tooltip("Segundos que se ve cada mensaje breve.")]
+        [Tooltip("Seconds each short message stays on screen.")]
         public float messageSeconds = 2.5f;
 
-        VisualElement _root, _hud, _hudObjectives, _messages, _drill, _drillFill, _briefing, _results, _resScore, _resObjectives, _briefingObjectives;
-        Label _hudTitle, _hudTimer, _drillText, _tubes, _grade;
+        VisualElement _root, _hud, _hudObjectives, _messages, _drill, _drillFill, _briefing, _results, _resScore, _resObjectives, _briefingObjectives, _tutorial;
+        Label _hudTitle, _hudTimer, _drillText, _tubes, _grade, _tutStep, _tutText, _tutSub;
+        RoverPowerSystem _power;
+        MissionTutorial _tutorialLogic;
         Button _btnNext;
         CursorLockMode _prevLock; bool _prevVisible; bool _cursorFreed;
 
@@ -34,6 +36,8 @@ namespace Game.Missions
         {
             if (manager == null) manager = FindAnyObjectByType<MissionManager>();
             if (interactor == null) interactor = FindAnyObjectByType<SimpleSamplingInteractor>();
+            _power = FindAnyObjectByType<RoverPowerSystem>();
+            _tutorialLogic = FindAnyObjectByType<MissionTutorial>();
 
             _root = GetComponent<UIDocument>().rootVisualElement;
             _hud = _root.Q("hud");
@@ -52,6 +56,10 @@ namespace Game.Missions
             _resObjectives = _root.Q("res-objectives");
             _grade = _root.Q<Label>("res-grade");
             _btnNext = _root.Q<Button>("btn-next");
+            _tutorial = _root.Q("tutorial");
+            _tutStep = _root.Q<Label>("tut-step");
+            _tutText = _root.Q<Label>("tut-text");
+            _tutSub = _root.Q<Label>("tut-sub");
 
             ApplyTexts();
             ApplyFonts();
@@ -72,9 +80,15 @@ namespace Game.Missions
                 manager.OnMessage += PushMessage;
                 manager.OnMissionFinished += ShowResults;
                 manager.OnMissionAbandoned += OnAbandoned;
-                // si el manager ya mostró el briefing antes de que existiera la UI
+                // if the manager already showed the briefing before the UI existed
                 if (manager.State == MissionState.Briefing) ShowBriefing(manager.Current);
-                else if (manager.State == MissionState.EnCurso) ShowHud(manager.Current);
+                else if (manager.State == MissionState.InProgress) ShowHud(manager.Current);
+            }
+            if (_power != null) _power.Message += PushMessage;
+            if (_tutorialLogic != null)
+            {
+                _tutorialLogic.StepChanged += OnTutorialStep;
+                _tutorialLogic.Finished += OnTutorialFinished;
             }
             if (interactor != null)
             {
@@ -101,6 +115,12 @@ namespace Game.Missions
                 interactor.ProgressChanged -= OnDrillProgress;
                 interactor.Message -= PushMessage;
             }
+            if (_power != null) _power.Message -= PushMessage;
+            if (_tutorialLogic != null)
+            {
+                _tutorialLogic.StepChanged -= OnTutorialStep;
+                _tutorialLogic.Finished -= OnTutorialFinished;
+            }
             FreeCursor(false);
             SetRoverHudHidden(false);
             if (_scanner != null) _scanner.enabled = true;
@@ -114,17 +134,18 @@ namespace Game.Missions
 
         void Update()
         {
-            // con la ficha de análisis abierta no se muestra el aviso de perforación encima
+            // with the analysis panel open, the drill prompt is not drawn on top of it
             if (_inspection == null && Time.frameCount % 30 == 0) _inspection = FindAnyObjectByType<RocasMarte.RockInfoUI>();
             bool inspecting = _inspection != null && _inspection.IsOpen;
             _drill.style.visibility = inspecting ? Visibility.Hidden : Visibility.Visible;
             _hud.EnableInClassList("hud--inspecting", inspecting);
+            _tutorial.EnableInClassList("tutorial--inspecting", inspecting);
 
-            // la UI de la cámara del rover se oculta mientras hay ficha, briefing o resultados en pantalla
+            // the rover camera UI is hidden while the analysis panel, briefing or results are on screen
             bool overlay = _briefing.resolvedStyle.display == DisplayStyle.Flex || _results.resolvedStyle.display == DisplayStyle.Flex;
             SetRoverHudHidden(inspecting || overlay);
 
-            // con briefing o resultados en pantalla no se analiza ni se perfora
+            // no analyzing or drilling while the briefing or results are on screen
             if (_scanner == null && Time.frameCount % 30 == 0) _scanner = FindAnyObjectByType<RocasMarte.RoverRockScanner>();
             if (_scanner != null && _scanner.enabled == overlay)
             {
@@ -134,14 +155,14 @@ namespace Game.Missions
             }
             if (interactor != null) interactor.enabled = !overlay;
 
-            if (manager != null && manager.State == MissionState.EnCurso)
+            if (manager != null && manager.State == MissionState.InProgress)
                 _hudTimer.text = FormatTime(manager.Elapsed, false);
             if (interactor != null)
-                _tubes.text = $"TUBOS {interactor.TubesUsed}/{interactor.tubeCapacity}";
+                _tubes.text = string.Format(MissionTexts.Tubes, interactor.TubesUsed, interactor.tubeCapacity);
         }
 
-        // ---------- UI de la cámara del rover (PerseveranceStatus: bordes blancos, batería y puntero) ----------
-        // No se modifica ni se apaga su componente: solo se oculta la raíz de su UI mientras hace falta.
+        // ---------- rover camera UI (PerseveranceStatus: white frame, battery and crosshair) ----------
+        // Its component is neither modified nor disabled: only the root of its UI is hidden while needed.
         PanelRenderer _roverHudRenderer;
         VisualElement _roverHudRoot;
 
@@ -162,7 +183,7 @@ namespace Game.Missions
             if (_roverHudRenderer != null) _roverHudRenderer.RegisterUIReloadCallback(OnRoverHudReload);
         }
 
-        // si su UI se recarga, la nueva raíz hereda el estado actual
+        // if its UI reloads, the new root inherits the current state
         void OnRoverHudReload(PanelRenderer renderer, VisualElement root, int version)
         {
             _roverHudRoot = root;
@@ -176,7 +197,7 @@ namespace Game.Missions
             return prop != null ? prop.GetValue(r) as VisualElement : null;
         }
 
-        // ---------- pantallas ----------
+        // ---------- screens ----------
         void ShowOnly(VisualElement screen)
         {
             _briefing.style.display = screen == _briefing ? DisplayStyle.Flex : DisplayStyle.None;
@@ -184,7 +205,9 @@ namespace Game.Missions
             bool hud = screen == _hud;
             _hud.style.display = hud ? DisplayStyle.Flex : DisplayStyle.None;
             _tubes.style.display = hud && interactor != null ? DisplayStyle.Flex : DisplayStyle.None;
-            _drill.style.display = hud ? DisplayStyle.Flex : DisplayStyle.None;
+            bool tutorial = _tutorialLogic != null && _tutorialLogic.IsRunning && screen == null;
+            _drill.style.display = hud || tutorial ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!tutorial) _tutorial.style.display = DisplayStyle.None;
             FreeCursor(screen == _briefing || screen == _results);
         }
 
@@ -199,6 +222,10 @@ namespace Game.Missions
             var limit = _root.Q<Label>("briefing-limit");
             limit.text = m.timeLimit > 0 ? string.Format(MissionTexts.TimeLimit, FormatTime(m.timeLimit, false)) : "";
             limit.style.display = m.timeLimit > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+
+            var battery = _root.Q<Label>("briefing-battery");
+            battery.text = _power != null ? string.Format(MissionTexts.BatteryInfo, _power.BatteryName, _power.CapacityKAh.ToString("0.#")) : "";
+            battery.style.display = _power != null ? DisplayStyle.Flex : DisplayStyle.None;
 
             var rec = MissionProgressStore.Get(m.id);
             _root.Q<Label>("briefing-record").text = rec != null && rec.hasTime
@@ -236,6 +263,7 @@ namespace Game.Missions
         void ShowResults(MissionResult r)
         {
             _root.Q<Label>("res-status").text = r.completed ? MissionTexts.MissionCompleted
+                : r.batteryDepleted ? MissionTexts.MissionBatteryDepleted
                 : r.outOfTubes ? MissionTexts.MissionOutOfTubes
                 : r.timedOut ? MissionTexts.MissionTimedOut : MissionTexts.MissionIncomplete;
             _root.Q<Label>("res-title").text = TitleText(r.mission.title);
@@ -244,14 +272,14 @@ namespace Game.Missions
             _root.Q<Label>("res-thresholds").text = string.Format(MissionTexts.Thresholds,
                 FormatTime(th.a, false), FormatTime(th.b, false), FormatTime(th.c, false));
 
-            // desglose del puntaje
+            // score breakdown
             _resScore.Clear();
             _resScore.Add(ScoreRow(string.Format(MissionTexts.ScoreRocks, r.score.validRocks), r.score.rockPoints.ToString(), false));
             _resScore.Add(ScoreRow(MissionTexts.ScoreBonus, "+" + r.score.timeBonus, false));
             _resScore.Add(ScoreRow(string.Format(MissionTexts.ScoreMultiplier, r.grade), "×" + r.score.multiplier.ToString("0.##"), false));
             _resScore.Add(ScoreRow(MissionTexts.ScoreTotal, r.score.total.ToString(), true));
 
-            // rocas con ✓ / ✗ (imágenes, no glifos de la fuente)
+            // rocks with ✓ / ✗ (images, not font glyphs)
             _resObjectives.Clear();
             foreach (var o in r.objectives)
                 _resObjectives.Add(ObjectiveRow(o.type, o.type.displayName, $"{o.collected}/{o.required}", o.completed ? checkIcon : crossIcon));
@@ -262,7 +290,7 @@ namespace Game.Missions
 
             _btnNext.style.display = manager.PeekNext() != null ? DisplayStyle.Flex : DisplayStyle.None;
 
-            // letra grande: aparece con un escalado
+            // big letter: appears with a scale-in
             _grade.text = r.grade.ToString();
             foreach (var g in new[] { "A", "B", "C", "D" }) _grade.RemoveFromClassList("grade--" + g);
             _grade.AddToClassList("grade--" + r.grade);
@@ -273,10 +301,12 @@ namespace Game.Missions
 
         void OnAbandoned(MissionDefinition _) => ShowOnly(null);
 
-        // ---------- perforación ----------
+        // ---------- drilling ----------
         void OnDrillTarget(RockSampleTarget t)
         {
-            bool show = t != null && manager != null && manager.State == MissionState.EnCurso;
+            bool active = (manager != null && manager.State == MissionState.InProgress)
+                          || (_tutorialLogic != null && _tutorialLogic.IsRunning);
+            bool show = t != null && active;
             _drill.EnableInClassList("drill--hidden", !show);
             if (show)
             {
@@ -292,7 +322,28 @@ namespace Game.Missions
             else OnDrillTarget(interactor.Target);
         }
 
-        // ---------- mensajes ----------
+        // ---------- tutorial ----------
+        void OnTutorialStep(int step, string text, string sub)
+        {
+            ShowOnly(null);
+            _tutorial.style.display = DisplayStyle.Flex;
+            _drill.style.display = DisplayStyle.Flex;
+            _tutStep.text = step <= MissionTutorial.StepCount
+                ? MissionTexts.TutorialHeader + "  ·  " + string.Format(MissionTexts.TutorialStep, step, MissionTutorial.StepCount)
+                : MissionTexts.TutorialHeader;
+            _tutText.text = text;
+            _tutSub.text = sub ?? "";
+            _tutSub.EnableInClassList("tutorial__sub--empty", string.IsNullOrEmpty(sub));
+            _tutorial.EnableInClassList("tutorial--done", step > MissionTutorial.StepCount);
+        }
+
+        void OnTutorialFinished()
+        {
+            _tutorial.style.display = DisplayStyle.None;
+            _drill.EnableInClassList("drill--hidden", true);
+        }
+
+        // ---------- messages ----------
         void PushMessage(string text)
         {
             if (string.IsNullOrEmpty(text)) return;
@@ -303,7 +354,7 @@ namespace Game.Missions
             l.schedule.Execute(() => l.RemoveFromHierarchy()).StartingIn((long)(messageSeconds * 1000) + 400);
         }
 
-        // ---------- piezas ----------
+        // ---------- building blocks ----------
         VisualElement ObjectiveRow(RockTypeData type, string label, string count, Texture2D mark)
         {
             var row = new VisualElement(); row.AddToClassList("obj-row");
@@ -339,6 +390,7 @@ namespace Game.Missions
             _root.Q<Button>("btn-retry").text = MissionTexts.Retry;
             _root.Q<Button>("btn-next").text = MissionTexts.Next;
             _root.Q<Button>("btn-exit").text = MissionTexts.Exit;
+            _root.Q<Label>("tut-skip").text = MissionTexts.TutorialSkip;
         }
 
         void ApplyFonts()
@@ -368,7 +420,7 @@ namespace Game.Missions
             }
         }
 
-        /// <summary>Los títulos usan Overmars, que no tiene tildes ni Ñ: se escriben en mayúsculas y sin ellas.</summary>
+        /// <summary>Titles use Overmars, which has no accents: they are written in uppercase without them.</summary>
         static string TitleText(string s)
         {
             if (string.IsNullOrEmpty(s)) return s;
@@ -379,7 +431,7 @@ namespace Game.Missions
             return sb.ToString();
         }
 
-        /// <summary>mm:ss o mm:ss.cc</summary>
+        /// <summary>mm:ss or mm:ss.cc</summary>
         public static string FormatTime(float seconds, bool centis)
         {
             if (seconds < 0) seconds = 0;

@@ -1,10 +1,10 @@
-// RocasMarteBootstrap.cs — conecta la ventana de rocas con el campo de rocas del terreno, sin tocar la escena.
-// Al cargar una escena con RoverController y el campo de rocas (objetos "Decoration/Obstacle/Sample <Tipo>"):
-//   - registra todas las rocas en RockRegistry:
-//       Sample <Tipo>            -> ficha de la roca real (rocks_info.json: CheyavaFalls, Seitah, ...)
-//       Decoration/Obstacle ...  -> nombre de su tipo de roca: BASALTO, GABRO... (Generic_<Tipo>)
-//   - crea UI_RockInfo (UIDocument + RockInfoUI) y añade RoverRockScanner al rover (tecla F).
-// Para desactivarlo: Resources/RocasMarte_Config -> Auto Setup = off.
+// RocasMarteBootstrap.cs — connects the rock window with the terrain rock field, without touching the scene.
+// When a scene with a RoverController and the rock field (objects "Decoration/Obstacle/Sample <Type>") loads:
+//   - registers every rock in RockRegistry:
+//       Sample <Type>            -> panel of the real rock (rocks_info.json: CheyavaFalls, Seitah, ...)
+//       Decoration/Obstacle ...  -> name of its rock type: BASALT, GABBRO... (Generic_<Type>)
+//   - creates UI_RockInfo (UIDocument + RockInfoUI) and adds RoverRockScanner to the rover (F key).
+// To disable it: Resources/RocasMarte_Config -> Auto Setup = off.
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -74,12 +74,12 @@ namespace RocasMarte
             if (scanner == null) scanner = rover.gameObject.AddComponent<RoverRockScanner>();
             scanner.ui = ui;
             if (cfg != null) scanner.range = cfg.range;
-            // se mide desde la punta del taladro del rover si existe (la misma referencia que usa la perforación)
+            // measured from the rover's drill tip if it exists (the same reference the drilling uses)
             if (scanner.scanOrigin == null)
                 foreach (var t in rover.GetComponentsInChildren<Transform>(true))
                     if (t.name == "INT_ROV_Drill_Tip") { scanner.scanOrigin = t; break; }
 
-            Debug.Log($"[Rocas Marte] {named + generic} rocas inspeccionables en '{scene.name}' ({named} muestras con ficha, {generic} rocas sin catalogar). Tecla {scanner.interactKey}.");
+            Debug.Log($"[Mars Rocks] {named + generic} inspectable rocks in '{scene.name}' ({named} catalogued samples, {generic} uncatalogued rocks). Key {scanner.interactKey}.");
         }
 
         static string Family(string objectName)

@@ -1,6 +1,6 @@
 // SampleMissionsCreator.cs — Tools/Missions/Create Sample Missions
-// Crea (o actualiza) las 5 misiones de ejemplo y la MissionDatabase con ellas en orden.
-// Los tiempos son iniciales: se ajustan probando.
+// Creates (or updates) the 5 sample missions and the MissionDatabase with them in order.
+// The times are initial values: tune them by playtesting.
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -12,13 +12,13 @@ namespace Game.Missions.EditorTools
         [MenuItem("Tools/Missions/Create Sample Missions", priority = 2)]
         public static void CreateMenu()
         {
-            // los tipos de roca son necesarios: si faltan, se importan primero
+            // rock types are required: if missing, they are imported first
             if (RockTypeImporter.Load("Rochette") == null) RockTypeImporter.ImportMenu();
             if (RockTypeImporter.Load("Rochette") == null) return;
 
             var db = Create();
             Selection.activeObject = db;
-            EditorUtility.DisplayDialog("Misiones", $"{db.missions.Count} misiones de ejemplo creadas en\n{MissionsEditorPaths.DataMissions}", "OK");
+            EditorUtility.DisplayDialog("Missions", $"{db.missions.Count} sample missions created in\n{MissionsEditorPaths.DataMissions}", "OK");
         }
 
         public static MissionDatabase Create()
@@ -32,20 +32,20 @@ namespace Game.Missions.EditorTools
             MissionsEditorPaths.EnsureFolder(MissionsEditorPaths.DataMissions);
             var list = new List<MissionDefinition>
             {
-                Mission("01_PrimerNucleo", "Primer núcleo",
-                    "Perfora cinco rocas de basalto de la formación Máaz, como Rochette, de donde salieron las dos primeras muestras de Perseverance.",
+                Mission("01_FirstCore", "First core",
+                    "Drill five basalt rocks of the Máaz formation, like Rochette, where Perseverance's first two samples came from.",
                     180, 300, 480, (rochette, 5)),
-                Mission("02_HistoriaVolcanica", "Historia volcánica",
-                    "Reúne rocas ígneas del fondo de Jezero: tres cumulados de olivino de Séítah y dos basaltos de Máaz para reconstruir la historia volcánica del cráter.",
+                Mission("02_VolcanicHistory", "Volcanic history",
+                    "Collect igneous rocks from the floor of Jezero: three olivine cumulates from Séítah and two Máaz basalts to rebuild the crater's volcanic history.",
                     200, 330, 520, (seitah, 3), (rochette, 2)),
-                Mission("03_PistasVidaAntigua", "Pistas de vida antigua",
-                    "Toma tres muestras de lutita como Cheyava Falls: lodo endurecido en agua con «manchas de leopardo», una posible biofirma.",
+                Mission("03_AncientLifeClues", "Clues of ancient life",
+                    "Take three mudstone samples like Cheyava Falls: mud hardened in water with \"leopard spots\", a potential biosignature.",
                     150, 260, 420, (cheyava, 3)),
-                Mission("04_CicatricesImpacto", "Cicatrices de impacto",
-                    "Perfora cuatro brechas de impacto como Broom Point, rocas rotas y soldadas por los asteroides que golpearon el Marte primitivo.",
+                Mission("04_ImpactScars", "Impact scars",
+                    "Drill four impact breccias like Broom Point, rocks shattered and welded by the asteroids that hit early Mars.",
                     220, 360, 560, (broom, 4)),
-                Mission("05_RocasMasAntiguas", "Las rocas más antiguas",
-                    "Consigue dos gabros como Singita, de las rocas más antiguas y duras de Marte, y una muestra de cada uno de los otros tipos.",
+                Mission("05_OldestRocks", "The oldest rocks",
+                    "Get two gabbros like Singita, among the oldest and hardest rocks on Mars, and one sample of each of the other types.",
                     300, 480, 720, (singita, 2), (rochette, 1), (seitah, 1), (cheyava, 1), (broom, 1)),
             };
 
@@ -58,7 +58,7 @@ namespace Game.Missions.EditorTools
             db.missions = list;
             EditorUtility.SetDirty(db);
             AssetDatabase.SaveAssets();
-            Debug.Log($"[Misiones] {list.Count} misiones de ejemplo creadas/actualizadas.");
+            Debug.Log($"[Missions] {list.Count} sample missions created/updated.");
             return db;
         }
 

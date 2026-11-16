@@ -1,5 +1,5 @@
-// RockRegistry.cs — rocas del terreno que se pueden inspeccionar sin componentes por roca
-// (el campo de rocas tiene ~11 700 piedras; RocasMarteBootstrap lo rellena al cargar la escena).
+// RockRegistry.cs — terrain rocks that can be inspected without a component per rock
+// (the rock field has ~11,700 rocks; RocasMarteBootstrap fills it when the scene loads).
 using System.Collections.Generic;
 using UnityEngine;
 

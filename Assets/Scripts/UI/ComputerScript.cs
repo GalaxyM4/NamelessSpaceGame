@@ -98,7 +98,7 @@ public class ComputerScript : MonoBehaviour
     {
         if (selectedLabel != null)
         {
-            Debug.Log($"Seleccionado en computadora: {selectedLabel.text}");
+            Debug.Log($"Selected on computer: {selectedLabel.text}");
         }
     }
 
@@ -117,7 +117,7 @@ public class ComputerScript : MonoBehaviour
         }
         else
         {
-            if (selectedLabel != null) selectedLabel.text = "Selecciona uno";
+            if (selectedLabel != null) selectedLabel.text = "Select one";
             if (priceLabel != null) priceLabel.text = "0.00$";
             if (weightLabel != null) weightLabel.text = "0Kg";
             if (litersProgress != null)

@@ -1,4 +1,4 @@
-// RockTypeData.cs — un tipo de roca recolectable en las misiones (uno por cada roca de rocks.json).
+// RockTypeData.cs — a rock type that can be collected in missions (one per rock in rocks.json).
 using UnityEngine;
 
 namespace Game.Missions
@@ -6,25 +6,25 @@ namespace Game.Missions
     [CreateAssetMenu(menuName = "Game/Missions/Rock Type", fileName = "RockType_")]
     public class RockTypeData : ScriptableObject
     {
-        [Tooltip("Id igual que en rocks.json: CheyavaFalls, Seitah, Rochette, BroomPoint, Singita.")]
+        [Tooltip("Same id as in rocks.json: CheyavaFalls, Seitah, Rochette, BroomPoint, Singita.")]
         public string id;
 
-        [Tooltip("Nombre completo en español, p. ej. \"Basalto de Máaz (Rochette)\".")]
+        [Tooltip("Full display name, e.g. \"Máaz basalt (Rochette)\".")]
         public string displayName;
 
-        [Tooltip("Nombre corto para el HUD, p. ej. \"Basalto\".")]
+        [Tooltip("Short name for the HUD, e.g. \"Basalt\".")]
         public string shortName;
 
-        [Tooltip("Icono para la UI (opcional).")]
+        [Tooltip("UI icon (optional).")]
         public Sprite icon;
 
-        [Tooltip("Color con el que se muestra este tipo en la UI.")]
+        [Tooltip("Color used for this type in the UI.")]
         public Color uiColor = Color.white;
 
-        [Tooltip("Dureza 1–5 (de rocks.json). La perforación tarda 2 s × dureza.")]
+        [Tooltip("Hardness 1–5 (from rocks.json). Drilling takes 2 s × hardness.")]
         [Range(1, 5)] public int hardness = 3;
 
-        /// <summary>Nombre corto, o el id si no hay.</summary>
+        /// <summary>Short name, or the id if there is none.</summary>
         public string ShortLabel => string.IsNullOrEmpty(shortName) ? id : shortName;
     }
 }

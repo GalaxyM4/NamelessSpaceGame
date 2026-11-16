@@ -1,4 +1,4 @@
-// MissionDefinitionEditor.cs — inspector de MissionDefinition con avisos (tubos del rover y umbrales).
+// MissionDefinitionEditor.cs — MissionDefinition inspector with warnings (rover tubes and thresholds).
 using UnityEditor;
 
 namespace Game.Missions.EditorTools
@@ -12,18 +12,18 @@ namespace Game.Missions.EditorTools
 
             if (m.ExceedsTubeCapacity)
                 EditorGUILayout.HelpBox(
-                    $"Esta misión pide {m.TotalRequired} rocas y el rover solo lleva {MissionDefinition.RoverTubeCapacity} tubos de muestra.",
+                    $"This mission asks for {m.TotalRequired} rocks but the rover only carries {MissionDefinition.RoverTubeCapacity} sample tubes.",
                     MessageType.Warning);
             if (!m.gradeThresholds.IsOrdered)
-                EditorGUILayout.HelpBox("Los umbrales deben cumplir 0 < A ≤ B ≤ C (segundos).", MessageType.Warning);
+                EditorGUILayout.HelpBox("Thresholds must satisfy 0 < A ≤ B ≤ C (seconds).", MessageType.Warning);
             foreach (var o in m.objectives)
                 if (o == null || o.rockType == null)
                 {
-                    EditorGUILayout.HelpBox("Hay un objetivo sin tipo de roca.", MessageType.Error);
+                    EditorGUILayout.HelpBox("An objective has no rock type.", MessageType.Error);
                     break;
                 }
 
-            EditorGUILayout.LabelField("Total de rocas", $"{m.TotalRequired} / {MissionDefinition.RoverTubeCapacity} tubos");
+            EditorGUILayout.LabelField("Total rocks", $"{m.TotalRequired} / {MissionDefinition.RoverTubeCapacity} tubes");
             DrawDefaultInspector();
         }
     }

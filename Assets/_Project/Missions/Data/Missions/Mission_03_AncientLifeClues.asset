@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f662dfae6e13f4f46b2307715516132a, type: 3}
-  m_Name: Mission_04_CicatricesImpacto
+  m_Name: Mission_03_AncientLifeClues
   m_EditorClassIdentifier: Game.Missions::Game.Missions.MissionDefinition
-  id: 04_CicatricesImpacto
-  title: Cicatrices de impacto
-  description: Perfora cuatro brechas de impacto como Broom Point, rocas rotas y soldadas por los asteroides que golpearon el Marte primitivo.
+  id: 03_AncientLifeClues
+  title: Clues of ancient life
+  description: 'Take three mudstone samples like Cheyava Falls: mud hardened in water with "leopard spots", a potential biosignature.'
   objectives:
-  - rockType: {fileID: 11400000, guid: ac3f2db993c283c4facd89a7e82b83ea, type: 2}
-    amount: 4
+  - rockType: {fileID: 11400000, guid: 125b556ae3d76664eb318b73e813f7b4, type: 2}
+    amount: 3
   gradeThresholds:
-    a: 220
-    b: 360
-    c: 560
+    a: 150
+    b: 260
+    c: 420
   timeLimit: 0

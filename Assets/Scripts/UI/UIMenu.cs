@@ -25,10 +25,10 @@ public class UIScript : MonoBehaviour
     private readonly List<string> creditsEntries = new List<string>
     {
         "Nameless Space Game",
-        "Desarrollo y Programación - IA + Kiwi Brotherhood",
-        "Diseño de Interfaz y Arte - IA + Kiwi Brotherhood",
-        "Motor Gráfico - Unity",
-        "Uso de Blender y herramientas a fines",
+        "Development and Programming - AI + Kiwi Brotherhood",
+        "Interface Design and Art - AI + Kiwi Brotherhood",
+        "Game Engine - Unity",
+        "Blender and related tools",
         "® Nasa Space Apps"
     };
 

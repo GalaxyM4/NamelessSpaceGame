@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: RockType_BroomPoint
   m_EditorClassIdentifier: Game.Missions::Game.Missions.RockTypeData
   id: BroomPoint
-  displayName: Brecha de impacto (Broom Point)
-  shortName: Brecha
+  displayName: Impact breccia (Broom Point)
+  shortName: Breccia
   icon: {fileID: 0}
   uiColor: {r: 0.85, g: 0.72, b: 0.45, a: 1}
   hardness: 4
-  prefab: {fileID: 3949764105019542296, guid: c62aeda5e99f2b64fbfeb6ef4075c762, type: 3}

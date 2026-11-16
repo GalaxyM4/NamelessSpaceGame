@@ -1,4 +1,4 @@
-// MissionResult.cs — resultado final de una misión (lo muestra la pantalla de resultados).
+// MissionResult.cs — final result of a mission (shown on the results screen).
 using System.Collections.Generic;
 
 namespace Game.Missions
@@ -14,14 +14,15 @@ namespace Game.Missions
     public class MissionResult
     {
         public MissionDefinition mission;
-        public float finalTime;          // segundos
-        public bool completed;           // todos los objetivos cumplidos
-        public bool timedOut;            // terminó por límite de tiempo
-        public bool outOfTubes;          // terminó porque ya no quedaban tubos para completarla
+        public float finalTime;          // seconds
+        public bool completed;           // every objective fulfilled
+        public bool timedOut;            // ended by the time limit
+        public bool outOfTubes;          // ended because there were not enough tubes left to finish
+        public bool batteryDepleted;     // ended because the rover battery ran out
         public Grade grade;
         public ScoreBreakdown score;
         public List<ObjectiveResult> objectives = new List<ObjectiveResult>();
-        public RecordFlags newRecords;   // qué récords se batieron
+        public RecordFlags newRecords;   // which records were beaten
 
         public bool IsNewRecord => newRecords != RecordFlags.None;
     }
