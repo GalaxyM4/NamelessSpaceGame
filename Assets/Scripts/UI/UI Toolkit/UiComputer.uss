@@ -199,6 +199,14 @@
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
     border-bottom-left-radius: 50px;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-color: rgb(55, 200, 171);
+    border-right-color: rgb(55, 200, 171);
+    border-bottom-color: rgb(55, 200, 171);
+    border-left-color: rgb(55, 200, 171);
     color: rgb(255, 255, 255);
     background-color: rgb(36, 74, 67);
     background-size: 100% 100%;
@@ -206,6 +214,25 @@
     background-image: resource("frameOne");
     height: 120px;
     flex-shrink: 0;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out;
+}
+
+.style-button:hover,
+.style-button.is-hovered {
+    background-color: rgb(55, 200, 171);
+    -unity-background-image-tint-color: rgb(170, 255, 235);
+    color: rgb(15, 25, 30);
+    scale: 1.04 1.04 1;
+    border-top-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-left-color: rgb(255, 255, 255);
+}
+
+.style-button:active {
+    scale: 0.98 0.98 1;
+    background-color: rgb(35, 160, 135);
 }
 
 .panel-hidden {
@@ -240,26 +267,24 @@
     min-height: 0;
     flex-direction: column;
     flex-wrap: nowrap;
-    align-items: center;
-    justify-content: center;
+    align-items: stretch;
+    justify-content: flex-start;
     margin-right: 15px;
-    align-content: center;
-    align-self: center;
 }
 
 .card-resource {
     width: 100%;
-    height: 300px;
+    height: 240px;
     flex-shrink: 0;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .button-resource {
-    width: 220px;
-    height: 220px;
+    width: 170px;
+    height: 170px;
     flex-shrink: 0;
     background-image: url("project://database/Assets/Textures/plain_starfield_1.png?fileID=2800000&guid=625dabdc324a0454baa65d072fc2415e&type=3#plain_starfield_1");
     background-size: 100% 100%;
@@ -291,8 +316,8 @@
     width: 100%;
     height: auto;
     flex-shrink: 0;
-    margin-top: 8px;
-    font-size: 42px;
+    margin-top: 6px;
+    font-size: 36px;
     -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
     color: rgb(255, 255, 255);
     -unity-text-align: middle-center;
@@ -318,36 +343,147 @@
     border-left-color: rgb(55, 200, 171);
 }
 
-.tree-cell-label {
-    font-size: 26px;
-    color: rgb(255, 255, 255);
+.equipment-scroll {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 0;
+    width: 100%;
+    padding-right: 10px;
+}
+
+.section-header {
+    width: 100%;
+    height: auto;
+    font-size: 42px;
+    -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
+    color: rgb(55, 200, 171);
     -unity-text-align: middle-left;
+    margin-top: 14px;
+    margin-bottom: 10px;
+    padding-left: 6px;
+    border-bottom-width: 2px;
+    border-bottom-color: rgba(55, 200, 171, 0.5);
+}
+
+.module-grid {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    overflow: visible;
+}
+
+.grid-card {
+    width: 31%;
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgba(20, 24, 34, 0.75);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-color: rgba(255, 255, 255, 0.25);
+    border-right-color: rgba(255, 255, 255, 0.25);
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+    border-left-color: rgba(255, 255, 255, 0.25);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    margin-top: 10px;
+    margin-right: 1%;
+    margin-bottom: 10px;
+    margin-left: 1%;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    overflow: visible;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.grid-card:hover,
+.grid-card.is-hovered {
+    border-top-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-left-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.92);
+}
+
+.grid-card.is-selected {
+    border-top-color: rgb(55, 200, 171);
+    border-right-color: rgb(55, 200, 171);
+    border-bottom-color: rgb(55, 200, 171);
+    border-left-color: rgb(55, 200, 171);
+    background-color: rgba(55, 200, 171, 0.35);
+}
+
+.grid-card-frame {
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+    background-image: url("project://database/Assets/Textures/plain_starfield_1.png?fileID=2800000&guid=625dabdc324a0454baa65d072fc2415e&type=3#plain_starfield_1");
+    background-size: 100% 100%;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    padding-top: 8px;
+    padding-right: 8px;
+    padding-bottom: 8px;
     padding-left: 8px;
+    overflow: visible;
 }
 
-.sprite-bobsemple {
-    background-image: url("project://database/Assets/Sprites/sprite1.png?fileID=-385655791&guid=34f6a0807cebb7843b6548a0ebf69ab2&type=3#sprite1_1");
+.grid-card-icon {
+    width: 100%;
+    height: 100%;
+    -unity-background-scale-mode: scale-to-fit;
+    opacity: 0.6;
+    scale: 1.15 1.15 1;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out;
 }
 
-.sprite-superacerin {
-    background-image: url("project://database/Assets/Sprites/sprite1.png?fileID=1264682343&guid=34f6a0807cebb7843b6548a0ebf69ab2&type=3#sprite1_3");
+.grid-card:hover .grid-card-icon,
+.grid-card.is-hovered .grid-card-icon {
+    opacity: 1;
+    scale: 1.4 1.4 1;
 }
 
-.sprite-plastimax {
-    background-image: url("project://database/Assets/Sprites/sprite1.png?fileID=-195958674&guid=34f6a0807cebb7843b6548a0ebf69ab2&type=3#sprite1_4");
+.grid-card-label {
+    width: 100%;
+    height: auto;
+    margin-top: 8px;
+    font-size: 26px;
+    white-space: normal;
+    -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
 }
 
-.sprite-plastimax-ii {
-    background-image: url("project://database/Assets/Sprites/sprite1.png?fileID=1960287262&guid=34f6a0807cebb7843b6548a0ebf69ab2&type=3#sprite1_5");
+.grid-card:hover .grid-card-label,
+.grid-card.is-hovered .grid-card-label {
+    color: rgb(20, 24, 34);
 }
 
-.sprite-aluminium {
-    background-image: url("project://database/Assets/Sprites/sprite1.png?fileID=-5600456472141597053&guid=34f6a0807cebb7843b6548a0ebf69ab2&type=3#sprite1_0");
-}
-
-.sprite-fibrividrio {
-    background-image: url("project://database/Assets/Sprites/sprite1.png?fileID=1170246500&guid=34f6a0807cebb7843b6548a0ebf69ab2&type=3#sprite1_2");
-}
 
 .resources-right {
     align-self: stretch;
@@ -370,7 +506,7 @@
     width: 100%;
     height: auto;
     flex-shrink: 0;
-    font-size: 135px;
+    font-size: 96px;
     -unity-font-style: normal;
     -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
     -unity-text-align: upper-center;
@@ -416,8 +552,9 @@
 }
 
 .label-value {
-    font-size: 80px;
+    font-size: 48px;
     flex-shrink: 1;
+    white-space: normal;
     -unity-font-definition: url("project://database/Assets/fonts/FutureLight-BW15w.ttf?fileID=12800000&guid=23156b98981a2ae47b81ba77d89f0f34&type=3#FutureLight-BW15w");
     -unity-font-style: bold;
     color: rgb(55, 200, 171);
@@ -426,7 +563,7 @@
 
 .unity-progress-bar__progress {
     background-color: rgb(55, 200, 171);
-    height: auto;
+    height: 100%;
     transition-timing-function: ease-out;
 }
 
@@ -462,7 +599,9 @@
     width: auto;
     height: 90px;
     margin-top: 10px;
+    margin-right: 10px;
     margin-bottom: 10px;
+    margin-left: 10px;
     font-size: 44px;
     -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
     -unity-font-style: bold;
@@ -476,4 +615,67 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.button-main:hover,
+.button-main.is-hovered {
+    background-color: rgb(90, 235, 205);
+    scale: 1.04 1.04 1;
+}
+
+.button-exit {
+    background-color: rgb(200, 55, 55);
+    color: rgb(255, 255, 255);
+}
+
+.button-exit:hover,
+.button-exit.is-hovered {
+    background-color: rgb(235, 85, 85);
+    scale: 1.04 1.04 1;
+}
+
+.niquelin-material {
+    background-image: url("project://database/Assets/Sprites/sprite4.png?fileID=566837128&guid=2e8bc99d6c617d749b4a676bc49a02f7&type=3#sprite4_1");
+}
+
+.plomin-material {
+    background-image: url("project://database/Assets/Sprites/sprite4.png?fileID=166980517&guid=2e8bc99d6c617d749b4a676bc49a02f7&type=3#sprite4_3");
+}
+
+.hidraumax-material {
+    background-image: url("project://database/Assets/Sprites/sprite4.png?fileID=570458347&guid=2e8bc99d6c617d749b4a676bc49a02f7&type=3#sprite4_2");
+}
+
+.infinitum-material {
+    background-image: url("project://database/Assets/Sprites/sprite4.png?fileID=-7669990234729027438&guid=2e8bc99d6c617d749b4a676bc49a02f7&type=3#sprite4_0");
+}
+
+.aluminium-armor {
+    background-image: url("project://database/Assets/Sprites/sprite5.png?fileID=1425057842&guid=256dd90c8319a4a45a93acdd66d63f77&type=3#sprite5_1");
+}
+
+.iron-armor {
+    background-image: url("project://database/Assets/Sprites/sprite5.png?fileID=-1216811951&guid=256dd90c8319a4a45a93acdd66d63f77&type=3#sprite5_2");
+}
+
+.steel-armor {
+    background-image: url("project://database/Assets/Sprites/sprite5.png?fileID=4279882661034213769&guid=256dd90c8319a4a45a93acdd66d63f77&type=3#sprite5_0");
+}
+
+.tp-radin {
+    background-image: url("project://database/Assets/Sprites/sprite6.png?fileID=-7544885220895043624&guid=09f589012aee1eb4b99649b38126776f&type=3#sprite6_0");
+}
+
+.tp-radio {
+    background-image: url("project://database/Assets/Sprites/sprite6.png?fileID=593757749&guid=09f589012aee1eb4b99649b38126776f&type=3#sprite6_1");
+}
+
+.tp-radmax {
+    background-image: url("project://database/Assets/Sprites/sprite6.png?fileID=-1348647770&guid=09f589012aee1eb4b99649b38126776f&type=3#sprite6_2");
+}
+
+.tp-supreme {
+    background-image: url("project://database/Assets/Sprites/sprite6.png?fileID=850180623&guid=09f589012aee1eb4b99649b38126776f&type=3#sprite6_3");
 }
