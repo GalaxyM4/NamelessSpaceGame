@@ -129,7 +129,7 @@
 .text-general {
     -unity-font-style: bold;
     -unity-text-align: middle-center;
-    font-size: 48px;
+    font-size: 100px;
     -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
     -unity-text-outline-width: 2px;
     text-shadow: 10px 10px 0 rgb(0, 0, 0);
@@ -150,6 +150,7 @@
     color: rgb(249, 255, 52);
     text-shadow: 10px 10px 0 rgb(0, 0, 0);
     -unity-text-outline-color: rgb(0, 0, 0);
+    display: flex;
 }
 
 .information-text {
@@ -484,7 +485,6 @@
     color: rgb(20, 24, 34);
 }
 
-
 .resources-right {
     align-self: stretch;
     justify-content: flex-start;
@@ -506,7 +506,7 @@
     width: 100%;
     height: auto;
     flex-shrink: 0;
-    font-size: 96px;
+    font-size: 95px;
     -unity-font-style: normal;
     -unity-font-definition: url("project://database/Assets/fonts/FutureNowRegular-25Bl.ttf?fileID=12800000&guid=39f20f318685a9c488b3b0c8210c6e89&type=3#FutureNowRegular-25Bl");
     -unity-text-align: upper-center;
@@ -534,16 +534,18 @@
     align-items: center;
     margin-top: 12px;
     margin-bottom: 12px;
+    font-size: 14px;
 }
 
 .resource-stadistic-actions {
     justify-content: center;
+    flex-wrap: wrap;
     margin-top: auto;
 }
 
 .label-stadistic {
     -unity-font-style: bold;
-    font-size: 50px;
+    font-size: 65px;
     flex-shrink: 0;
     -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
     text-shadow: 5px 5px 0 rgb(0, 0, 0);
@@ -552,7 +554,7 @@
 }
 
 .label-value {
-    font-size: 48px;
+    font-size: 82px;
     flex-shrink: 1;
     white-space: normal;
     -unity-font-definition: url("project://database/Assets/fonts/FutureLight-BW15w.ttf?fileID=12800000&guid=23156b98981a2ae47b81ba77d89f0f34&type=3#FutureLight-BW15w");
@@ -633,6 +635,19 @@
 .button-exit:hover,
 .button-exit.is-hovered {
     background-color: rgb(235, 85, 85);
+    scale: 1.04 1.04 1;
+}
+
+.button-launch {
+    background-color: rgb(35, 145, 220);
+    color: rgb(255, 255, 255);
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.button-launch:hover,
+.button-launch.is-hovered {
+    background-color: rgb(70, 180, 255);
     scale: 1.04 1.04 1;
 }
 

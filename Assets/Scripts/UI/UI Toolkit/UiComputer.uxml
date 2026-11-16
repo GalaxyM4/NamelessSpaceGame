@@ -2,7 +2,7 @@
     <Style src="project://database/Assets/Scripts/UI/UI%20Toolkit/UiComputer.uss?fileID=7433441132597879392&amp;guid=75c39eb46fa76e44fb77598b9c818cdf&amp;type=3#UiComputer"/>
     <ui:VisualElement class="background">
         <ui:Label name="screenTitle" text="&lt;A ­ ­ ­ ­ ­ ­ ­  ­ ­ ­ ­ ­ ­ ­ SELECT YOUR MISION ­ ­ ­ ­ ­ ­ ­  ­ ­ ­ ­ ­ ­ ­ D&gt;" class="main-text"/>
-        <ui:VisualElement name="mainContent" class="main-content">
+        <ui:VisualElement name="mainContent" class="main-content" style="font-size: 0;">
             <ui:VisualElement name="misionOne" class="card">
                 <ui:Button text="" name="MissionButtonImage" class="button-style mission-button-bg" style="-unity-background-scale-mode: scale-and-crop;">
                     <ui:Image style="background-image: resource(&quot;curiosity-3d-model&quot;); height: 70%; width: 70%; right: auto; bottom: 0; justify-content: center; align-items: auto; align-self: center;"/>
@@ -36,6 +36,7 @@
                     </ui:VisualElement>
                     <ui:VisualElement class="resource-stadistic resource-stadistic-actions">
                         <ui:Button name="save" text="Seleccionar" class="button-main"/>
+                        <ui:Button name="launchButton" text="Ir a Marte" class="button-main button-launch panel-hidden"/>
                         <ui:Button name="exitButton" text="Salir" class="button-main button-exit"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
