@@ -199,6 +199,22 @@ public class PlayerController : MonoBehaviour
                     t.gameObject.AddComponent<BackgroundMusicInteractable>();
                 }
             }
+            else if (t.name.StartsWith("INT_CMD_TouchPanel_02", StringComparison.OrdinalIgnoreCase) ||
+                     t.name.StartsWith("INT_CMD_TouchPanel_2", StringComparison.OrdinalIgnoreCase))
+            {
+                if (t.GetComponent<TouchPanelModuleDisplay>() == null)
+                {
+                    t.gameObject.AddComponent<TouchPanelModuleDisplay>().SetSlotOffset(0);
+                }
+            }
+            else if (t.name.StartsWith("INT_CMD_TouchPanel_03", StringComparison.OrdinalIgnoreCase) ||
+                     t.name.StartsWith("INT_CMD_TouchPanel_3", StringComparison.OrdinalIgnoreCase))
+            {
+                if (t.GetComponent<TouchPanelModuleDisplay>() == null)
+                {
+                    t.gameObject.AddComponent<TouchPanelModuleDisplay>().SetSlotOffset(1);
+                }
+            }
         }
     }
 

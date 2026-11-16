@@ -55,6 +55,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
     private Label priceLabel;
     private ProgressBar capacityProgress;
     private Button saveButton;
+    private Button launchButton;
     private Button exitButton;
 
     private GenericModule currentSelectedModule;
@@ -163,6 +164,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         priceLabel = root.Q<Label>("price");
         capacityProgress = root.Q<ProgressBar>("capacity");
         saveButton = root.Q<Button>("save");
+        launchButton = root.Q<Button>("launchButton");
         exitButton = root.Q<Button>("exitButton");
 
         if (startMissionButton != null)
@@ -174,6 +176,12 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         if (saveButton != null)
         {
             saveButton.RegisterCallback<ClickEvent>(OnSaveModuleClicked);
+        }
+
+        if (launchButton != null)
+        {
+            launchButton.RegisterCallback<ClickEvent>(OnLaunchMarsClicked);
+            UpdateLaunchButtonVisibility();
         }
 
         if (exitButton != null)
@@ -194,6 +202,10 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         if (saveButton != null)
         {
             saveButton.UnregisterCallback<ClickEvent>(OnSaveModuleClicked);
+        }
+        if (launchButton != null)
+        {
+            launchButton.UnregisterCallback<ClickEvent>(OnLaunchMarsClicked);
         }
         if (exitButton != null)
         {
@@ -234,12 +246,61 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         ConfirmCurrentModule();
     }
 
+    private void OnLaunchMarsClicked(ClickEvent evt)
+    {
+        LaunchMarsScene();
+    }
+
     private void ConfirmCurrentModule()
     {
-        if (currentSelectedModule != null)
+        RoverArmor armor = null;
+        RoverBattery battery = null;
+        RoverAntenna antenna = null;
+
+        foreach (Button card in selectedCardsByCategory.Values)
         {
-            RoverModuleSelection.SelectModule(currentSelectedModule);
+            if (card?.userData is ModuleCardData data)
+            {
+                if (data.Module is RoverArmor a) armor = a;
+                else if (data.Module is RoverBattery b) battery = b;
+                else if (data.Module is RoverAntenna ant) antenna = ant;
+            }
         }
+
+        if (armor == null && currentSelectedModule is RoverArmor fallbackArmor) armor = fallbackArmor;
+        if (battery == null && currentSelectedModule is RoverBattery fallbackBattery) battery = fallbackBattery;
+        if (antenna == null && currentSelectedModule is RoverAntenna fallbackAntenna) antenna = fallbackAntenna;
+
+        if (armor == null && battery == null && antenna == null) return;
+
+        RoverModuleSelection.SaveSelection(armor, battery, antenna);
+        if (saveButton != null)
+        {
+            saveButton.text = "Guardado";
+        }
+        UpdateLaunchButtonVisibility();
+    }
+
+    private void UpdateLaunchButtonVisibility()
+    {
+        if (launchButton == null) return;
+
+        if (RoverModuleSelection.IsConfigurationComplete)
+        {
+            launchButton.RemoveFromClassList("panel-hidden");
+        }
+        else
+        {
+            launchButton.AddToClassList("panel-hidden");
+        }
+    }
+
+    private void LaunchMarsScene()
+    {
+        if (!RoverModuleSelection.IsConfigurationComplete) return;
+
+        LoadingManegment.TargetScene = "MarsScene";
+        SceneManager.LoadScene("LoadingScene");
     }
 
     private void SetupEquipmentGrid()
@@ -375,7 +436,10 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         cardButton?.AddToClassList("is-selected");
 
         currentSelectedModule = data.Module;
-        RoverModuleSelection.SelectModule(currentSelectedModule);
+        if (saveButton != null)
+        {
+            saveButton.text = "Seleccionar";
+        }
 
         if (resourcesTitleLabel != null) resourcesTitleLabel.text = data.Category.ToUpperInvariant();
         if (selectedModuleLabel != null) selectedModuleLabel.text = data.Name;
@@ -622,6 +686,12 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
             return;
         }
 
+        if (launchButton != null && !launchButton.ClassListContains("panel-hidden") && launchButton.worldBound.Contains(panelPoint))
+        {
+            SetHoveredElement(launchButton);
+            return;
+        }
+
         Button hoveredCard = FindModuleCardAtPoint(panelPoint);
         if (hoveredCard != null)
         {
@@ -691,6 +761,12 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         if (saveButton != null && saveButton.worldBound.Contains(panelPoint))
         {
             ConfirmCurrentModule();
+            return;
+        }
+
+        if (launchButton != null && !launchButton.ClassListContains("panel-hidden") && launchButton.worldBound.Contains(panelPoint))
+        {
+            LaunchMarsScene();
             return;
         }
 
