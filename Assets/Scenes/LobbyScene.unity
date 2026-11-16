@@ -1036,7 +1036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1b2c3d4e5f647899a0b1c2d3e4f5a6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainScreenInteractable
-  promptText: Usar Pantalla
+  promptText: Use Screen
   transitionDuration: 0.4
   screenDistanceMultiplier: 1.15
   screenPanelRenderer: {fileID: 379531862}
@@ -1451,7 +1451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e5f6a7b8c94012cd34ef56ab78cd90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BackgroundMusicInteractable
-  promptText: "Panel de M\xFAsica"
+  promptText: Music Panel
   transitionDuration: 0.4
   screenDistanceMultiplier: 1.25
   musicAudioSource: {fileID: 0}

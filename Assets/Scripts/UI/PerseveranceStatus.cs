@@ -293,13 +293,13 @@ public class PerseveranceStatus : MonoBehaviour
             lowSignalBanner.style.borderBottomRightRadius = 12;
             lowSignalBanner.style.alignItems = Align.Center;
 
-            lowSignalTitle = new Label("AVISO: SEÑAL ESCASA") { name = "lowSignalTitle", pickingMode = PickingMode.Ignore };
+            lowSignalTitle = new Label("WARNING: LOW SIGNAL") { name = "lowSignalTitle", pickingMode = PickingMode.Ignore };
             lowSignalTitle.style.fontSize = 38;
             lowSignalTitle.style.color = warnRed;
             lowSignalTitle.style.unityFontStyleAndWeight = FontStyle.Bold;
             lowSignalTitle.style.unityTextAlign = TextAnchor.MiddleCenter;
 
-            lowSignalDetail = new Label("Acercándose al límite de alcance de la antena") { name = "lowSignalDetail", pickingMode = PickingMode.Ignore };
+            lowSignalDetail = new Label("Approaching the antenna's range limit") { name = "lowSignalDetail", pickingMode = PickingMode.Ignore };
             lowSignalDetail.style.fontSize = 24;
             lowSignalDetail.style.color = new Color(1f, 0.88f, 0.86f, 1f);
             lowSignalDetail.style.unityTextAlign = TextAnchor.MiddleCenter;
@@ -620,12 +620,12 @@ public class PerseveranceStatus : MonoBehaviour
                 if (lowSignalTitle != null)
                 {
                     lowSignalTitle.text = normDist >= 0.98f
-                        ? "SEÑAL CRÍTICA - LÍMITE ALCANZADO"
-                        : "AVISO: SEÑAL ESCASA";
+                        ? "CRITICAL SIGNAL - RANGE LIMIT REACHED"
+                        : "WARNING: LOW SIGNAL";
                 }
                 if (lowSignalDetail != null)
                 {
-                    lowSignalDetail.text = $"Señal: {signalPct}%  |  Distancia: {distanceFromOrigin:0}m / {maxRange:0}m";
+                    lowSignalDetail.text = $"Signal: {signalPct}%  |  Distance: {distanceFromOrigin:0}m / {maxRange:0}m";
                 }
             }
             else

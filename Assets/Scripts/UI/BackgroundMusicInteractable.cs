@@ -327,9 +327,9 @@ public class BackgroundMusicInteractable : MonoBehaviour, IInteractable
         controlsRow.style.justifyContent = Justify.Center;
         controlsRow.style.width = Length.Percent(90);
 
-        var prev = CreateStyledButton("prevButton", "ANT", 180, 96, false);
+        var prev = CreateStyledButton("prevButton", "PREV", 180, 96, false);
         var playPause = CreateStyledButton("playPauseButton", "PAUSE", 280, 96, true);
-        var next = CreateStyledButton("nextButton", "SIG", 180, 96, false);
+        var next = CreateStyledButton("nextButton", "NEXT", 180, 96, false);
 
         controlsRow.Add(prev);
         controlsRow.Add(playPause);

@@ -20,8 +20,8 @@
             </ui:VisualElement>
             <ui:VisualElement name="signalDistortionOverlay" picking-mode="Ignore" class="signal-distortion-overlay"/>
             <ui:VisualElement name="lowSignalBanner" picking-mode="Ignore" class="low-signal-banner alerts-hidden">
-                <ui:Label name="lowSignalTitle" text="AVISO: SEÑAL ESCASA" picking-mode="Ignore" class="low-signal-title"/>
-                <ui:Label name="lowSignalDetail" text="Acercándose al límite de alcance de la antena" picking-mode="Ignore" class="low-signal-detail"/>
+                <ui:Label name="lowSignalTitle" text="WARNING: LOW SIGNAL" picking-mode="Ignore" class="low-signal-title"/>
+                <ui:Label name="lowSignalDetail" text="Approaching the antenna's range limit" picking-mode="Ignore" class="low-signal-detail"/>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="marsPauseMenu" class="pause-container alerts-hidden">
