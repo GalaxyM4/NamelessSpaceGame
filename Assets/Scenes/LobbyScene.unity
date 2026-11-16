@@ -181,7 +181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7328221328035289387, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.004
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6694654961262854762, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -205,7 +205,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3aa24805bf0b4664d80f425b76da0f5b, type: 2}
     - target: {fileID: 37108568760241994, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.004
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
       propertyPath: m_Name
@@ -1460,6 +1460,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7ee81b7c8acf3e041ab6e35bb35f33b9, type: 3}
   initialVolume: 0.1
   touchPanelRenderer: {fileID: 0}
+--- !u!4 &379531871 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7328221328035289387, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
+  m_PrefabInstance: {fileID: 49338234}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &379531872 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 37108568760241994, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
+  m_PrefabInstance: {fileID: 49338234}
+  m_PrefabAsset: {fileID: 0}
 --- !u!65 &389496491
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1776,6 +1786,14 @@ PrefabInstance:
       propertyPath: visualMouseSensitivity
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 7067957947596924913, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
+      propertyPath: doorPositiveTransform
+      value: 
+      objectReference: {fileID: 379531871}
+    - target: {fileID: 7067957947596924913, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
+      propertyPath: doorNegativeTransform
+      value: 
+      objectReference: {fileID: 379531872}
     - target: {fileID: 7113573926694119732, guid: 6ddc64728cdbd0c47b133cfd483b1ff7, type: 3}
       propertyPath: m_Material
       value: 

@@ -6,5 +6,12 @@
             <ui:Label name="keyLabel" text="F" picking-mode="Ignore" class="prompt-text" style="position: relative; margin-right: 8px; top: auto; left: auto; font-size: 35px;"/>
             <ui:Label name="promptText" text="INTERACTIBLE" picking-mode="Ignore" class="prompt-text" style="position: relative; top: auto; left: auto; font-size: 35px;"/>
         </ui:VisualElement>
+        <ui:VisualElement name="tutorialContainer" picking-mode="Ignore" class="tutorial-container">
+            <ui:Label name="tutorialPhaseLabel" text="Fase 1" picking-mode="Ignore" class="tutorial-phase-label"/>
+            <ui:Label name="tutorialTextLabel" text="WASD, movimiento básico del personaje" picking-mode="Ignore" class="tutorial-text-label"/>
+            <ui:VisualElement name="tutorialProgressTrack" picking-mode="Ignore" class="tutorial-progress-track">
+                <ui:VisualElement name="tutorialProgressFill" picking-mode="Ignore" class="tutorial-progress-fill"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

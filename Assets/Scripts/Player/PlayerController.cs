@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -38,6 +39,14 @@ public class PlayerController : MonoBehaviour
     public LayerMask interactLayerMask = ~0;
     public PanelRenderer hudRenderer;
 
+    [Header("Tutorial Lobby")]
+    public bool enableTutorial = true;
+    public float tutorialStepHoldTime = 0.4f;
+    public Transform doorPositiveTransform;
+    public Transform doorNegativeTransform;
+    public float doorOpenOffset = 0.004f;
+    public float doorOpenDuration = 0.8f;
+
     private Rigidbody rb;
     private Vector3 moveInput;
     private Vector3 rotationInput;
@@ -45,6 +54,12 @@ public class PlayerController : MonoBehaviour
     private IInteractable currentInteractable;
     private Label promptLabel;
     private Label keyLabel;
+    private VisualElement tutorialContainer;
+    private Label tutorialPhaseLabel;
+    private Label tutorialTextLabel;
+    private VisualElement tutorialProgressFill;
+    private int tutorialPhase = 1;
+    private float tutorialPhaseTimer;
     private bool isInteractingWithUI;
 
     private float visualPitch;
@@ -75,6 +90,7 @@ public class PlayerController : MonoBehaviour
         UnityEngine.Cursor.visible = false;
 
         SetupMainScreenInteractables();
+        SetupTutorialDoors();
     }
 
     void OnEnable()
@@ -93,7 +109,85 @@ public class PlayerController : MonoBehaviour
     {
         promptLabel = root.Q<Label>("promptText");
         keyLabel = root.Q<Label>("keyLabel");
+        tutorialContainer = root.Q<VisualElement>("tutorialContainer");
+        if (tutorialContainer == null)
+        {
+            BuildFallbackTutorialHUD(root);
+        }
+        tutorialPhaseLabel = root.Q<Label>("tutorialPhaseLabel");
+        tutorialTextLabel = root.Q<Label>("tutorialTextLabel");
+        tutorialProgressFill = root.Q<VisualElement>("tutorialProgressFill");
         UpdatePromptHUD(null);
+        UpdateTutorialUI();
+    }
+
+    private void BuildFallbackTutorialHUD(VisualElement root)
+    {
+        VisualElement hudRoot = root.Q<VisualElement>("hudRoot") ?? root;
+
+        tutorialContainer = new VisualElement { name = "tutorialContainer", pickingMode = PickingMode.Ignore };
+        tutorialContainer.AddToClassList("tutorial-container");
+        tutorialContainer.style.position = Position.Absolute;
+        tutorialContainer.style.bottom = 48;
+        tutorialContainer.style.minWidth = 520;
+        tutorialContainer.style.paddingTop = 14;
+        tutorialContainer.style.paddingBottom = 14;
+        tutorialContainer.style.paddingLeft = 24;
+        tutorialContainer.style.paddingRight = 24;
+        tutorialContainer.style.backgroundColor = new Color(15f / 255f, 20f / 255f, 30f / 255f, 0.82f);
+        tutorialContainer.style.borderTopLeftRadius = 10;
+        tutorialContainer.style.borderTopRightRadius = 10;
+        tutorialContainer.style.borderBottomLeftRadius = 10;
+        tutorialContainer.style.borderBottomRightRadius = 10;
+        tutorialContainer.style.borderTopWidth = 1;
+        tutorialContainer.style.borderBottomWidth = 1;
+        tutorialContainer.style.borderLeftWidth = 1;
+        tutorialContainer.style.borderRightWidth = 1;
+        Color teal = new Color(55f / 255f, 200f / 255f, 171f / 255f, 1f);
+        tutorialContainer.style.borderTopColor = teal;
+        tutorialContainer.style.borderBottomColor = teal;
+        tutorialContainer.style.borderLeftColor = teal;
+        tutorialContainer.style.borderRightColor = teal;
+        tutorialContainer.style.alignItems = Align.Center;
+        tutorialContainer.style.justifyContent = Justify.Center;
+
+        var phaseLbl = new Label("Fase 1:") { name = "tutorialPhaseLabel", pickingMode = PickingMode.Ignore };
+        phaseLbl.AddToClassList("tutorial-phase-label");
+        phaseLbl.style.fontSize = 20;
+        phaseLbl.style.color = teal;
+        phaseLbl.style.marginBottom = 6;
+        phaseLbl.style.unityTextAlign = TextAnchor.MiddleCenter;
+
+        var textLbl = new Label("WASD, movimiento básico del personaje") { name = "tutorialTextLabel", pickingMode = PickingMode.Ignore };
+        textLbl.AddToClassList("tutorial-text-label");
+        textLbl.style.fontSize = 26;
+        textLbl.style.color = Color.white;
+        textLbl.style.marginBottom = 10;
+        textLbl.style.unityTextAlign = TextAnchor.MiddleCenter;
+        textLbl.style.whiteSpace = WhiteSpace.Normal;
+
+        var track = new VisualElement { name = "tutorialProgressTrack", pickingMode = PickingMode.Ignore };
+        track.AddToClassList("tutorial-progress-track");
+        track.style.width = Length.Percent(100);
+        track.style.height = 6;
+        track.style.backgroundColor = new Color(1f, 1f, 1f, 0.15f);
+        track.style.borderTopLeftRadius = 3;
+        track.style.borderTopRightRadius = 3;
+        track.style.borderBottomLeftRadius = 3;
+        track.style.borderBottomRightRadius = 3;
+        track.style.overflow = Overflow.Hidden;
+
+        var fill = new VisualElement { name = "tutorialProgressFill", pickingMode = PickingMode.Ignore };
+        fill.AddToClassList("tutorial-progress-fill");
+        fill.style.width = Length.Percent(0);
+        fill.style.height = Length.Percent(100);
+        fill.style.backgroundColor = teal;
+
+        track.Add(fill);
+        tutorialContainer.Add(phaseLbl);
+        tutorialContainer.Add(textLbl);
+        tutorialContainer.Add(track);
+        hudRoot.Add(tutorialContainer);
     }
 
     private void UpdatePromptHUD(string text)
@@ -199,6 +293,22 @@ public class PlayerController : MonoBehaviour
                     t.gameObject.AddComponent<BackgroundMusicInteractable>();
                 }
             }
+            else if (t.name.StartsWith("INT_CMD_TouchPanel_02", StringComparison.OrdinalIgnoreCase) ||
+                     t.name.StartsWith("INT_CMD_TouchPanel_2", StringComparison.OrdinalIgnoreCase))
+            {
+                if (t.GetComponent<TouchPanelModuleDisplay>() == null)
+                {
+                    t.gameObject.AddComponent<TouchPanelModuleDisplay>().SetSlotOffset(0);
+                }
+            }
+            else if (t.name.StartsWith("INT_CMD_TouchPanel_03", StringComparison.OrdinalIgnoreCase) ||
+                     t.name.StartsWith("INT_CMD_TouchPanel_3", StringComparison.OrdinalIgnoreCase))
+            {
+                if (t.GetComponent<TouchPanelModuleDisplay>() == null)
+                {
+                    t.gameObject.AddComponent<TouchPanelModuleDisplay>().SetSlotOffset(1);
+                }
+            }
         }
     }
 
@@ -284,7 +394,187 @@ public class PlayerController : MonoBehaviour
 
         isBraking = keyboard.xKey.isPressed;
 
+        UpdateTutorial(keyboard);
         HandleInteraction(keyboard);
+    }
+
+    private void SetupTutorialDoors()
+    {
+        if (!enableTutorial) return;
+
+        Transform[] allTransforms = FindObjectsByType<Transform>();
+        if (doorPositiveTransform == null || doorNegativeTransform == null)
+        {
+            foreach (Transform t in allTransforms)
+            {
+                if (t == transform || t.IsChildOf(transform)) continue;
+
+                if (doorPositiveTransform == null && Mathf.Abs(t.localPosition.x - doorOpenOffset) < 0.0005f)
+                {
+                    doorPositiveTransform = t;
+                }
+                else if (doorNegativeTransform == null && Mathf.Abs(t.localPosition.x + doorOpenOffset) < 0.0005f)
+                {
+                    doorNegativeTransform = t;
+                }
+            }
+        }
+
+        if (doorPositiveTransform == null || doorNegativeTransform == null)
+        {
+            foreach (Transform t in allTransforms)
+            {
+                if (doorPositiveTransform == null &&
+                    (t.name.Equals("PREVIEW_CMD_JNT_DOOR_Slide_L", StringComparison.OrdinalIgnoreCase) ||
+                     t.name.Equals("SM_DOOR_Leaf_L", StringComparison.OrdinalIgnoreCase)))
+                {
+                    doorPositiveTransform = t;
+                }
+                else if (doorNegativeTransform == null &&
+                         (t.name.Equals("PREVIEW_CMD_JNT_DOOR_Slide_R", StringComparison.OrdinalIgnoreCase) ||
+                          t.name.Equals("SM_DOOR_Leaf_R", StringComparison.OrdinalIgnoreCase)))
+                {
+                    doorNegativeTransform = t;
+                }
+            }
+        }
+
+        if (doorPositiveTransform != null)
+        {
+            Vector3 pos = doorPositiveTransform.localPosition;
+            doorPositiveTransform.localPosition = new Vector3(0f, pos.y, pos.z);
+        }
+
+        if (doorNegativeTransform != null)
+        {
+            Vector3 pos = doorNegativeTransform.localPosition;
+            doorNegativeTransform.localPosition = new Vector3(0f, pos.y, pos.z);
+        }
+
+        tutorialPhase = 1;
+        tutorialPhaseTimer = 0f;
+        UpdateTutorialUI();
+    }
+
+    private void UpdateTutorial(Keyboard keyboard)
+    {
+        if (!enableTutorial || tutorialPhase > 4) return;
+
+        bool phaseInputActive = false;
+        switch (tutorialPhase)
+        {
+            case 1:
+                phaseInputActive = keyboard.wKey.isPressed || keyboard.aKey.isPressed ||
+                                   keyboard.sKey.isPressed || keyboard.dKey.isPressed;
+                break;
+            case 2:
+                phaseInputActive = keyboard.qKey.isPressed || keyboard.eKey.isPressed;
+                break;
+            case 3:
+                phaseInputActive = keyboard.spaceKey.isPressed || keyboard.leftCtrlKey.isPressed ||
+                                   keyboard.rightCtrlKey.isPressed || keyboard.cKey.isPressed;
+                break;
+            case 4:
+                phaseInputActive = keyboard.xKey.isPressed;
+                break;
+        }
+
+        if (phaseInputActive)
+        {
+            tutorialPhaseTimer += Time.deltaTime;
+            if (tutorialPhaseTimer >= tutorialStepHoldTime)
+            {
+                tutorialPhase++;
+                tutorialPhaseTimer = 0f;
+
+                if (tutorialPhase > 4)
+                {
+                    StartCoroutine(OpenTutorialDoorsCoroutine());
+                }
+            }
+            UpdateTutorialUI();
+        }
+    }
+
+    private void UpdateTutorialUI()
+    {
+        if (tutorialContainer == null) return;
+
+        if (!enableTutorial || tutorialPhase > 4)
+        {
+            tutorialContainer.AddToClassList("prompt-hidden");
+            return;
+        }
+
+        tutorialContainer.RemoveFromClassList("prompt-hidden");
+
+        if (tutorialPhaseLabel != null)
+        {
+            tutorialPhaseLabel.text = $"Fase {tutorialPhase}:";
+        }
+
+        if (tutorialTextLabel != null)
+        {
+            switch (tutorialPhase)
+            {
+                case 1:
+                    tutorialTextLabel.text = "WASD, movimiento básico del personaje";
+                    break;
+                case 2:
+                    tutorialTextLabel.text = "Q, E: Movimiento rotacional";
+                    break;
+                case 3:
+                    tutorialTextLabel.text = "Space, Ctrl o C: Movimiento vertical";
+                    break;
+                case 4:
+                    tutorialTextLabel.text = "X: Frenar al personaje";
+                    break;
+            }
+        }
+
+        if (tutorialProgressFill != null)
+        {
+            float pct = Mathf.Clamp01(tutorialPhaseTimer / Mathf.Max(0.01f, tutorialStepHoldTime)) * 100f;
+            tutorialProgressFill.style.width = Length.Percent(pct);
+        }
+    }
+
+    private IEnumerator OpenTutorialDoorsCoroutine()
+    {
+        float elapsed = 0f;
+        float duration = Mathf.Max(0.01f, doorOpenDuration);
+
+        Vector3 posStart = doorPositiveTransform != null ? doorPositiveTransform.localPosition : Vector3.zero;
+        Vector3 negStart = doorNegativeTransform != null ? doorNegativeTransform.localPosition : Vector3.zero;
+
+        Vector3 posTarget = new Vector3(doorOpenOffset, posStart.y, posStart.z);
+        Vector3 negTarget = new Vector3(-doorOpenOffset, negStart.y, negStart.z);
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
+
+            if (doorPositiveTransform != null)
+            {
+                doorPositiveTransform.localPosition = Vector3.Lerp(posStart, posTarget, t);
+            }
+            if (doorNegativeTransform != null)
+            {
+                doorNegativeTransform.localPosition = Vector3.Lerp(negStart, negTarget, t);
+            }
+
+            yield return null;
+        }
+
+        if (doorPositiveTransform != null)
+        {
+            doorPositiveTransform.localPosition = posTarget;
+        }
+        if (doorNegativeTransform != null)
+        {
+            doorNegativeTransform.localPosition = negTarget;
+        }
     }
 
     private void HandleInteraction(Keyboard keyboard)

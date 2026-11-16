@@ -44,9 +44,13 @@ public static class RoverModulesImplement
 
 public static class RoverModuleSelection
 {
+    private static readonly List<GenericModule> selectedModules = new List<GenericModule>();
+
     public static RoverArmor SelectedArmor { get; private set; }
     public static RoverBattery SelectedBattery { get; private set; }
     public static RoverAntenna SelectedAntenna { get; private set; }
+    public static IReadOnlyList<GenericModule> SelectedModules => selectedModules;
+    public static bool IsConfigurationComplete => SelectedArmor != null && SelectedBattery != null && SelectedAntenna != null;
 
     public static event Action OnSelectionChanged;
 
@@ -65,6 +69,25 @@ public static class RoverModuleSelection
             SelectedAntenna = antenna;
         }
 
+        RebuildSelectedModules();
         OnSelectionChanged?.Invoke();
+    }
+
+    public static void SaveSelection(RoverArmor armor, RoverBattery battery, RoverAntenna antenna)
+    {
+        if (armor != null) SelectedArmor = armor;
+        if (battery != null) SelectedBattery = battery;
+        if (antenna != null) SelectedAntenna = antenna;
+
+        RebuildSelectedModules();
+        OnSelectionChanged?.Invoke();
+    }
+
+    private static void RebuildSelectedModules()
+    {
+        selectedModules.Clear();
+        if (SelectedArmor != null) selectedModules.Add(SelectedArmor);
+        if (SelectedBattery != null) selectedModules.Add(SelectedBattery);
+        if (SelectedAntenna != null) selectedModules.Add(SelectedAntenna);
     }
 }
