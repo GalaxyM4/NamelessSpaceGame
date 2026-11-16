@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c39af587c15e4767ac55a6551990cc59, type: 3}
+  m_Name: RocasMarte_Config
+  m_EditorClassIdentifier: Assembly-CSharp::RocasMarte.RocasMarteConfig
+  autoSetup: 1
+  panelSettings: {fileID: 11400000, guid: 3c1f6b0c2963f7f43a07eacec12201a4, type: 2}
+  panel: {fileID: 9197481963319205126, guid: 88fd16d1fc6fc6e46b76ab9d0f2db0c1, type: 3}
+  titleFont: {fileID: 12800000, guid: 80bacaa6c9a67794a9d1e6b734fcfd75, type: 3}
+  headFont: {fileID: 12800000, guid: 39f20f318685a9c488b3b0c8210c6e89, type: 3}
+  range: 4

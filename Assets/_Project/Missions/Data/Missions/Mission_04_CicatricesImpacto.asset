@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f662dfae6e13f4f46b2307715516132a, type: 3}
+  m_Name: Mission_04_CicatricesImpacto
+  m_EditorClassIdentifier: Game.Missions::Game.Missions.MissionDefinition
+  id: 04_CicatricesImpacto
+  title: Cicatrices de impacto
+  description: Perfora cuatro brechas de impacto como Broom Point, rocas rotas y soldadas por los asteroides que golpearon el Marte primitivo.
+  objectives:
+  - rockType: {fileID: 11400000, guid: ac3f2db993c283c4facd89a7e82b83ea, type: 2}
+    amount: 4
+  gradeThresholds:
+    a: 220
+    b: 360
+    c: 560
+  timeLimit: 0

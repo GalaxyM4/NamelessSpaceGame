@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f662dfae6e13f4f46b2307715516132a, type: 3}
+  m_Name: Mission_02_HistoriaVolcanica
+  m_EditorClassIdentifier: Game.Missions::Game.Missions.MissionDefinition
+  id: 02_HistoriaVolcanica
+  title: "Historia volc\xE1nica"
+  description: "Re\xFAne rocas \xEDgneas del fondo de Jezero: tres cumulados de olivino de S\xE9\xEDtah y dos basaltos de M\xE1az para reconstruir la historia volc\xE1nica del cr\xE1ter."
+  objectives:
+  - rockType: {fileID: 11400000, guid: 44888d1cd5ae9f042aaca84449c4a01a, type: 2}
+    amount: 3
+  - rockType: {fileID: 11400000, guid: 18e4ba9d8f3d2b6428c82b87561bba5f, type: 2}
+    amount: 2
+  gradeThresholds:
+    a: 200
+    b: 330
+    c: 520
+  timeLimit: 0

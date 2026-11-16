@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f662dfae6e13f4f46b2307715516132a, type: 3}
+  m_Name: Mission_01_PrimerNucleo
+  m_EditorClassIdentifier: Game.Missions::Game.Missions.MissionDefinition
+  id: 01_PrimerNucleo
+  title: "Primer n\xFAcleo"
+  description: "Perfora cinco rocas de basalto de la formaci\xF3n M\xE1az, como Rochette, de donde salieron las dos primeras muestras de Perseverance."
+  objectives:
+  - rockType: {fileID: 11400000, guid: 18e4ba9d8f3d2b6428c82b87561bba5f, type: 2}
+    amount: 5
+  gradeThresholds:
+    a: 180
+    b: 300
+    c: 480
+  timeLimit: 0
