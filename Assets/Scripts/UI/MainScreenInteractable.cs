@@ -43,6 +43,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
     private Button missionImageButton;
     private Label missionTitleLabel;
     private Label missionInfoLabel;
+    private Label missionBudgetLabel;
     private Label urlInfoLabel;
     private Button startMissionButton;
 
@@ -53,12 +54,15 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
     private Label detailLabel;
     private Label weightLabel;
     private Label priceLabel;
+    private Label budgetLabel;
     private ProgressBar capacityProgress;
     private Button saveButton;
     private Button launchButton;
     private Button exitButton;
 
     private GenericModule currentSelectedModule;
+    private ModuleCardData currentSelectedCardData;
+    private Button currentPreviewedCardButton;
     private readonly Dictionary<string, Button> selectedCardsByCategory = new Dictionary<string, Button>();
     private VisualElement currentHoveredElement;
     private readonly List<Button> moduleCardButtons = new List<Button>();
@@ -75,6 +79,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         public string DetailTitle;
         public string Stats;
         public string Price;
+        public float NumericPrice;
         public float ProgressValue;
         public float ProgressMax;
         public GenericModule Module;
@@ -152,6 +157,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         missionImageButton = root.Q<Button>("MissionButtonImage");
         missionTitleLabel = root.Q<Label>("MissionTitle");
         missionInfoLabel = root.Q<Label>(className: "info-mision");
+        missionBudgetLabel = root.Q<Label>("missionBudgetLabel");
         urlInfoLabel = root.Q<Label>("urlInfo");
         startMissionButton = root.Q<Button>("Button");
 
@@ -162,10 +168,18 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         detailLabel = root.Q<Label>("detailLabel");
         weightLabel = root.Q<Label>("weight");
         priceLabel = root.Q<Label>("price");
+        budgetLabel = root.Q<Label>("budgetLabel");
         capacityProgress = root.Q<ProgressBar>("capacity");
         saveButton = root.Q<Button>("save");
         launchButton = root.Q<Button>("launchButton");
         exitButton = root.Q<Button>("exitButton");
+
+        EnsureBudgetUIElements(root);
+
+        if (launchButton != null)
+        {
+            launchButton.text = "Launch to Mars";
+        }
 
         if (startMissionButton != null)
         {
@@ -191,6 +205,40 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
 
         SetupEquipmentGrid();
         UpdateMissionUI();
+        UpdateBudgetUI();
+    }
+
+    private void EnsureBudgetUIElements(VisualElement root)
+    {
+        if (missionBudgetLabel == null && informationCard != null)
+        {
+            missionBudgetLabel = new Label { name = "missionBudgetLabel" };
+            missionBudgetLabel.AddToClassList("mission-budget-text");
+            int idx = urlInfoLabel != null ? informationCard.IndexOf(urlInfoLabel) : -1;
+            if (idx >= 0) informationCard.Insert(idx, missionBudgetLabel);
+            else informationCard.Add(missionBudgetLabel);
+        }
+
+        if (budgetLabel == null)
+        {
+            VisualElement resourcesRight = root.Q<VisualElement>("resources-right");
+            if (resourcesRight != null)
+            {
+                var row = new VisualElement();
+                row.AddToClassList("resource-stadistic");
+                var titleLbl = new Label("Budget:") { name = "budgetTitleLabel" };
+                titleLbl.AddToClassList("label-stadistic");
+                budgetLabel = new Label("900$ / 900$") { name = "budgetLabel" };
+                budgetLabel.AddToClassList("label-value");
+                row.Add(titleLbl);
+                row.Add(budgetLabel);
+
+                VisualElement actionsRow = resourcesRight.Q<VisualElement>(className: "resource-stadistic-actions");
+                int idx = actionsRow != null ? resourcesRight.IndexOf(actionsRow) : -1;
+                if (idx >= 0) resourcesRight.Insert(idx, row);
+                else resourcesRight.Add(row);
+            }
+        }
     }
 
     private void UnbindButton()
@@ -238,7 +286,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         if (missionOneCard != null) missionOneCard.AddToClassList("panel-hidden");
         if (informationCard != null) informationCard.AddToClassList("panel-hidden");
         if (dashboardRightPanel != null) dashboardRightPanel.RemoveFromClassList("panel-hidden");
-        if (screenTitleLabel != null) screenTitleLabel.text = "CONFIGURA TU ROVER";
+        UpdateBudgetUI();
     }
 
     private void OnSaveModuleClicked(ClickEvent evt)
@@ -251,7 +299,34 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         LaunchMarsScene();
     }
 
-    private void ConfirmCurrentModule()
+    private float GetCurrentMissionBudget()
+    {
+        IReadOnlyList<Mission> missions = MissionsImplement.GetMissions;
+        if (missions == null || missions.Count == 0) return 900f;
+        int idx = Mathf.Clamp(currentMissionIndex, 0, missions.Count - 1);
+        return missions[idx].budget;
+    }
+
+    private float GetSelectedCostExceptCategory(string excludedCategory)
+    {
+        float sum = 0f;
+        foreach (KeyValuePair<string, Button> kvp in selectedCardsByCategory)
+        {
+            if (kvp.Key == excludedCategory) continue;
+            if (kvp.Value?.userData is ModuleCardData data)
+            {
+                sum += data.NumericPrice;
+            }
+        }
+        return sum;
+    }
+
+    private float GetTotalSelectedCost()
+    {
+        return GetSelectedCostExceptCategory(null);
+    }
+
+    private void SyncSelectedModulesToStore()
     {
         RoverArmor armor = null;
         RoverBattery battery = null;
@@ -267,25 +342,91 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
             }
         }
 
-        if (armor == null && currentSelectedModule is RoverArmor fallbackArmor) armor = fallbackArmor;
-        if (battery == null && currentSelectedModule is RoverBattery fallbackBattery) battery = fallbackBattery;
-        if (antenna == null && currentSelectedModule is RoverAntenna fallbackAntenna) antenna = fallbackAntenna;
-
-        if (armor == null && battery == null && antenna == null) return;
-
         RoverModuleSelection.SaveSelection(armor, battery, antenna);
+        UpdateLaunchButtonVisibility();
+    }
+
+    private void UpdateBudgetUI()
+    {
+        float totalBudget = GetCurrentMissionBudget();
+        float spent = GetTotalSelectedCost();
+        float remaining = Mathf.Max(0f, totalBudget - spent);
+
+        if (budgetLabel != null)
+        {
+            budgetLabel.text = $"{remaining:0}$ / {totalBudget:0}$";
+        }
+
+        if (isConfiguringModules && screenTitleLabel != null)
+        {
+            screenTitleLabel.text = $"CONFIGURE YOUR ROVER  |  BUDGET: {remaining:0}$ / {totalBudget:0}$";
+        }
+
+        foreach (Button card in moduleCardButtons)
+        {
+            if (card?.userData is ModuleCardData data)
+            {
+                bool isSelected = selectedCardsByCategory.TryGetValue(data.Category, out Button selCard) && selCard == card;
+                float costIfPicked = GetSelectedCostExceptCategory(data.Category) + data.NumericPrice;
+                bool canAfford = costIfPicked <= totalBudget + 0.01f;
+
+                if (!isSelected && !canAfford)
+                {
+                    card.AddToClassList("is-unaffordable");
+                }
+                else
+                {
+                    card.RemoveFromClassList("is-unaffordable");
+                }
+            }
+        }
+    }
+
+    private void ConfirmCurrentModule()
+    {
+        if (currentSelectedCardData != null && currentPreviewedCardButton != null)
+        {
+            float totalBudget = GetCurrentMissionBudget();
+            float costIfPicked = GetSelectedCostExceptCategory(currentSelectedCardData.Category) + currentSelectedCardData.NumericPrice;
+            if (costIfPicked > totalBudget + 0.01f)
+            {
+                if (saveButton != null) saveButton.text = "Over Budget!";
+                if (budgetLabel != null) budgetLabel.AddToClassList("budget-over");
+                if (priceLabel != null) priceLabel.AddToClassList("budget-over");
+                return;
+            }
+
+            if (selectedCardsByCategory.TryGetValue(currentSelectedCardData.Category, out Button prevCard) && prevCard != null)
+            {
+                prevCard.RemoveFromClassList("is-selected");
+            }
+            selectedCardsByCategory[currentSelectedCardData.Category] = currentPreviewedCardButton;
+            currentPreviewedCardButton.AddToClassList("is-selected");
+        }
+
+        if (selectedCardsByCategory.Count == 0) return;
+
+        if (GetTotalSelectedCost() > GetCurrentMissionBudget() + 0.01f)
+        {
+            if (saveButton != null) saveButton.text = "Over Budget!";
+            return;
+        }
+
+        SyncSelectedModulesToStore();
+        UpdateBudgetUI();
+
         if (saveButton != null)
         {
-            saveButton.text = "Guardado";
+            saveButton.text = "Saved";
         }
-        UpdateLaunchButtonVisibility();
     }
 
     private void UpdateLaunchButtonVisibility()
     {
         if (launchButton == null) return;
 
-        if (RoverModuleSelection.IsConfigurationComplete)
+        bool withinBudget = GetTotalSelectedCost() <= GetCurrentMissionBudget() + 0.01f;
+        if (RoverModuleSelection.IsConfigurationComplete && withinBudget)
         {
             launchButton.RemoveFromClassList("panel-hidden");
         }
@@ -298,6 +439,14 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
     private void LaunchMarsScene()
     {
         if (!RoverModuleSelection.IsConfigurationComplete) return;
+        if (GetTotalSelectedCost() > GetCurrentMissionBudget() + 0.01f) return;
+
+        IReadOnlyList<Mission> missions = MissionsImplement.GetMissions;
+        if (missions != null && missions.Count > 0)
+        {
+            int idx = Mathf.Clamp(currentMissionIndex, 0, missions.Count - 1);
+            MissionsImplement.ActiveMission = missions[idx];
+        }
 
         LoadingManegment.TargetScene = "MarsScene";
         SceneManager.LoadScene("LoadingScene");
@@ -346,7 +495,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
             }
             frame.Add(icon);
 
-            var nameLabel = new Label(data.Name);
+            var nameLabel = new Label($"{data.Name}\n({data.Price})");
             nameLabel.AddToClassList("grid-card-label");
             nameLabel.pickingMode = PickingMode.Ignore;
 
@@ -374,6 +523,7 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
                 DetailTitle = "Hits:",
                 Stats = $"{armor.bangs} hits",
                 Price = $"{armor.price}$",
+                NumericPrice = armor.price,
                 ProgressValue = armor.bangs,
                 ProgressMax = 20f,
                 Module = armor
@@ -392,9 +542,10 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
                 Name = battery.name,
                 Category = "Battery",
                 StatTitle = "Capacity:",
-                DetailTitle = "Carga:",
+                DetailTitle = "Charge:",
                 Stats = $"{battery.ah / 1000f:0.#}kAh",
                 Price = $"{battery.price}$",
+                NumericPrice = battery.price,
                 ProgressValue = battery.ah / 1000f,
                 ProgressMax = 30f,
                 Module = battery
@@ -415,7 +566,8 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
                 StatTitle = "Range:",
                 DetailTitle = "Signal:",
                 Stats = $"{antenna.radius}cm / {antenna.speed}Hz",
-                Price = "N/D",
+                Price = $"{antenna.price}$",
+                NumericPrice = antenna.price,
                 ProgressValue = antenna.radius,
                 ProgressMax = 100f,
                 Module = antenna
@@ -428,18 +580,9 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
     {
         if (data == null || data.Module == null) return;
 
-        if (selectedCardsByCategory.TryGetValue(data.Category, out Button prevCard) && prevCard != null)
-        {
-            prevCard.RemoveFromClassList("is-selected");
-        }
-        selectedCardsByCategory[data.Category] = cardButton;
-        cardButton?.AddToClassList("is-selected");
-
         currentSelectedModule = data.Module;
-        if (saveButton != null)
-        {
-            saveButton.text = "Select";
-        }
+        currentSelectedCardData = data;
+        currentPreviewedCardButton = cardButton;
 
         if (resourcesTitleLabel != null) resourcesTitleLabel.text = data.Category.ToUpperInvariant();
         if (selectedModuleLabel != null) selectedModuleLabel.text = data.Name;
@@ -454,6 +597,49 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
             capacityProgress.value = data.ProgressValue;
             capacityProgress.title = data.Stats;
         }
+
+        bool isAlreadySelected = selectedCardsByCategory.TryGetValue(data.Category, out Button prevCard) && prevCard == cardButton;
+        if (isAlreadySelected)
+        {
+            cardButton.RemoveFromClassList("is-selected");
+            selectedCardsByCategory.Remove(data.Category);
+            if (budgetLabel != null) budgetLabel.RemoveFromClassList("budget-over");
+            if (priceLabel != null) priceLabel.RemoveFromClassList("budget-over");
+            if (saveButton != null) saveButton.text = "Select";
+            SyncSelectedModulesToStore();
+            UpdateBudgetUI();
+            return;
+        }
+
+        float totalBudget = GetCurrentMissionBudget();
+        float costIfPicked = GetSelectedCostExceptCategory(data.Category) + data.NumericPrice;
+
+        if (costIfPicked > totalBudget + 0.01f)
+        {
+            if (budgetLabel != null) budgetLabel.AddToClassList("budget-over");
+            if (priceLabel != null) priceLabel.AddToClassList("budget-over");
+            if (saveButton != null) saveButton.text = "Over Budget!";
+            UpdateBudgetUI();
+            return;
+        }
+
+        if (budgetLabel != null) budgetLabel.RemoveFromClassList("budget-over");
+        if (priceLabel != null) priceLabel.RemoveFromClassList("budget-over");
+
+        if (prevCard != null)
+        {
+            prevCard.RemoveFromClassList("is-selected");
+        }
+        selectedCardsByCategory[data.Category] = cardButton;
+        cardButton?.AddToClassList("is-selected");
+
+        if (saveButton != null)
+        {
+            saveButton.text = "Selected";
+        }
+
+        SyncSelectedModulesToStore();
+        UpdateBudgetUI();
     }
 
     private void SetHoveredElement(VisualElement element)
@@ -489,6 +675,11 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         if (missionInfoLabel != null)
         {
             missionInfoLabel.text = current.information;
+        }
+
+        if (missionBudgetLabel != null)
+        {
+            missionBudgetLabel.text = $"Mission Budget: {current.budget:0}$";
         }
 
         if (urlInfoLabel != null)

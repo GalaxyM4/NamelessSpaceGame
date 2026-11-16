@@ -187,6 +187,19 @@
     margin-bottom: 8px;
 }
 
+.mission-budget-text {
+    -unity-text-align: middle-left;
+    width: 100%;
+    height: auto;
+    flex-shrink: 0;
+    font-size: 38px;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
+    color: rgb(55, 200, 171);
+    text-shadow: 3px 3px 0 rgb(0, 0, 0);
+    margin-top: 8px;
+}
+
 .style-button {
     -unity-font-style: normal;
     font-size: 64px;
@@ -426,6 +439,14 @@
     background-color: rgba(55, 200, 171, 0.35);
 }
 
+.grid-card.is-unaffordable {
+    opacity: 0.45;
+    border-top-color: rgba(220, 70, 70, 0.55);
+    border-right-color: rgba(220, 70, 70, 0.55);
+    border-bottom-color: rgba(220, 70, 70, 0.55);
+    border-left-color: rgba(220, 70, 70, 0.55);
+}
+
 .grid-card-frame {
     width: 140px;
     height: 140px;
@@ -532,8 +553,8 @@
     flex-shrink: 0;
     justify-content: flex-start;
     align-items: center;
-    margin-top: 12px;
-    margin-bottom: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
     font-size: 14px;
 }
 
@@ -545,7 +566,7 @@
 
 .label-stadistic {
     -unity-font-style: bold;
-    font-size: 65px;
+    font-size: 54px;
     flex-shrink: 0;
     -unity-font-definition: url("project://database/Assets/fonts/PixelywaveTechFuture-7OdJw.otf?fileID=12800000&guid=3091d1e83733f8c49b40b722f76f43f3&type=3#PixelywaveTechFuture-7OdJw");
     text-shadow: 5px 5px 0 rgb(0, 0, 0);
@@ -554,13 +575,17 @@
 }
 
 .label-value {
-    font-size: 82px;
+    font-size: 66px;
     flex-shrink: 1;
     white-space: normal;
     -unity-font-definition: url("project://database/Assets/fonts/FutureLight-BW15w.ttf?fileID=12800000&guid=23156b98981a2ae47b81ba77d89f0f34&type=3#FutureLight-BW15w");
     -unity-font-style: bold;
     color: rgb(55, 200, 171);
     text-shadow: 4px 4px 0 rgb(0, 0, 0);
+}
+
+.label-value.budget-over {
+    color: rgb(255, 85, 85);
 }
 
 .unity-progress-bar__progress {

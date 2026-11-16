@@ -12,6 +12,7 @@
             <ui:VisualElement name="information" class="card information">
                 <ui:Label text="Information" class="information-text"/>
                 <ui:Label text="Since landing on the Red Planet in 2021 to search for signs of ancient life, NASA's Perseverance Mars rover has driven farther and faster than any vehicle on the surface of another world. On Oct. 11, its odometer reached 28.10 miles (45.22 kilometers), beating the 28.06-mile (45.16-kilometer) record of NASA's Opportunity rover (2004-2018). And Perseverance covered that ground in about 5½ years, compared with almost 15 for its predecessor. This mission highlights mineral collection, honoring this milestone from 2021." name="information" class="info-mision"/>
+                <ui:Label text="Budget: 900$" name="missionBudgetLabel" class="mission-budget-text"/>
                 <ui:Label text="https://science.nasa.gov/mission/mars-2020-perseverance/" name="urlInfo" class="text-references"/>
                 <ui:Button text="START MISSION" name="Button" class="style-button"/>
             </ui:VisualElement>
@@ -34,9 +35,13 @@
                         <ui:Label text="Cost:" class="label-stadistic"/>
                         <ui:Label name="price" text="0.00$" class="label-value"/>
                     </ui:VisualElement>
+                    <ui:VisualElement class="resource-stadistic">
+                        <ui:Label name="budgetTitleLabel" text="Budget:" class="label-stadistic"/>
+                        <ui:Label name="budgetLabel" text="900$ / 900$" class="label-value"/>
+                    </ui:VisualElement>
                     <ui:VisualElement class="resource-stadistic resource-stadistic-actions">
                         <ui:Button name="save" text="Select" class="button-main"/>
-                        <ui:Button name="launchButton" text="Ir a Marte" class="button-main button-launch panel-hidden"/>
+                        <ui:Button name="launchButton" text="Launch to Mars" class="button-main button-launch panel-hidden"/>
                         <ui:Button name="exitButton" text="Exit" class="button-main button-exit"/>
                     </ui:VisualElement>
                 </ui:VisualElement>

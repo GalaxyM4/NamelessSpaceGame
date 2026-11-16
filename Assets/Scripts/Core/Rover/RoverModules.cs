@@ -17,28 +17,29 @@ public class RoverAntenna : GenericModule
 {
     public float radius;
     public float speed;
+    public float price;
 }
 
 public static class RoverModulesImplement
 {
     public static IReadOnlyList<RoverBattery> batteryList = new RoverBattery[] {
-        new() { name = "Niquelin", ah = 5000, price = 50, spriteClass = "niquelin-material" },
-        new() { name = "Plomin", ah = 15000, price = 100, spriteClass = "plomin-material" },
-        new() { name = "Hidraumax", ah = 20000, price = 150, spriteClass = "hidraumax-material" },
-        new() { name = "Infinitum", ah = 30000, price = 200, spriteClass = "infinitum-material" }
+        new() { name = "Niquelin", ah = 2000, price = 50, spriteClass = "niquelin-material" },
+        new() { name = "Plomin", ah = 6000, price = 100, spriteClass = "plomin-material" },
+        new() { name = "Hidraumax", ah = 8000, price = 150, spriteClass = "hidraumax-material" },
+        new() { name = "Infinitum", ah = 10000, price = 250, spriteClass = "infinitum-material" }
     };
 
     public static IReadOnlyList<RoverArmor> armorList = new RoverArmor[] {
-        new() { name = "Aluminio", bangs = 4, price = 300, spriteClass = "aluminium-armor" },
-        new() { name = "Hierro", bangs = 10, price = 500, spriteClass = "iron-armor" },
-        new() { name = "Acero", bangs = 20, price = 800, spriteClass = "steel-armor" }
+        new() { name = "Aluminum", bangs = 4, price = 300, spriteClass = "aluminium-armor" },
+        new() { name = "Iron", bangs = 10, price = 500, spriteClass = "iron-armor" },
+        new() { name = "Steel", bangs = 20, price = 800, spriteClass = "steel-armor" }
     };
 
     public static IReadOnlyList<RoverAntenna> antennaList = new RoverAntenna[] {
-        new() { name = "TP-Radin", radius = 5f, speed = 5f, spriteClass = "tp-radin" },
-        new() { name = "TP-Rado", radius = 10f, speed = 2.5f, spriteClass = "tp-radio" },
-        new() { name = "TP-Radmax", radius = 100f, speed = 10f, spriteClass = "tp-radmax" },
-        new() { name = "TP-Supreme", radius = 100f, speed = 100f, spriteClass = "tp-supreme" }
+        new() { name = "TP-Radin", radius = 100f, speed = 5f, price = 50, spriteClass = "tp-radin" },
+        new() { name = "TP-Rado", radius = 300f, speed = 2.5f, price = 100, spriteClass = "tp-radio" },
+        new() { name = "TP-Radmax", radius = 500f, speed = 10f, price = 150, spriteClass = "tp-radmax" },
+        new() { name = "TP-Supreme", radius = 900f, speed = 100f, price = 250, spriteClass = "tp-supreme" }
     };
 }
 
@@ -75,9 +76,9 @@ public static class RoverModuleSelection
 
     public static void SaveSelection(RoverArmor armor, RoverBattery battery, RoverAntenna antenna)
     {
-        if (armor != null) SelectedArmor = armor;
-        if (battery != null) SelectedBattery = battery;
-        if (antenna != null) SelectedAntenna = antenna;
+        SelectedArmor = armor;
+        SelectedBattery = battery;
+        SelectedAntenna = antenna;
 
         RebuildSelectedModules();
         OnSelectionChanged?.Invoke();

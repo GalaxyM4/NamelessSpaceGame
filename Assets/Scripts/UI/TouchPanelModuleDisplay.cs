@@ -114,7 +114,7 @@ public class TouchPanelModuleDisplay : MonoBehaviour
             }
             if (module is RoverAntenna antenna)
             {
-                ApplyValues("ANTENNA", antenna.name, antenna.spriteClass, "Range:", antenna.radius, 100f, $"{antenna.radius}cm / {antenna.speed}Hz", "N/A");
+                ApplyValues("ANTENNA", antenna.name, antenna.spriteClass, "Range:", antenna.radius, 100f, $"{antenna.radius}cm / {antenna.speed}Hz", $"{antenna.price}$");
                 return;
             }
         }
@@ -130,7 +130,7 @@ public class TouchPanelModuleDisplay : MonoBehaviour
                 break;
 
             case RoverModuleSlot.Antenna:
-                ApplyValues("ANTENNA", "Antenna", "tp-radin", "Range:", 0f, 100f, "-", "N/A");
+                ApplyValues("ANTENNA", "Antenna", "tp-radin", "Range:", 0f, 100f, "-", "0.00$");
                 break;
         }
     }

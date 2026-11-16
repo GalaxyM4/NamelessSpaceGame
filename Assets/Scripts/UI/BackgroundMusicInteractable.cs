@@ -97,6 +97,28 @@ public class BackgroundMusicInteractable : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        PlayInitialTrack();
+    }
+
+    public void PlayInitialTrack()
+    {
+        LoadTracksIfNeeded();
+        if (backgroundTracks.Count == 0)
+        {
+            UpdateMusicUI();
+            return;
+        }
+
+        for (int i = 0; i < backgroundTracks.Count; i++)
+        {
+            if (backgroundTracks[i] != null &&
+                backgroundTracks[i].name.IndexOf("Portal", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                PlayTrackAtIndex(i);
+                return;
+            }
+        }
+
         PlayRandomTrack();
     }
 
