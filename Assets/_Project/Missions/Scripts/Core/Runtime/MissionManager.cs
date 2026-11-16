@@ -15,6 +15,8 @@ namespace Game.Missions
         public MissionDefinition startMission;
         [Tooltip("Mostrar el briefing automáticamente al iniciar la escena.")]
         public bool briefingOnStart = true;
+        [Tooltip("Misiones en orden aleatorio: al empezar y con \"Siguiente misión\" sale una al azar, sin repetir hasta haber jugado todas.")]
+        public bool randomMissions = true;
 
         public MissionState State { get; private set; } = MissionState.Inactiva;
         public MissionDefinition Current { get; private set; }
@@ -38,7 +40,9 @@ namespace Game.Missions
         void Start()
         {
             if (!briefingOnStart) return;
-            var m = startMission != null ? startMission : (database != null && database.missions.Count > 0 ? database.missions[0] : null);
+            var m = startMission != null ? startMission
+                  : randomMissions ? DrawRandom()
+                  : (database != null && database.missions.Count > 0 ? database.missions[0] : null);
             if (m != null) ShowBriefing(m);
         }
 
@@ -58,6 +62,7 @@ namespace Game.Missions
         {
             if (mission == null) return;
             Current = mission;
+            if (_peeked == mission) _peeked = null;
             Progress = new MissionProgress(mission);
             Elapsed = 0f;
             SetState(MissionState.Briefing);
@@ -87,14 +92,37 @@ namespace Game.Missions
         /// <summary>Botón "Siguiente misión". Devuelve false si no hay siguiente.</summary>
         public bool NextMission()
         {
-            var next = database != null ? database.GetNext(Current) : null;
+            var next = PeekNext();
             if (next == null) return false;
             ResetSampledRocks();
             ShowBriefing(next);
             return true;
         }
 
-        public MissionDefinition PeekNext() => database != null ? database.GetNext(Current) : null;
+        public MissionDefinition PeekNext()
+        {
+            if (database == null) return null;
+            if (!randomMissions) return database.GetNext(Current);
+            if (_peeked == null || _peeked == Current) _peeked = DrawRandom();
+            return _peeked;
+        }
+
+        // ---------- orden aleatorio ("bolsa": no se repite ninguna hasta haber salido todas) ----------
+        readonly List<MissionDefinition> _bag = new List<MissionDefinition>();
+        MissionDefinition _peeked;
+
+        MissionDefinition DrawRandom()
+        {
+            if (database == null || database.missions.Count == 0) return null;
+            if (_bag.Count == 0)
+                foreach (var m in database.missions)
+                    if (m != null && m != Current) _bag.Add(m);
+            if (_bag.Count == 0) return Current;   // solo hay una misión
+            int i = UnityEngine.Random.Range(0, _bag.Count);
+            var pick = _bag[i];
+            _bag.RemoveAt(i);
+            return pick;
+        }
 
         /// <summary>Botón "Salir" o abandonar durante la misión.</summary>
         public void Abandon()

@@ -15,7 +15,7 @@ namespace Game.Missions
     {
         [Tooltip("Punta del taladro. Vacío = busca INT_ROV_Drill_Tip en los hijos; si no hay, el propio objeto.")]
         public Transform tip;
-        [Tooltip("Alcance horizontal desde la punta (o el centro del rover) hasta el borde de la roca (m). Con una punta real de taladro, ~0.35 m.")]
+        [Tooltip("Alcance horizontal desde la punta del taladro (o el centro del rover) hasta el borde de la roca (m). Igual que el de la ventana de análisis.")]
         public float reach = 4f;
         [Tooltip("Segundos de perforación por punto de dureza.")]
         public float secondsPerHardness = 2f;
@@ -50,7 +50,7 @@ namespace Game.Missions
         {
             if (tip == null)
                 foreach (var t in GetComponentsInChildren<Transform>(true))
-                    if (t.name == "INT_ROV_Drill_Tip") { tip = t; reach = Mathf.Min(reach, 0.35f); break; }
+                    if (t.name == "INT_ROV_Drill_Tip") { tip = t; break; }
             if (tip == null) tip = transform;
         }
 

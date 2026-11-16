@@ -74,6 +74,10 @@ namespace RocasMarte
             if (scanner == null) scanner = rover.gameObject.AddComponent<RoverRockScanner>();
             scanner.ui = ui;
             if (cfg != null) scanner.range = cfg.range;
+            // se mide desde la punta del taladro del rover si existe (la misma referencia que usa la perforación)
+            if (scanner.scanOrigin == null)
+                foreach (var t in rover.GetComponentsInChildren<Transform>(true))
+                    if (t.name == "INT_ROV_Drill_Tip") { scanner.scanOrigin = t; break; }
 
             Debug.Log($"[Rocas Marte] {named + generic} rocas inspeccionables en '{scene.name}' ({named} muestras con ficha, {generic} rocas sin catalogar). Tecla {scanner.interactKey}.");
         }

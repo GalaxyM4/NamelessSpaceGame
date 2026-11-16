@@ -103,10 +103,13 @@ namespace Game.Missions
             }
             FreeCursor(false);
             SetRoverHudHidden(false);
+            if (_scanner != null) _scanner.enabled = true;
+            if (interactor != null) interactor.enabled = true;
             if (_roverHudRenderer != null) _roverHudRenderer.UnregisterUIReloadCallback(OnRoverHudReload);
         }
 
         RocasMarte.RockInfoUI _inspection;
+        RocasMarte.RoverRockScanner _scanner;
         bool _roverHudHidden;
 
         void Update()
@@ -115,10 +118,21 @@ namespace Game.Missions
             if (_inspection == null && Time.frameCount % 30 == 0) _inspection = FindAnyObjectByType<RocasMarte.RockInfoUI>();
             bool inspecting = _inspection != null && _inspection.IsOpen;
             _drill.style.visibility = inspecting ? Visibility.Hidden : Visibility.Visible;
+            _hud.EnableInClassList("hud--inspecting", inspecting);
 
             // la UI de la cámara del rover se oculta mientras hay ficha, briefing o resultados en pantalla
             bool overlay = _briefing.resolvedStyle.display == DisplayStyle.Flex || _results.resolvedStyle.display == DisplayStyle.Flex;
             SetRoverHudHidden(inspecting || overlay);
+
+            // con briefing o resultados en pantalla no se analiza ni se perfora
+            if (_scanner == null && Time.frameCount % 30 == 0) _scanner = FindAnyObjectByType<RocasMarte.RoverRockScanner>();
+            if (_scanner != null && _scanner.enabled == overlay)
+            {
+                _scanner.enabled = !overlay;
+                if (overlay && inspecting) _inspection.Hide();
+                if (overlay && _inspection != null) _inspection.SetPrompt(null);
+            }
+            if (interactor != null) interactor.enabled = !overlay;
 
             if (manager != null && manager.State == MissionState.EnCurso)
                 _hudTimer.text = FormatTime(manager.Elapsed, false);
