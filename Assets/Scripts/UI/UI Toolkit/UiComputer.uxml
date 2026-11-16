@@ -1,31 +1,27 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Scripts/UI/UI%20Toolkit/UiComputer.uss?fileID=7433441132597879392&amp;guid=75c39eb46fa76e44fb77598b9c818cdf&amp;type=3#UiComputer"/>
     <ui:VisualElement class="background">
-        <ui:Label name="screenTitle" text="selecciona una mision" class="main-text"/>
+        <ui:Label name="screenTitle" text="&lt;A ­ ­ ­ ­ ­ ­ ­  ­ ­ ­ ­ ­ ­ ­ SELECT YOUR MISION ­ ­ ­ ­ ­ ­ ­  ­ ­ ­ ­ ­ ­ ­ D&gt;" class="main-text"/>
         <ui:VisualElement name="mainContent" class="main-content">
-            <ui:VisualElement name="misionOne" class="card" style="display: flex;">
-                <ui:Button text="" name="MissionButtonImage" class="button-style mission-button-bg" style="-unity-background-scale-mode: scale-and-crop;"/>
+            <ui:VisualElement name="misionOne" class="card">
+                <ui:Button text="" name="MissionButtonImage" class="button-style mission-button-bg" style="-unity-background-scale-mode: scale-and-crop;">
+                    <ui:Image style="background-image: resource(&quot;curiosity-3d-model&quot;); height: 70%; width: 70%; right: auto; bottom: 0; justify-content: center; align-items: auto; align-self: center;"/>
+                </ui:Button>
                 <ui:Label text="Misión #1 - La Recolección" name="MissionTitle" class="text-general"/>
             </ui:VisualElement>
-            <ui:VisualElement name="information" class="card information" style="display: flex;">
-                <ui:Label text="Información" class="information-text"/>
+            <ui:VisualElement name="information" class="card information">
+                <ui:Label text="Information" class="information-text"/>
                 <ui:Label text="Desde que aterrizó en el Planeta Rojo en 2021 para buscar señales de vida antigua, el rover Perseverance Mars de la NASA ha recorrido más lejos y más rápido que cualquier vehículo en la superficie de otro mundo. En octubre. 11, su odómetro alcanzó las 28,10 millas (45,22 kilómetros), superando el récord de 28,06 millas (45,16 kilómetros) del rover Opportunity de la NASA (2004-2018). Y Perseverance ha cubierto el terreno en aproximadamente 5½ años, en comparación con casi 15 de su predecesor. Esta misión destaca la recolección de minerales homenajeando este hito en 2021." name="information" class="info-mision"/>
                 <ui:Label text="https://science.nasa.gov/mission/mars-2020-perseverance/" name="urlInfo" class="text-references"/>
-                <ui:Button text="Iniciar misión" name="Button" class="style-button"/>
+                <ui:Button text="START MISION" name="Button" class="style-button"/>
             </ui:VisualElement>
-            <ui:VisualElement name="dashboardRight" class="right panel-hidden" style="display: none;">
+            <ui:VisualElement name="dashboardRight" class="right panel-hidden">
                 <ui:VisualElement name="resources-left" class="resources-left">
-                    <ui:VisualElement name="previewCard" class="card-resource">
-                        <ui:Button text="" name="ButtonResource" class="button-resource">
-                            <ui:VisualElement name="cardImage" class="image-resource sprite-aluminium"/>
-                        </ui:Button>
-                        <ui:Label text="Armor" name="TextResource" class="text-resource"/>
-                    </ui:VisualElement>
-                    <ui:MultiColumnTreeView name="equipmentTreeView" fixed-item-height="42" class="equipment-tree"/>
+                    <ui:ScrollView name="equipmentScrollView" class="equipment-scroll"/>
                 </ui:VisualElement>
                 <ui:VisualElement name="resources-right" class="resources-right">
                     <ui:Label name="resourcesTitle" text="ARMOR" class="resources-title"/>
-                    <ui:Label name="selected" text="Selecciona uno" class="resources-subtitle"/>
+                    <ui:Label name="selected" text="SELECT ONE" class="resources-subtitle" style="-unity-font-definition: url(&quot;project://database/Assets/fonts/FutureLight-BW15w.ttf?fileID=12800000&amp;guid=23156b98981a2ae47b81ba77d89f0f34&amp;type=3#FutureLight-BW15w&quot;);"/>
                     <ui:VisualElement class="resource-stadistic">
                         <ui:Label name="statLabel" text="Capacidad:" class="label-stadistic"/>
                         <ui:ProgressBar name="capacity" low-value="0" high-value="100" value="0" title=""/>
@@ -40,6 +36,7 @@
                     </ui:VisualElement>
                     <ui:VisualElement class="resource-stadistic resource-stadistic-actions">
                         <ui:Button name="save" text="Seleccionar" class="button-main"/>
+                        <ui:Button name="exitButton" text="Salir" class="button-main button-exit"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>

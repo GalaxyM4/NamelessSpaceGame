@@ -211,6 +211,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: orion_interior_v13
       objectReference: {fileID: 0}
+    - target: {fileID: 4705761548015280884, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
+      propertyPath: m_TagString
+      value: Interactible
+      objectReference: {fileID: 0}
     - target: {fileID: 4710963106872609958, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -435,6 +439,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4705761548015280884, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
       insertIndex: -1
       addedObject: {fileID: 379531861}
+    - targetCorrespondingSourceObject: {fileID: 4705761548015280884, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 379531869}
+    - targetCorrespondingSourceObject: {fileID: 4705761548015280884, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 379531870}
     - targetCorrespondingSourceObject: {fileID: 1160917030060303368, guid: 4f4b8b1b85ea39b4292376df9f08fa40, type: 3}
       insertIndex: -1
       addedObject: {fileID: 379531860}
@@ -1342,7 +1352,7 @@ PanelRenderer:
   m_MaskInteraction: 0
   serializedVersion: 1
   m_PanelSettings: {fileID: 11400000, guid: e8fab884f0d0c9d499f0b3975f3513d0, type: 2}
-  sourceAsset: {fileID: 9197481963319205126, guid: 416bfa9c545f337418d80b35c791bac3, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: c3d4e5f6a7b84901bc23de45fa67bc89, type: 3}
   m_ParentUI: {fileID: 0}
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
@@ -1408,6 +1418,48 @@ PanelRenderer:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_Position: 0
+--- !u!65 &379531869
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379531857}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0042, y: 0.0023999996, z: 0.0015}
+  m_Center: {x: 4.656613e-10, y: -0.0000000037252903, z: 0.0000000018626451}
+--- !u!114 &379531870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379531857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4e5f6a7b8c94012cd34ef56ab78cd90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BackgroundMusicInteractable
+  promptText: "Panel de M\xFAsica"
+  transitionDuration: 0.4
+  screenDistanceMultiplier: 1.25
+  musicAudioSource: {fileID: 0}
+  backgroundTracks:
+  - {fileID: 8300000, guid: ad22d31bee09e7a4eb0345c9c98d71e7, type: 3}
+  - {fileID: 8300000, guid: 7ee81b7c8acf3e041ab6e35bb35f33b9, type: 3}
+  initialVolume: 0.1
+  touchPanelRenderer: {fileID: 0}
 --- !u!65 &389496491
 BoxCollider:
   m_ObjectHideFlags: 0

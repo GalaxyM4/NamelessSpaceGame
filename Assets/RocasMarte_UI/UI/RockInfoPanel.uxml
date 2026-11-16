@@ -1,0 +1,87 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="RockInfoPanel.uss" />
+    <ui:VisualElement name="root" class="root" picking-mode="Ignore">
+
+        <!-- Aviso de interacción -->
+        <ui:VisualElement name="prompt" class="prompt prompt--hidden" picking-mode="Ignore">
+            <ui:Label name="prompt-key" text="E" class="prompt__key f-value" />
+            <ui:Label name="prompt-text" text="ANALIZAR ROCA" class="prompt__text f-head" />
+        </ui:VisualElement>
+
+        <!-- Ventana de análisis -->
+        <ui:VisualElement name="panel" class="panel panel--hidden">
+
+            <ui:VisualElement class="panel__header">
+                <ui:VisualElement class="header__titles">
+                    <ui:Label name="rock-name" text="CHEYAVA FALLS" class="title f-title" />
+                    <ui:Label name="rock-type" text="Lutita (lodo endurecido)" class="subtitle f-body" />
+                </ui:VisualElement>
+                <ui:VisualElement class="header__tag">
+                    <ui:Label text="ANÁLISIS DE MUESTRA" class="tag__label f-label" />
+                    <ui:Label name="rock-id" text="ID · CheyavaFalls" class="tag__value f-value" />
+                </ui:VisualElement>
+                <ui:Button name="close-button" text="X" class="close-button f-value" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="panel__body">
+                <!-- 1. escaneo 3D en líneas -->
+                <ui:VisualElement class="column column--scan">
+                    <ui:Label text="ESCANEO 3D" class="section-title f-head" />
+                    <ui:VisualElement name="scan-view" class="scan-view">
+                        <ui:VisualElement class="scan-grid" picking-mode="Ignore" />
+                        <ui:VisualElement name="scan-image" class="scan-image" picking-mode="Ignore" />
+                        <ui:VisualElement name="scan-line" class="scan-line" picking-mode="Ignore" />
+                        <ui:VisualElement class="corner corner--tl" picking-mode="Ignore" />
+                        <ui:VisualElement class="corner corner--tr" picking-mode="Ignore" />
+                        <ui:VisualElement class="corner corner--bl" picking-mode="Ignore" />
+                        <ui:VisualElement class="corner corner--br" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="scan-info">
+                        <ui:Label text="TAMAÑO" class="row__label f-label" />
+                        <ui:Label name="v-size" text="-" class="scan-info__value f-value" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <!-- 2. características -->
+                <ui:VisualElement class="column column--data">
+                    <ui:Label text="CARACTERÍSTICAS" class="section-title f-head" />
+                    <ui:VisualElement class="row"><ui:Label text="UBICACIÓN" class="row__label f-label" /><ui:Label name="v-location" text="-" class="row__value f-value" /></ui:VisualElement>
+                    <ui:VisualElement class="row"><ui:Label text="COMPOSICIÓN" class="row__label f-label" /><ui:Label name="v-composition" text="-" class="row__value f-value" /></ui:VisualElement>
+                    <ui:VisualElement class="row"><ui:Label text="MUESTRA" class="row__label f-label" /><ui:Label name="v-sample" text="-" class="row__value f-value" /></ui:VisualElement>
+                    <ui:VisualElement class="row"><ui:Label text="EDAD" class="row__label f-label" /><ui:Label name="v-age" text="-" class="row__value f-value" /></ui:VisualElement>
+                </ui:VisualElement>
+
+                <!-- 3. análisis -->
+                <ui:VisualElement class="column column--meters">
+                    <ui:Label text="ANÁLISIS" class="section-title f-head" />
+                    <ui:VisualElement class="meter">
+                        <ui:VisualElement class="meter__head">
+                            <ui:Label text="EVIDENCIA DE AGUA" class="meter__label f-label" />
+                            <ui:Label name="n-water" text="0/5" class="meter__num f-value" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="m-water" class="meter__bar" />
+                        <ui:Label name="v-water" text="-" class="meter__note f-body" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="meter">
+                        <ui:VisualElement class="meter__head">
+                            <ui:Label text="DUREZA" class="meter__label f-label" />
+                            <ui:Label name="n-hardness" text="0/5" class="meter__num f-value" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="m-hardness" class="meter__bar" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="meter">
+                        <ui:VisualElement class="meter__head">
+                            <ui:Label text="INTERÉS ASTROBIOLÓGICO" class="meter__label f-label" />
+                            <ui:Label name="n-astro" text="0/5" class="meter__num f-value" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="m-astro" class="meter__bar" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement class="panel__description">
+                <ui:Label name="v-description" text="-" class="description f-body" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

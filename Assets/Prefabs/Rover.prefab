@@ -303,6 +303,14 @@ MonoBehaviour:
   maxSteerAngle: 35
   maxSpeed: 10
   brakeTorque: 1200
+  startSound: {fileID: 0}
+  loopSound: {fileID: 0}
+  endSound: {fileID: 0}
+  wheelStartSound: {fileID: 8300000, guid: 25868294798a6d74e84b1526b9315cdb, type: 3}
+  wheelLoopSound: {fileID: 8300000, guid: 2502af299dd5cbb47abb58e57444e69e, type: 3}
+  wheelEndSound: {fileID: 8300000, guid: f6dc9424e24840a4f853427c181262f5, type: 3}
+  wheelAudioSource: {fileID: 0}
+  wheelMoveThreshold: 0.15
   cameraSensitivity: 1
   maxVisualPitch: 85
   maxVisualYaw: 120

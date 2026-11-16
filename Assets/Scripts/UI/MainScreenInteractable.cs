@@ -34,14 +34,50 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
     private Coroutine transitionCoroutine;
 
     private int currentMissionIndex;
+    private bool isConfiguringModules;
     private VisualElement rootElement;
+    private Label screenTitleLabel;
     private VisualElement missionOneCard;
+    private VisualElement informationCard;
+    private VisualElement dashboardRightPanel;
     private Button missionImageButton;
     private Label missionTitleLabel;
     private Label missionInfoLabel;
     private Label urlInfoLabel;
     private Button startMissionButton;
+
+    private ScrollView equipmentScrollView;
+    private Label resourcesTitleLabel;
+    private Label selectedModuleLabel;
+    private Label statLabel;
+    private Label detailLabel;
+    private Label weightLabel;
+    private Label priceLabel;
+    private ProgressBar capacityProgress;
+    private Button saveButton;
+    private Button exitButton;
+
+    private GenericModule currentSelectedModule;
+    private readonly Dictionary<string, Button> selectedCardsByCategory = new Dictionary<string, Button>();
+    private VisualElement currentHoveredElement;
+    private readonly List<Button> moduleCardButtons = new List<Button>();
+    private bool isDraggingScroll;
+    private float lastScrollDragY;
+    private float scrollDragDistance;
     private int lastClickFrame = -1;
+
+    private sealed class ModuleCardData
+    {
+        public string Name;
+        public string Category;
+        public string StatTitle;
+        public string DetailTitle;
+        public string Stats;
+        public string Price;
+        public float ProgressValue;
+        public float ProgressMax;
+        public GenericModule Module;
+    }
 
     private void Awake()
     {
@@ -92,10 +128,24 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         UnbindButton();
 
         rootElement = root;
+        isConfiguringModules = false;
+        screenTitleLabel = root.Q<Label>("screenTitle");
         missionOneCard = root.Q<VisualElement>("misionOne");
+        informationCard = root.Q<VisualElement>("information");
+        dashboardRightPanel = root.Q<VisualElement>("dashboardRight");
+
         if (missionOneCard != null)
         {
             missionOneCard.SetEnabled(true);
+            missionOneCard.RemoveFromClassList("panel-hidden");
+        }
+        if (informationCard != null)
+        {
+            informationCard.RemoveFromClassList("panel-hidden");
+        }
+        if (dashboardRightPanel != null)
+        {
+            dashboardRightPanel.AddToClassList("panel-hidden");
         }
 
         missionImageButton = root.Q<Button>("MissionButtonImage");
@@ -104,12 +154,34 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         urlInfoLabel = root.Q<Label>("urlInfo");
         startMissionButton = root.Q<Button>("Button");
 
+        equipmentScrollView = root.Q<ScrollView>("equipmentScrollView");
+        resourcesTitleLabel = root.Q<Label>("resourcesTitle");
+        selectedModuleLabel = root.Q<Label>("selected");
+        statLabel = root.Q<Label>("statLabel");
+        detailLabel = root.Q<Label>("detailLabel");
+        weightLabel = root.Q<Label>("weight");
+        priceLabel = root.Q<Label>("price");
+        capacityProgress = root.Q<ProgressBar>("capacity");
+        saveButton = root.Q<Button>("save");
+        exitButton = root.Q<Button>("exitButton");
+
         if (startMissionButton != null)
         {
             startMissionButton.SetEnabled(true);
             startMissionButton.RegisterCallback<ClickEvent>(OnStartMissionClicked);
         }
 
+        if (saveButton != null)
+        {
+            saveButton.RegisterCallback<ClickEvent>(OnSaveModuleClicked);
+        }
+
+        if (exitButton != null)
+        {
+            exitButton.RegisterCallback<ClickEvent>(OnExitDashboardClicked);
+        }
+
+        SetupEquipmentGrid();
         UpdateMissionUI();
     }
 
@@ -119,19 +191,220 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         {
             startMissionButton.UnregisterCallback<ClickEvent>(OnStartMissionClicked);
         }
+        if (saveButton != null)
+        {
+            saveButton.UnregisterCallback<ClickEvent>(OnSaveModuleClicked);
+        }
+        if (exitButton != null)
+        {
+            exitButton.UnregisterCallback<ClickEvent>(OnExitDashboardClicked);
+        }
+        moduleCardButtons.Clear();
+        selectedCardsByCategory.Clear();
+        currentHoveredElement = null;
+        isDraggingScroll = false;
+    }
+
+    private void OnExitDashboardClicked(ClickEvent evt)
+    {
+        ExitScreenFocus();
     }
 
     private void OnStartMissionClicked(ClickEvent evt)
     {
-        TriggerStartMission();
+        OpenModuleDashboard();
     }
 
-    private void TriggerStartMission()
+    private void OpenModuleDashboard()
     {
         if (Time.frameCount == lastClickFrame) return;
         lastClickFrame = Time.frameCount;
-        LoadingManegment.TargetScene = "MarsScene";
-        SceneManager.LoadScene("LoadingScene");
+
+        isConfiguringModules = true;
+        SetHoveredElement(null);
+
+        if (missionOneCard != null) missionOneCard.AddToClassList("panel-hidden");
+        if (informationCard != null) informationCard.AddToClassList("panel-hidden");
+        if (dashboardRightPanel != null) dashboardRightPanel.RemoveFromClassList("panel-hidden");
+        if (screenTitleLabel != null) screenTitleLabel.text = "CONFIGURA TU ROVER";
+    }
+
+    private void OnSaveModuleClicked(ClickEvent evt)
+    {
+        ConfirmCurrentModule();
+    }
+
+    private void ConfirmCurrentModule()
+    {
+        if (currentSelectedModule != null)
+        {
+            RoverModuleSelection.SelectModule(currentSelectedModule);
+        }
+    }
+
+    private void SetupEquipmentGrid()
+    {
+        if (equipmentScrollView == null) return;
+
+        equipmentScrollView.mode = ScrollViewMode.Vertical;
+        equipmentScrollView.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
+        equipmentScrollView.Clear();
+        moduleCardButtons.Clear();
+        selectedCardsByCategory.Clear();
+
+        AddCategorySection("Armor", BuildArmorCards());
+        AddCategorySection("Battery", BuildBatteryCards());
+        AddCategorySection("Antena", BuildAntennaCards());
+    }
+
+    private void AddCategorySection(string title, List<ModuleCardData> items)
+    {
+        var header = new Label(title);
+        header.AddToClassList("section-header");
+        equipmentScrollView.Add(header);
+
+        var grid = new VisualElement();
+        grid.AddToClassList("module-grid");
+
+        foreach (ModuleCardData data in items)
+        {
+            var cardButton = new Button();
+            cardButton.AddToClassList("grid-card");
+            cardButton.userData = data;
+
+            var frame = new VisualElement();
+            frame.AddToClassList("grid-card-frame");
+            frame.pickingMode = PickingMode.Ignore;
+
+            var icon = new VisualElement();
+            icon.AddToClassList("grid-card-icon");
+            icon.pickingMode = PickingMode.Ignore;
+            if (data.Module != null && !string.IsNullOrEmpty(data.Module.spriteClass))
+            {
+                icon.AddToClassList(data.Module.spriteClass);
+            }
+            frame.Add(icon);
+
+            var nameLabel = new Label(data.Name);
+            nameLabel.AddToClassList("grid-card-label");
+            nameLabel.pickingMode = PickingMode.Ignore;
+
+            cardButton.Add(frame);
+            cardButton.Add(nameLabel);
+            cardButton.clicked += () => SelectModuleCard(cardButton, data);
+
+            moduleCardButtons.Add(cardButton);
+            grid.Add(cardButton);
+        }
+
+        equipmentScrollView.Add(grid);
+    }
+
+    private List<ModuleCardData> BuildArmorCards()
+    {
+        var list = new List<ModuleCardData>();
+        foreach (RoverArmor armor in RoverModulesImplement.armorList)
+        {
+            list.Add(new ModuleCardData
+            {
+                Name = armor.name,
+                Category = "Armor",
+                StatTitle = "Resistencia:",
+                DetailTitle = "Golpes:",
+                Stats = $"{armor.bangs} golpes",
+                Price = $"{armor.price}$",
+                ProgressValue = armor.bangs,
+                ProgressMax = 20f,
+                Module = armor
+            });
+        }
+        return list;
+    }
+
+    private List<ModuleCardData> BuildBatteryCards()
+    {
+        var list = new List<ModuleCardData>();
+        foreach (RoverBattery battery in RoverModulesImplement.batteryList)
+        {
+            list.Add(new ModuleCardData
+            {
+                Name = battery.name,
+                Category = "Battery",
+                StatTitle = "Capacidad:",
+                DetailTitle = "Carga:",
+                Stats = $"{battery.ah / 1000f:0.#}kAh",
+                Price = $"{battery.price}$",
+                ProgressValue = battery.ah / 1000f,
+                ProgressMax = 30f,
+                Module = battery
+            });
+        }
+        return list;
+    }
+
+    private List<ModuleCardData> BuildAntennaCards()
+    {
+        var list = new List<ModuleCardData>();
+        foreach (RoverAntenna antenna in RoverModulesImplement.antennaList)
+        {
+            list.Add(new ModuleCardData
+            {
+                Name = antenna.name,
+                Category = "Antena",
+                StatTitle = "Alcance:",
+                DetailTitle = "Señal:",
+                Stats = $"{antenna.radius}cm / {antenna.speed}Hz",
+                Price = "N/D",
+                ProgressValue = antenna.radius,
+                ProgressMax = 100f,
+                Module = antenna
+            });
+        }
+        return list;
+    }
+
+    private void SelectModuleCard(Button cardButton, ModuleCardData data)
+    {
+        if (data == null || data.Module == null) return;
+
+        if (selectedCardsByCategory.TryGetValue(data.Category, out Button prevCard) && prevCard != null)
+        {
+            prevCard.RemoveFromClassList("is-selected");
+        }
+        selectedCardsByCategory[data.Category] = cardButton;
+        cardButton?.AddToClassList("is-selected");
+
+        currentSelectedModule = data.Module;
+        RoverModuleSelection.SelectModule(currentSelectedModule);
+
+        if (resourcesTitleLabel != null) resourcesTitleLabel.text = data.Category.ToUpperInvariant();
+        if (selectedModuleLabel != null) selectedModuleLabel.text = data.Name;
+        if (statLabel != null) statLabel.text = data.StatTitle;
+        if (detailLabel != null) detailLabel.text = data.DetailTitle;
+        if (weightLabel != null) weightLabel.text = data.Stats;
+        if (priceLabel != null) priceLabel.text = data.Price;
+
+        if (capacityProgress != null)
+        {
+            capacityProgress.highValue = data.ProgressMax;
+            capacityProgress.value = data.ProgressValue;
+            capacityProgress.title = data.Stats;
+        }
+    }
+
+    private void SetHoveredElement(VisualElement element)
+    {
+        if (currentHoveredElement == element) return;
+
+        if (currentHoveredElement != null)
+        {
+            currentHoveredElement.RemoveFromClassList("is-hovered");
+        }
+        currentHoveredElement = element;
+        if (currentHoveredElement != null)
+        {
+            currentHoveredElement.AddToClassList("is-hovered");
+        }
     }
 
     private void UpdateMissionUI()
@@ -258,16 +531,173 @@ public class MainScreenInteractable : MonoBehaviour, IInteractable
         }
 
         var mouse = Mouse.current;
-        if (mouse != null && mouse.leftButton.wasPressedThisFrame && startMissionButton != null)
+        if (mouse != null)
         {
             Vector2 mousePos = mouse.position.ReadValue();
             if (TryGetPanelPointFromScreen(mousePos, true, out Vector2 panelPoint))
             {
-                if (startMissionButton.worldBound.Contains(panelPoint))
+                UpdateMouseHover(panelPoint);
+
+                if (mouse.leftButton.wasPressedThisFrame)
                 {
-                    TriggerStartMission();
+                    HandlePanelClick(panelPoint);
+                }
+
+                if (isConfiguringModules && equipmentScrollView != null)
+                {
+                    float scrollY = mouse.scroll.ReadValue().y;
+                    if (!Mathf.Approximately(scrollY, 0f) && equipmentScrollView.worldBound.Contains(panelPoint))
+                    {
+                        float step = Mathf.Abs(scrollY) > 10f ? scrollY * 0.5f : scrollY * 50f;
+                        ScrollEquipmentBy(-step);
+                    }
+
+                    if (mouse.rightButton.wasPressedThisFrame && equipmentScrollView.worldBound.Contains(panelPoint))
+                    {
+                        isDraggingScroll = true;
+                        lastScrollDragY = panelPoint.y;
+                        scrollDragDistance = 0f;
+                    }
+                    else if (isDraggingScroll && mouse.rightButton.isPressed)
+                    {
+                        float deltaY = panelPoint.y - lastScrollDragY;
+                        lastScrollDragY = panelPoint.y;
+                        scrollDragDistance += Mathf.Abs(deltaY);
+                        if (Mathf.Abs(deltaY) > 0.01f)
+                        {
+                            ScrollEquipmentBy(-deltaY);
+                        }
+                    }
+                    else if (mouse.rightButton.wasReleasedThisFrame)
+                    {
+                        isDraggingScroll = false;
+                    }
                 }
             }
+            else
+            {
+                isDraggingScroll = false;
+                SetHoveredElement(null);
+            }
+        }
+    }
+
+    private void ScrollEquipmentBy(float deltaY)
+    {
+        if (equipmentScrollView == null) return;
+
+        float contentHeight = equipmentScrollView.contentContainer.layout.height;
+        float viewportHeight = equipmentScrollView.contentViewport.layout.height;
+        float maxScroll = Mathf.Max(0f, contentHeight - viewportHeight);
+
+        Vector2 offset = equipmentScrollView.scrollOffset;
+        offset.y = Mathf.Clamp(offset.y + deltaY, 0f, maxScroll);
+        equipmentScrollView.scrollOffset = offset;
+    }
+
+    private void UpdateMouseHover(Vector2 panelPoint)
+    {
+        if (!isConfiguringModules)
+        {
+            if (startMissionButton != null && startMissionButton.worldBound.Contains(panelPoint))
+            {
+                SetHoveredElement(startMissionButton);
+            }
+            else
+            {
+                SetHoveredElement(null);
+            }
+            return;
+        }
+
+        if (exitButton != null && exitButton.worldBound.Contains(panelPoint))
+        {
+            SetHoveredElement(exitButton);
+            return;
+        }
+
+        if (saveButton != null && saveButton.worldBound.Contains(panelPoint))
+        {
+            SetHoveredElement(saveButton);
+            return;
+        }
+
+        Button hoveredCard = FindModuleCardAtPoint(panelPoint);
+        if (hoveredCard != null)
+        {
+            SetHoveredElement(hoveredCard);
+            return;
+        }
+
+        SetHoveredElement(null);
+    }
+
+    private Button FindModuleCardAtPoint(Vector2 panelPoint)
+    {
+        if (equipmentScrollView != null && !equipmentScrollView.worldBound.Contains(panelPoint))
+        {
+            return null;
+        }
+
+        if (rootElement != null && rootElement.panel != null)
+        {
+            VisualElement picked = rootElement.panel.Pick(panelPoint);
+            for (VisualElement el = picked; el != null; el = el.parent)
+            {
+                if (el is Button btn && btn.userData is ModuleCardData)
+                {
+                    return btn;
+                }
+            }
+        }
+
+        foreach (Button card in moduleCardButtons)
+        {
+            if (IsPointOverCard(card, panelPoint))
+            {
+                return card;
+            }
+        }
+
+        return null;
+    }
+
+    private static bool IsPointOverCard(Button card, Vector2 panelPoint)
+    {
+        if (card == null) return false;
+        if (card.worldBound.Contains(panelPoint)) return true;
+
+        VisualElement icon = card.Q<VisualElement>(className: "grid-card-icon");
+        return icon != null && icon.worldBound.Contains(panelPoint);
+    }
+
+    private void HandlePanelClick(Vector2 panelPoint)
+    {
+        if (!isConfiguringModules)
+        {
+            if (startMissionButton != null && startMissionButton.worldBound.Contains(panelPoint))
+            {
+                OpenModuleDashboard();
+            }
+            return;
+        }
+
+        if (exitButton != null && exitButton.worldBound.Contains(panelPoint))
+        {
+            ExitScreenFocus();
+            return;
+        }
+
+        if (saveButton != null && saveButton.worldBound.Contains(panelPoint))
+        {
+            ConfirmCurrentModule();
+            return;
+        }
+
+        Button clickedCard = FindModuleCardAtPoint(panelPoint);
+        if (clickedCard != null && clickedCard.userData is ModuleCardData data)
+        {
+            SelectModuleCard(clickedCard, data);
         }
     }
 
