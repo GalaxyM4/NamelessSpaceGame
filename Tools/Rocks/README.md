@@ -4,7 +4,7 @@
 
 `Assets/Scenes/MarsScene.unity` contains a baked, seeded field using the five
 `SM_ROCK_*` models, matching `COL_ROCK_*_Convex` hulls, and packed 1024px color/normal
-textures from `rocks_lowpoly_v03_compartir.blend`. The original Blender file is
+textures from `ArtSource/Rocks/rocks_lowpoly_v03_compartir.blend`. The original Blender file is
 left unchanged outside `Assets`; teammates do not need Blender to play the scene.
 Temporary ground/scale-reference objects and procedural source materials are not imported.
 
@@ -156,7 +156,7 @@ From the project root, with Blender installed:
 
 ```powershell
 & 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' `
-  --background rocks_lowpoly_v03_compartir.blend --python Tools/Rocks/export_rocks.py
+  --background ArtSource/Rocks/rocks_lowpoly_v03_compartir.blend --python Tools/Rocks/export_rocks.py
 ```
 
 Exports render/collision geometry in a common normalized frame, preserves UVs,
