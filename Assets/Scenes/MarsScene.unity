@@ -523,7 +523,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7f9472a2c0ef2814b81fad6287be85a1, type: 2}
   - {fileID: 11400000, guid: a854a3d0731221644bffaecfa79d1823, type: 2}
   - {fileID: 11400000, guid: c211b92263044a94f9bc4fb72b76fc8f, type: 2}
-  seed: 24175
+  seed: 45994
   useDensity: 1
   decorationDensity: 23.841858
   obstacleDensity: 3.8146973
@@ -547,8 +547,8 @@ MonoBehaviour:
   maximumSlope: 32
   spawnClearance: 10
   minimumGap: 0.15
-  burialFraction: 0.08
-  maximumBurialFraction: 0.35
+  burialFraction: 0.107
+  maximumBurialFraction: 0.647
   groundAlignment: 0.45
   roverClearanceRadius: 2
   settledRoverHeight: 1.4
@@ -559,7 +559,7 @@ MonoBehaviour:
   starterSamples: 5
   studySites: []
   exclusions: []
-  bakedRoot: {fileID: 5977814712494851241}
+  bakedRoot: {fileID: 5999801086856256345}
   layoutPrefab: {fileID: 984742770822090461, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
 --- !u!4 &1295210085
 Transform:
@@ -632,7 +632,7 @@ Terrain:
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
-  m_SplatMapDistance: 5792.786
+  m_SplatMapDistance: 11592.079
   m_HeightmapMinimumLODSimplification: 0
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
@@ -665,7 +665,7 @@ Transform:
   m_GameObject: {fileID: 1308145422}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1024, y: 0, z: -1024}
+  m_LocalPosition: {x: -2048, y: 0, z: -2048}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -683,7 +683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da32b0c310ca568479b15eb5e30809da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MarsTerrainGenerator
-  manifestPath: TerrainSources/Prepared/Gale/manifest.json
+  manifestPath: TerrainSources/Prepared/Jezero/manifest.json
   terrainCenterWorldXZ: {x: 0, y: 0}
   surfaceTileMeters: 3
   spawnWorldXZ: {x: 0, y: 0}
@@ -694,7 +694,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1576583570584022348, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
   m_PrefabInstance: {fileID: 8865164782067189094}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &5977814712494851240
+--- !u!1001 &5999801086856256344
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -755,10 +755,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
---- !u!4 &5977814712494851241 stripped
+--- !u!4 &5999801086856256345 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4730035509277117091, guid: 1c3279c82afefc549b1016c6fbf68f33, type: 3}
-  m_PrefabInstance: {fileID: 5977814712494851240}
+  m_PrefabInstance: {fileID: 5999801086856256344}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8865164782067189094
 PrefabInstance:
@@ -788,6 +788,10 @@ PrefabInstance:
       propertyPath: startSound
       value: 
       objectReference: {fileID: 8300000, guid: 1ff3177daa877ad469beb735bec28cc7, type: 3}
+    - target: {fileID: 3615715286965502086, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
+      propertyPath: far clip plane
+      value: 6000
+      objectReference: {fileID: 0}
     - target: {fileID: 5409387474644546850, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_Name
       value: Rover
@@ -798,7 +802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8937855599700424506, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.58
+      value: 70.810936
       objectReference: {fileID: 0}
     - target: {fileID: 8937855599700424506, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_LocalPosition.z
@@ -806,7 +810,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8937855599700424506, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8937855599700424506, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_LocalRotation.x
@@ -814,7 +818,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8937855599700424506, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8937855599700424506, guid: 4e4bcd7db5afe0c4e9d5295ef434a570, type: 3}
       propertyPath: m_LocalRotation.z
@@ -851,4 +855,4 @@ SceneRoots:
   - {fileID: 1308145425}
   - {fileID: 8865164782067189094}
   - {fileID: 1295210085}
-  - {fileID: 5977814712494851240}
+  - {fileID: 5999801086856256344}

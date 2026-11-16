@@ -19,7 +19,7 @@ public static class BakeCurrentScene
             throw new InvalidOperationException("The existing terrain generator and rover must be present.");
 
         Undo.RecordObject(generator, "Configure HiRISE Bake");
-        generator.manifestPath = "TerrainSources/Prepared/Gale/manifest.json";
+        generator.manifestPath = "TerrainSources/Prepared/Jezero/manifest.json";
         generator.terrainCenterWorldXZ = Vector2.zero;
         generator.spawnWorldXZ = Vector2.zero;
         generator.snapTarget = rover.transform;

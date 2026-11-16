@@ -1,0 +1,34 @@
+{
+    "dtmProduct": "DTEEC_045994_1985_046060_1985_U01",
+    "orthoProduct": "ESP_045994_1985_RED_C_01_ORTHO",
+    "sourceHeightSha256": "804f4f0d5bada8d50cbca583ee508faaa1f4fe372089a01b3e5afb588bbf5f16",
+    "sourceTextureSha256": "f7425e8e92cb36277da1a089deff2ead33c9c6a7552a629b2c270215c671e074",
+    "orientation": "+X=east,+Z=north; float32 LE rows south-to-north",
+    "credit": "NASA/JPL-Caltech/University of Arizona; DTM produced by USGS",
+    "projectedBounds": [
+        -2048.0,
+        1092452.0,
+        2048.0,
+        1096548.0
+    ],
+    "elevationOffsetMeters": -2617.93017578125,
+    "verticalRangeMeters": 199.10791015625,
+    "sizeMeters": 4096.0,
+    "resolution": 4097,
+    "terrainWorldPosition": {
+        "x": -2048.0,
+        "y": 0.0,
+        "z": -2048.0
+    },
+    "flattenSpawn": false,
+    "spawnWorldXZ": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "heightMode": "unmodified-source-elevations",
+    "verticalScale": 1.0,
+    "surfaceMode": "artistic-rock",
+    "surfaceTextureAssetPath": "Assets/Textures/Rock029_8K-JPG_Color.jpg",
+    "surfaceTileMeters": 3.0,
+    "maximumGameplayHeightChangeMeters": 0.0
+}

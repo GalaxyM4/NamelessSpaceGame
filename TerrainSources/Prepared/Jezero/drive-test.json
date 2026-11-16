@@ -1,0 +1,14 @@
+{
+  "framesAdvanced": 1252,
+  "gameSeconds": 11.14032,
+  "distanceMeters": 100.80999,
+  "maximumTiltDegrees": 5.667283,
+  "maximumSpeedMetersPerSecond": 10.354579,
+  "groundedObservations": 106,
+  "observations": 106,
+  "inputObservations": 106,
+  "maximumMotorTorque": 800.0,
+  "passed": true,
+  "start": "(0.00, 70.91, -0.02)",
+  "end": "(-100.54, 72.27, -7.43)"
+}

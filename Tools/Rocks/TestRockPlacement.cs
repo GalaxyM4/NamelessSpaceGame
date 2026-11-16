@@ -24,7 +24,9 @@ public static class TestRockPlacement
             s.obstacles.count = 30;
             s.samples.count = 6;
             s.starterSamples = 5;
-            s.routeGridMeters = 8f;
+            // Regression plans use a coarse grid; full saved-layout validation
+            // separately runs the scene's actual 4 m swept-corridor screen.
+            s.routeGridMeters = 16f;
             foreach (RockDefinition definition in s.definitions)
             {
                 Vector3 span = definition.mesh.bounds.size;
@@ -94,8 +96,14 @@ public static class TestRockPlacement
                 Check(Vector2.Distance(new Vector2(rock.position.x, rock.position.z),
                     new Vector2(s.rover.position.x, s.rover.position.z)) >= s.spawnClearance + rock.radius, "Spawn exclusion");
                 if (rock.role == RockRole.Sample)
+                {
                     Check(Vector3.Distance(rock.position, rock.approach) <= s.candidateApproachRange,
                         "Candidate approach within placement proximity");
+                    Check(Vector2.Distance(new Vector2(rock.position.x, rock.position.z),
+                        new Vector2(rock.approach.x, rock.approach.z)) >=
+                        s.roverClearanceRadius + rock.radius + s.minimumGap,
+                        "Candidate does not block its own approach envelope");
+                }
             }
             passed++;
             for (int i = 0; i < first.rocks.Count; i++)

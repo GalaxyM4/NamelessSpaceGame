@@ -5,13 +5,22 @@ The procedural generator has been replaced in `MarsScene` using the existing
 
 ## Current map
 
-- Gale MSL landing-site region: **2048 × 2048 m**, 2049² height samples.
-- Elevation: `DTEEC_024234_1755_024300_1755_U01` (stereo DTM, approximately 1 m sampling).
-- Archived imagery: `ESP_024234_1755_RED_C_01_ORTHO` (monochrome, **not displayed**).
-- [Source and product downloads](https://www.uahirise.org/dtm/ESP_024234_1755).
+- Jezero western delta front: **4096 × 4096 m**, **4097²** height samples (1 m grid).
+- Elevation: `DTEEC_045994_1985_046060_1985_U01` (stereo DTM, 1.00966 m source posts).
+- Archived imagery: `ESP_045994_1985_RED_C_01_ORTHO` (monochrome, **not displayed**).
+- [Source and product downloads](https://www.uahirise.org/dtm/ESP_045994_1985).
 - Credit: **NASA/JPL-Caltech/University of Arizona**; DTM produced by USGS.
 - +X is east; +Z is north. One Unity unit is one projected metre.
-- Approximately 14 m of natural relief, without vertical exaggeration.
+- **191.108 m** of natural relief, from -2613.930 to -2422.822 m absolute elevation,
+  without vertical exaggeration. Grid sampling uses bilinear interpolation.
+- Projected crop center: `(0, 1094500)`; bounds:
+  `[-2048, 1092452, 2048, 1096548]` in the manifest's Mars equirectangular CRS.
+  This spans the western delta-front sector around the Hawksbill Gap / Three Forks
+  exploration area, adjacent crater floor, scarps, gullies and crater rims.
+  Landmark names are regional context, not surveyed in-game waypoint coordinates.
+- Rover starts at world XZ `(0, 0)` on approximately 0.68° ground below the delta,
+  facing west toward it. Camera far clipping is 6000 m so distant terrain is visible.
+  Scarp slopes can be impassable; this is not a promise of access to every plateau.
 - Scene origin uses a recorded elevation offset, not absolute Martian elevation.
 - Source elevations are used everywhere, including spawn: no flattening, smoothing,
   localized gameplay offsets, or vertical exaggeration. Rover placement moves the
@@ -45,31 +54,36 @@ isolated cache, not into Unity.
 From the project root:
 
 ```powershell
-python Tools/HiRISE/download.py
-uv run --python 3.13 Tools/HiRISE/prepare.py --center 1397.968102405869 -275285.4658527607 --extent 2048
+python Tools/HiRISE/download.py --region Jezero
+uv run --python 3.13 Tools/HiRISE/prepare.py --region Jezero --center 0 1094500 --extent 4096 --resolution 4097
 ```
 
-Original downloads (~471 MB) live in ignored `TerrainSources/Original/Gale`, outside
+Original downloads (~415 MB) live in ignored `TerrainSources/Original/Jezero`, outside
 `Assets`. Preparation writes:
 
-- `TerrainSources/Prepared/Gale/heights.f32`: little-endian absolute float32
+- `TerrainSources/Prepared/Jezero/heights.f32`: little-endian absolute float32
   elevations, south-to-north rows, west-to-east columns. Not in player builds.
-- `TerrainSources/Prepared/Gale/manifest.json`: hashes, product IDs, projection,
+- `TerrainSources/Prepared/Jezero/manifest.json`: hashes, product IDs, projection,
   crop bounds, source elevations, orientation and image contrast parameters.
-- `TerrainSources/Prepared/Gale/ortho-monochrome.png`: untinted, contrast-stretched
+- `TerrainSources/Prepared/Jezero/ortho-monochrome.png`: untinted, contrast-stretched
   imagery retained for comparison and future palette changes.
-- `Assets/Textures/HiRISE/GaleOrtho.png`: registered, north-up, artistically tinted
+- `Assets/Textures/HiRISE/JezeroOrtho.png`: registered, north-up, artistically tinted
   imagery, archived but not assigned to the terrain. Palette endpoints and both
-  image hashes are recorded in the manifest. This and `GaleOrtho.terrainlayer`
-  remain available as source/reference assets; the active layer is `MarsRock.terrainlayer`.
+  image hashes are recorded in the manifest. Archived Gale products and
+  `GaleOrtho.terrainlayer` remain available; the active layer is `MarsRock.terrainlayer`.
 
 An explicit `--center` is required (except with `--inspect`); automatic low-slope
-crop selection has been removed. The current bounds are unchanged. This crop is
-naturally gentle; a more challenging landscape needs a different real crop.
+crop selection has been removed. `--region Gale` and the default 2049 resolution
+retain compatibility with the archived 2048 m map.
 Use `--inspect` to inspect source georeferencing without writing outputs.
 The orthoimage is reprojected to the DTM crop; their pixel origins are not assumed
 identical. Missing elevation or imagery coverage aborts preparation rather than
 silently filling holes or inventing heights.
+The Jezero JP2's embedded projection misencodes its standard parallel as a latitude
+of origin. Its companion PDS label names the DTM as its source and supplies the
+matching projection parameters. Preparation checks that label, corrects the image
+CRS to the DTM's and retains the image's own affine transform. This correction
+affects archived imagery only, never the elevations or displayed surface.
 
 In Unity, select `DebugTerrain` and click **Bake HiRISE Mars Terrain**. This replaces
 its existing TerrainData in place, snaps the assigned rover, and writes
@@ -119,6 +133,30 @@ Requires a saved MarsScene in Edit Mode. Rebuilds heights and updates the existi
 collider in place without invoking surface setup or texture reimports. Verifies that
 the material, layer settings/references, paint weights and basemap distance are unchanged.
 Use this rather than the initial-setup script to retain all current texture tuning.
+After any elevation or footprint change, **Rebuild Rocks** and save again: old
+rock world positions do not automatically conform to new heights.
+
+### One-time Gale → Jezero migration
+
+`SwitchToJezero.cs` was used in two stages after backing up the open scene,
+TerrainData and generated prefab. It preserves live burial/density settings,
+TerrainData identity, collider references, material, layers and paint weights.
+Only heights, footprint, rover placement/orientation, camera far clip and terrain
+basemap distance change. It never alters collection or study mechanics.
+
+```powershell
+unity command script run --file Tools/HiRISE/SwitchToJezero.cs --entry SwitchToJezero.Terrain --timeout 120
+unity command script run --file Tools/HiRISE/SwitchToJezero.cs --entry SwitchToJezero.Rocks --timeout 1200
+```
+
+The first stage leaves the scene dirty; the second rebuilds the shared generated
+prefab with a Jezero-specific seed and saves. Do not replay this migration over
+later custom spawn or seed settings. For normal tuning use the Inspectors.
+The 4× larger area increases rock population and bake cost; cull distances and
+shared materials are retained. No target-device performance benchmark is implied.
+
+`CaptureTerrain.cs` renders three temporary-camera views to the approved local
+`Temp/opencode` folder; it does not save camera objects or modify the scene.
 
 ### Surface quality only
 
@@ -153,7 +191,10 @@ targets the matte artistic rock surface, not arbitrary metallic/masked terrain l
 
 `DriveSmokeTest.cs` runs only in Play Mode. It adds a temporary virtual keyboard,
 holds W through the existing rover controller for up to 12 game seconds or 100 m,
-then removes the keyboard. Run only while nobody is controlling the rover:
+then removes the keyboard. A temporary input-update hook keeps that keyboard
+current in an unfocused Editor; the input background behavior is restored in
+`finally`. No controller code or saved input settings are changed.
+Run only while nobody is controlling the rover:
 
 ```powershell
 unity command script run --file Tools/HiRISE/DriveSmokeTest.cs --entry DriveSmokeTest.Run --timeout 45
@@ -163,6 +204,20 @@ It writes `drive-test.json`; exit Play Mode afterward to restore the baked spawn
 This straight-line smoke test is not a whole-map driving certification. Source
 sampling does not resolve wheel-scale rocks, and stereo DTMs can contain
 reconstruction artifacts even where pixels are valid.
+
+### Verified Jezero migration
+
+- All **16,785,409** saved elevation samples checked; maximum error **0.0029296875 m**.
+- Existing artistic material, layers and paint weights preserved.
+- Ten rock-placement regression checks and six Python preparation checks passed.
+- Full rock validation reproduced all **46,460** transforms, meshes and materials;
+  **6,460** colliders, **60** passive candidates, **961,645** reachable screening cells.
+- Ten nested rock prefabs; largest **17,605,542 bytes**.
+- Advancing Play Mode verified; rover drove **100.81 m** through the existing controller,
+  with maximum observed tilt **5.67°** and grounded wheels in every sampled observation.
+- Returned to Edit Mode; temporary background-running and input overrides restored.
+- This is a spawn-area smoke test and approximate route screen, not whole-map
+  suspension-level certification or a standalone/target-device performance benchmark.
 
 The prepared sources and reports are versionable reproducibility inputs; the
 player packages only referenced Unity assets. No procedural height noise is used.

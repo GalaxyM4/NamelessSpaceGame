@@ -1,0 +1,13 @@
+{
+  "checkedUnmodifiedSamples": 16785409,
+  "maximumElevationErrorMeters": 0.0029296875,
+  "allSourceSamplesChecked": true,
+  "spawnPassableAtSlopeLimit": true,
+  "connectedDrivingAreaFraction": 0.9440914,
+  "connectedPassableSamples": 991886,
+  "passableSamples": 993221,
+  "farthestConnectedDistanceMeters": 2890.65259,
+  "slopeLimitDegrees": 15,
+  "routeScreeningSpacingMeters": 4.0,
+  "note": "Slopes/connectivity are informational, not traversability requirements. Every height sample is compared to source, including spawn."
+}

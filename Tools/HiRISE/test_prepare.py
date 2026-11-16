@@ -45,6 +45,13 @@ class PreparationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_heights(prepared)
 
+    def test_nonunit_spacing_uses_endpoints(self):
+        original = np.arange(100, dtype="float32").reshape(10, 10)
+        self.write(original)
+        with rasterio.open(self.path) as src:
+            heights = sample(src, (2.5, 3.5, 6.5, 7.5), 3)
+        np.testing.assert_allclose(heights, original[2:7:2, 2:7:2])
+
     def test_invalid_elevation_rejected(self):
         for invalid in (np.nan, np.inf, -3.402822655e38):
             with self.assertRaises(ValueError):

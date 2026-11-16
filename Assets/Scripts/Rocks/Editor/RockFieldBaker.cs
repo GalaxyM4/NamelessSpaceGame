@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -36,11 +37,13 @@ public static class RockFieldBaker
         private readonly RockScatterSettings s;
         private readonly System.Random random;
         private readonly Plan plan = new Plan();
+        private readonly List<Placement> reservedSamples = new List<Placement>();
         private readonly Dictionary<Vector2Int, List<Placement>> bins = new Dictionary<Vector2Int, List<Placement>>();
         private readonly Vector3 origin;
         private readonly Vector3 size;
         private readonly Vector2 noiseOffset;
         private readonly float largestRadius;
+        private readonly float spawnBiasProbability;
         private readonly Collider[] overlaps = new Collider[128];
         private bool[,] reachable;
         private int nx, nz;
@@ -52,6 +55,10 @@ public static class RockFieldBaker
             random = new System.Random(s.seed);
             origin = s.terrain.transform.position;
             size = s.terrain.terrainData.size;
+            // Keep the near-spawn population roughly constant as map area grows.
+            // A fixed 22% would put 4x as many rocks in the same 160 m circle
+            // when moving from a 2 km map to 4 km, obstructing starter routes.
+            spawnBiasProbability = 0.22f * Mathf.Min(1f, (2048f * 2048f) / (size.x * size.z));
             noiseOffset = new Vector2(Next() * 10000f, Next() * 10000f);
             largestRadius = s.definitions.Max(d => d.mesh.bounds.extents.magnitude) *
                 Mathf.Max(s.obstacles.maximumDiameter, s.decoration.maximumDiameter, s.samples.maximumDiameter);
@@ -170,7 +177,7 @@ public static class RockFieldBaker
                 throw new InvalidOperationException("No driving area from the rover. Check its position and route settings; terrain is never flattened.");
         }
 
-        private bool Approach(Vector2 p, out Vector3 approach)
+        private bool Approach(Vector2 p, float sampleRadius, out Vector3 approach)
         {
             approach = default;
             int cx = Mathf.RoundToInt((p.x - origin.x) / s.routeGridMeters);
@@ -182,7 +189,9 @@ public static class RockFieldBaker
                 int ix = cx + x, iz = cz + z;
                 if (ix < 0 || iz < 0 || ix >= nx || iz >= nz || !reachable[iz, ix]) continue;
                 Vector2 candidate = Cell(ix, iz);
-                if (Vector2.Distance(p, candidate) < s.roverClearanceRadius + s.samples.maximumDiameter ||
+                // Use the same footprint + gap as Driveable/Occupied. Longest mesh
+                // diameter alone can underestimate the rotated bounding-sphere radius.
+                if (Vector2.Distance(p, candidate) < s.roverClearanceRadius + sampleRadius + s.minimumGap ||
                     !Driveable(candidate)) continue;
                 Vector3 roverCenter = new Vector3(candidate.x, Ground(candidate) + roverHeight, candidate.y);
                 Vector3 target = new Vector3(p.x, Ground(p) + s.samples.minimumDiameter * 0.3f, p.y);
@@ -214,7 +223,7 @@ public static class RockFieldBaker
 
         private Vector2 Candidate(Vector3? center, float radius)
         {
-            if (!center.HasValue && Next() > 0.22f)
+            if (!center.HasValue && Next() > spawnBiasProbability)
                 return new Vector2(origin.x + Next() * size.x, origin.z + Next() * size.z);
             Vector3 c = center ?? s.rover.position;
             float angle = Next() * Mathf.PI * 2f;
@@ -253,11 +262,12 @@ public static class RockFieldBaker
                 float rockRadius = mesh.bounds.extents.magnitude * diameter;
                 if (!Inside(p, rockRadius + 0.5f) || Excluded(p, rockRadius) ||
                     Occupied(p, rockRadius, false) || ExistingBlocked(p, Mathf.Max(0.25f, rockRadius))) continue;
-                // Samples may not occupy any previously validated sample approach envelope.
-                if (plan.rocks.Any(r => r.role == RockRole.Sample &&
-                    Vector2.Distance(p, new Vector2(r.approach.x, r.approach.z)) < s.roverClearanceRadius + rockRadius)) continue;
+                // Keep every new rock out of previously validated candidate approach envelopes.
+                if (reservedSamples.Any(r =>
+                    Vector2.Distance(p, new Vector2(r.approach.x, r.approach.z)) <
+                    s.roverClearanceRadius + rockRadius + s.minimumGap)) continue;
                 Vector3 approach = default;
-                if (role == RockRole.Sample && !Approach(p, out approach)) continue;
+                if (role == RockRole.Sample && !Approach(p, rockRadius, out approach)) continue;
                 Vector2 uv = UV(p);
                 Quaternion rotation = Quaternion.Slerp(Quaternion.identity,
                     Quaternion.FromToRotation(Vector3.up, s.terrain.terrainData.GetInterpolatedNormal(uv.x, uv.y)),
@@ -279,6 +289,7 @@ public static class RockFieldBaker
                     rotation = rotation, approach = approach
                 };
                 plan.rocks.Add(rock);
+                if (role == RockRole.Sample) reservedSamples.Add(rock);
                 Vector2Int bin = Bin(p);
                 if (!bins.TryGetValue(bin, out var list)) bins[bin] = list = new List<Placement>();
                 list.Add(rock);
@@ -309,7 +320,10 @@ public static class RockFieldBaker
                 int x = Mathf.RoundToInt((sample.approach.x - origin.x) / s.routeGridMeters);
                 int z = Mathf.RoundToInt((sample.approach.z - origin.z) / s.routeGridMeters);
                 if (!reachable[z, x])
-                    throw new InvalidOperationException("A sample blocks another approach route. Change the seed or clearance; previous bake retained.");
+                    throw new InvalidOperationException(
+                        $"A candidate blocks an approach route at ({sample.approach.x:F1}, {sample.approach.z:F1}); " +
+                        $"local clearance valid: {Driveable(Cell(x, z))}. " +
+                        "Change the seed or clearance; previous bake retained.");
             }
             Populate(RockRole.Decoration, s.decoration, s.DecorationCount);
             var text = new StringBuilder();
@@ -450,6 +464,7 @@ public static class RockFieldBaker
                 throw new InvalidOperationException("Prepare the rock assets before baking.");
             string prefabPath = settings.layoutPrefab != null ? AssetDatabase.GetAssetPath(settings.layoutPrefab) :
                 AssetDatabase.GenerateUniqueAssetPath(folder + "/BakedMarsRocks.prefab");
+            SaveLargeFieldParts(root, prefabPath, plan.rocks.Count);
             marker.owner = null;
             GameObject prefab = PrefabUtility.SaveAsPrefabAssetAndConnect(root, prefabPath,
                 InteractionMode.AutomatedAction, out bool saved);
@@ -471,5 +486,45 @@ public static class RockFieldBaker
             UnityEngine.Object.DestroyImmediate(root);
             throw;
         }
+    }
+
+    /// <summary>Keep generated files small enough for ordinary Git hosting on larger maps.</summary>
+    public static void SaveLargeFieldParts(GameObject root, string prefabPath, int rockCount)
+    {
+        if (rockCount <= 20000) return;
+        string directory = Path.GetDirectoryName(prefabPath).Replace('\\', '/');
+        string partFolder = directory + "/" + Path.GetFileNameWithoutExtension(prefabPath) + "Parts";
+        if (!AssetDatabase.IsValidFolder(partFolder))
+            AssetDatabase.CreateFolder(directory, Path.GetFileName(partFolder));
+        // Bake-created chunks are 64 m spatial cells. Sort them to keep neighboring
+        // chunks together, and preserve every rock's world transform when reparenting.
+        Transform[] chunks = root.transform.Cast<Transform>()
+            .OrderBy(t => t.GetChild(0).position.z).ThenBy(t => t.GetChild(0).position.x).ToArray();
+        GameObject part = null;
+        int partCount = 0, partIndex = 0;
+        foreach (Transform chunk in chunks)
+        {
+            if (part != null && partCount + chunk.childCount > 5000)
+            {
+                SavePart(part, partFolder, partIndex++);
+                part = null;
+            }
+            if (part == null)
+            {
+                part = new GameObject($"Rock sector {partIndex:D3}");
+                part.transform.SetParent(root.transform, false);
+                partCount = 0;
+            }
+            partCount += chunk.childCount;
+            chunk.SetParent(part.transform, true);
+        }
+        if (part != null) SavePart(part, partFolder, partIndex);
+    }
+
+    private static void SavePart(GameObject part, string folder, int index)
+    {
+        PrefabUtility.SaveAsPrefabAssetAndConnect(part, $"{folder}/Sector{index:D3}.prefab",
+            InteractionMode.AutomatedAction, out bool saved);
+        if (!saved) throw new InvalidOperationException("Could not save a generated rock sector.");
     }
 }

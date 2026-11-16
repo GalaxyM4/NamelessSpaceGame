@@ -6,7 +6,7 @@ public class MarsTerrainGenerator : MonoBehaviour
 {
     [Header("Prepared HiRISE Source")]
     [Tooltip("Project-relative manifest produced by Tools/HiRISE/prepare.py.")]
-    public string manifestPath = "TerrainSources/Prepared/Gale/manifest.json";
+    public string manifestPath = "TerrainSources/Prepared/Jezero/manifest.json";
     public Vector2 terrainCenterWorldXZ = Vector2.zero;
 
     [Header("Artistic Mars Surface")]

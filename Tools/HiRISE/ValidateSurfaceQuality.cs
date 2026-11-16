@@ -58,7 +58,7 @@ public static class ValidateSurfaceQuality
             detailNormalSource = MarsTerrainSurface.NormalPath,
             note = "HiRISE supplies elevation only. Stochastic rock sampling and broad color variation are artistic, not measured Mars composition."
         };
-        File.WriteAllText("TerrainSources/Prepared/Gale/surface-quality.json",
+        File.WriteAllText(Path.Combine(Path.GetDirectoryName(generator.manifestPath), "surface-quality.json"),
             Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented) + "\n");
         return result;
     }

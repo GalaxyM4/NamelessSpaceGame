@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "shader": "NamelessSpaceGame/Mars Terrain Detail",
+  "satelliteImageryDisplayed": false,
+  "colorTextureSource": "Assets/Textures/Rock029_8K-JPG_Color.jpg",
+  "colorLayerCount": 1,
+  "filter": "Trilinear",
+  "anisotropy": 16,
+  "colorFormat": "BC7",
+  "normalFormat": "BC5",
+  "surfaceTileMeters": 3.0,
+  "sampling": "three smoothly blended, spatially randomized offsets and rotations",
+  "macroPatchMeters": 28.0,
+  "macroStrength": 0.18,
+  "basemapDistanceMeters": 11592.0791,
+  "detailStrength": 0.3,
+  "fadeStartMeters": 12.0,
+  "fadeEndMeters": 45.0,
+  "detailNormalSource": "Assets/Textures/Rock029_8K-JPG_NormalGL.jpg",
+  "note": "HiRISE supplies elevation only. Stochastic rock sampling and broad color variation are artistic, not measured Mars composition."
+}

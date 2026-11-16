@@ -1,9 +1,12 @@
 {
     "passed": true,
     "reproducibleLayout": true,
-    "layoutSha256": "4de849a5b22dacd39a2275e7a060d0b757cd9995db4bea14329736a80a126866",
-    "rockCount": 11660,
-    "colliderCount": 1660,
+    "allSavedTransformsMatch": true,
+    "layoutSha256": "07830ceb63264d0f205000eb3ad83344a294f67936db6f71ca500ea9f60ef4e8",
+    "rockCount": 46460,
+    "colliderCount": 6460,
     "sampleCount": 60,
-    "reachableCells": 256139
+    "reachableCells": 961645,
+    "prefabPartCount": 10,
+    "largestPrefabBytes": 17605542
 }

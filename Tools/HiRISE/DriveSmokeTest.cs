@@ -14,13 +14,26 @@ public static class DriveSmokeTest
         RoverController rover = UnityEngine.Object.FindAnyObjectByType<RoverController>();
         Rigidbody body = rover.GetComponent<Rigidbody>();
         Keyboard previous = Keyboard.current;
-        Keyboard keyboard = InputSystem.AddDevice<Keyboard>("HiRISE test keyboard");
+        Keyboard keyboard = null;
+        var background = InputSystem.settings.backgroundBehavior;
         Vector3 start = rover.transform.position;
         int firstFrame = Time.frameCount;
         float startedAt = Time.time, maximumTilt = 0f, maximumSpeed = 0f;
         int groundedObservations = 0, observations = 0;
+        int inputObservations = 0;
+        float maximumMotorTorque = 0;
+        Action holdForward = () =>
+        {
+            keyboard.MakeCurrent();
+            InputState.Change(keyboard, new KeyboardState(Key.W));
+        };
         try
         {
+            // The Editor can tick while unfocused yet suppress virtual keyboard
+            // events. Override this for the test only; never change game controls.
+            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+            keyboard = InputSystem.AddDevice<Keyboard>("HiRISE test keyboard");
+            InputSystem.onAfterUpdate += holdForward;
             keyboard.MakeCurrent();
             InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W));
             DateTime deadline = DateTime.UtcNow.AddSeconds(20);
@@ -28,6 +41,10 @@ public static class DriveSmokeTest
             {
                 await Task.Delay(100);
                 observations++;
+                if (Keyboard.current == keyboard && keyboard.wKey.isPressed) inputObservations++;
+                foreach (var axle in rover.axles)
+                    maximumMotorTorque = Mathf.Max(maximumMotorTorque, Mathf.Abs(axle.LWColl.motorTorque),
+                        Mathf.Abs(axle.RWColl.motorTorque));
                 float tilt = Vector3.Angle(rover.transform.up, Vector3.up);
                 maximumTilt = Mathf.Max(maximumTilt, tilt);
                 maximumSpeed = Mathf.Max(maximumSpeed, body.linearVelocity.magnitude);
@@ -44,8 +61,13 @@ public static class DriveSmokeTest
         }
         finally
         {
-            InputSystem.QueueStateEvent(keyboard, new KeyboardState());
-            InputSystem.RemoveDevice(keyboard);
+            InputSystem.onAfterUpdate -= holdForward;
+            if (keyboard != null)
+            {
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+                InputSystem.RemoveDevice(keyboard);
+            }
+            InputSystem.settings.backgroundBehavior = background;
             if (previous != null) previous.MakeCurrent();
         }
         float distance = Vector2.Distance(new Vector2(start.x, start.z),
@@ -56,11 +78,13 @@ public static class DriveSmokeTest
             distanceMeters = distance, maximumTiltDegrees = maximumTilt,
             maximumSpeedMetersPerSecond = maximumSpeed,
             groundedObservations, observations,
+            inputObservations, maximumMotorTorque,
             passed = Time.frameCount > firstFrame && distance >= 25f && maximumTilt < 65f &&
                 groundedObservations > observations / 2,
             start = start.ToString(), end = rover.transform.position.ToString()
         };
-        File.WriteAllText("TerrainSources/Prepared/Gale/drive-test.json",
+        var generator = UnityEngine.Object.FindAnyObjectByType<MarsTerrainGenerator>();
+        File.WriteAllText(Path.Combine(Path.GetDirectoryName(generator.manifestPath), "drive-test.json"),
             Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented) + "\n");
         return result;
     }

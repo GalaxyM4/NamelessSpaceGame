@@ -53,18 +53,19 @@ public static class ValidateBake
 
         // Informational only: steep or disconnected real terrain is not a bake failure.
         int n = (source.resolution - 1) / 4 + 1;
+        float spacing = source.sizeMeters / (source.resolution - 1) * 4f;
         bool[,] passable = new bool[n, n];
         int traversable = 0;
         for (int z = 1; z < n - 1; z++)
         for (int x = 1; x < n - 1; x++)
         {
-            float dx = (actual[z * 4, x * 4 + 4] - actual[z * 4, x * 4 - 4]) * data.size.y / 8f;
-            float dz = (actual[z * 4 + 4, x * 4] - actual[z * 4 - 4, x * 4]) * data.size.y / 8f;
+            float dx = (actual[z * 4, x * 4 + 4] - actual[z * 4, x * 4 - 4]) * data.size.y / (spacing * 2f);
+            float dz = (actual[z * 4 + 4, x * 4] - actual[z * 4 - 4, x * 4]) * data.size.y / (spacing * 2f);
             passable[z, x] = Mathf.Atan(Mathf.Sqrt(dx * dx + dz * dz)) * Mathf.Rad2Deg <= 15f;
             if (passable[z, x]) traversable++;
         }
-        int sx = Mathf.RoundToInt((generator.spawnWorldXZ.x - terrain.transform.position.x) / 4f);
-        int sz = Mathf.RoundToInt((generator.spawnWorldXZ.y - terrain.transform.position.z) / 4f);
+        int sx = Mathf.Clamp(Mathf.RoundToInt((generator.spawnWorldXZ.x - terrain.transform.position.x) / spacing), 0, n - 1);
+        int sz = Mathf.Clamp(Mathf.RoundToInt((generator.spawnWorldXZ.y - terrain.transform.position.z) / spacing), 0, n - 1);
         bool spawnPassable = passable[sz, sx];
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
         if (spawnPassable) queue.Enqueue(new Vector2Int(sx, sz));
@@ -76,7 +77,7 @@ public static class ValidateBake
         {
             Vector2Int cell = queue.Dequeue();
             connected++;
-            farthestMeters = Mathf.Max(farthestMeters, Vector2.Distance(cell, new Vector2(sx, sz)) * 4f);
+            farthestMeters = Mathf.Max(farthestMeters, Vector2.Distance(cell, new Vector2(sx, sz)) * spacing);
             foreach (Vector2Int step in steps)
             {
                 Vector2Int next = cell + step;
@@ -94,7 +95,7 @@ public static class ValidateBake
             connectedDrivingAreaFraction = connected / (float)(n * n),
             connectedPassableSamples = connected, passableSamples = traversable,
             farthestConnectedDistanceMeters = farthestMeters,
-            slopeLimitDegrees = 15, routeScreeningSpacingMeters = 4,
+            slopeLimitDegrees = 15, routeScreeningSpacingMeters = spacing,
             note = "Slopes/connectivity are informational, not traversability requirements. Every height sample is compared to source, including spawn."
         };
         File.WriteAllText(Path.Combine(directory, "validation.json"),

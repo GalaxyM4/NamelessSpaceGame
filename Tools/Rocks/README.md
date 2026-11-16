@@ -8,21 +8,25 @@ textures from `rocks_lowpoly_v03_compartir.blend`. The original Blender file is
 left unchanged outside `Assets`; teammates do not need Blender to play the scene.
 Temporary ground/scale-reference objects and procedural source materials are not imported.
 
-Initial population:
+Current population on the 4096 × 4096 m Jezero map:
 
 | Role | Count | Diameter range | Collision |
 | --- | ---: | --- | --- |
-| Decoration | 10,000 | 0.08–0.24 m | None |
-| Obstacles | 1,600 | 0.5–2.4 m | Fixed convex hull |
+| Decoration | 40,000 | 0.08–0.24 m | None |
+| Obstacles | 6,400 | 0.5–2.4 m | Fixed convex hull |
 | Passive study candidates | 60 | 0.16–0.30 m | Fixed convex hull |
 
 Diameter means the mesh's longest dimension before rotation, not an arbitrary
 Blender scale multiplier. Small sizes are more common than large sizes.
 
-Terrain heights, terrain material/layers, and the remote rover's saved spawn
-position are not changed. No scatter or source-raster work runs in the player.
-The generated hierarchy is stored in a separate `BakedMarsRocks.prefab` so normal
-scene changes remain small and the entire layout can be versioned independently.
+Rock rebuilding does not change terrain heights, terrain material/layers, or rover
+spawn. The separate Jezero map migration replaces heights and repositions the rover
+above the new ground. No scatter or source-raster work runs in the player.
+The generated hierarchy is stored in `BakedMarsRocks.prefab` so normal scene changes
+remain small. Fields above 20,000 rocks store roughly 5,000 rocks per nested prefab
+in `BakedMarsRocksParts/`, keeping individual generated files below ordinary Git
+hosting size limits. This changes storage only, not placement or runtime loading.
+Older unreferenced part assets are not automatically deleted by a smaller rebake.
 
 ## Scope and teammate integration
 
@@ -49,12 +53,16 @@ The algorithm combines broad coherent density patches, slope/terrain-break
 preference, denser exploration near spawn, patch-related rock families, and
 irregular spacing. It creates both open areas and rocky patches; it is not uniform
 random scattering and it is not a scientific reconstruction of rock locations.
+The near-spawn bias is scaled down for maps larger than 2048² m, rather than
+quadrupling the population within the same 160 m starter area on the 4096² m map.
 
 Obstacles are planned first. A four-connected terrain/obstacle driving grid,
 including sampled links and rover-width clearance, screens routes from spawn.
 Candidates are placed beside reachable approach positions; five starter candidates
 cover all five models within 45 m. Routes are checked again with the samples present.
 Decorations are added last and cannot fill sample approach envelopes.
+Candidate self-clearance and reserved approach envelopes include the configured
+minimum gap, using the same bounding-sphere footprint as the driving screen.
 Ground contact uses transformed mesh vertices with slight burial.
 
 **Protection and objectives**
@@ -94,10 +102,14 @@ the explicit population counts instead. Passive sample candidates always retain
 their own explicit count; these controls add no interaction mechanics.
 
 **Minimum Burial Fraction** and **Maximum Burial Fraction** control sinking as a
-fraction of each scaled mesh's height. The scene uses 0.08–0.35 for varied ground
+fraction of each scaled mesh's height. The scene preserves the user's 0.107–0.647 range for varied ground
 contact. Equal endpoints give uniform burial; both zero remove intentional
 sinking. Depths are deterministic and do not consume the placement RNG. Render
 meshes and collision hulls move together; terrain heights remain untouched.
+Both endpoints allow up to 0.9. Deep burial can hide most of a small mesh.
+The original densities (23.841858 decorations/ha, 3.8146973 obstacles/ha) are retained:
+four times the area produces four times the decoration/obstacle counts, but still
+60 passive candidates. The Jezero layout uses a terrain-specific seed.
 
 Click **Rebuild Rocks**, then save the scene. This replaces the owned generated
 prefab, so it also affects other instances of that prefab. Changes do not apply

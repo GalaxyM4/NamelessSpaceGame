@@ -65,11 +65,16 @@ def validate_heights(heights):
 def prepare(args):
     if not args.inspect and args.center is None:
         raise ValueError("Choose an explicit --center; crops are not selected for easy traversal.")
-    original = ROOT / "TerrainSources/Original/Gale"
-    prepared = ROOT / "TerrainSources/Prepared/Gale"
+    region = getattr(args, "region", "Gale")
+    resolution = getattr(args, "resolution", 2049)
+    dtm_product = "DTEEC_045994_1985_046060_1985_U01" if region == "Jezero" else DTM
+    ortho_product = "ESP_045994_1985_RED_C_01_ORTHO" if region == "Jezero" else ORTHO
+    source_page = "https://www.uahirise.org/dtm/ESP_045994_1985" if region == "Jezero" else SOURCE_PAGE
+    original = ROOT / "TerrainSources/Original" / region
+    prepared = ROOT / "TerrainSources/Prepared" / region
     textures = ROOT / "Assets/Textures/HiRISE"
-    dtm_path = original / f"{DTM}.IMG"
-    ortho_path = original / f"{ORTHO}.JP2"
+    dtm_path = original / f"{dtm_product}.IMG"
+    ortho_path = original / f"{ortho_product}.JP2"
     with rasterio.open(dtm_path) as dtm, rasterio.open(ortho_path) as ortho:
         print(json.dumps({
             "dtm": {"size": dtm.shape, "bounds": list(dtm.bounds),
@@ -84,15 +89,27 @@ def prepare(args):
             raise ValueError("Both source products require georeferencing; check companion labels.")
         if dtm.crs.linear_units != "metre":
             raise ValueError("DTM must use a projected coordinate system measured in metres.")
+        ortho_crs = ortho.crs
+        if region == "Jezero":
+            # The JP2 GeoTIFF keys misencode CENTER_LATITUDE as latitude_of_origin.
+            # Its detached PDS label explicitly names this DTM as its source and
+            # specifies the same equirectangular center, radius and pixel scale.
+            # Retain the image's own affine transform, but use the DTM projection.
+            label = ortho_path.with_suffix(".LBL").read_text()
+            for expected in (dtm_product, "77.44", "3394.8398133163", "1.0096633268711"):
+                if expected not in label:
+                    raise ValueError("Unexpected Jezero image label; verify projection before preparing.")
+            ortho_crs = dtm.crs
         cx, cy = args.center
         half = args.extent / 2
         bounds = (cx - half, cy - half, cx + half, cy + half)
-        heights = sample(dtm, bounds, 2049)
+        heights = sample(dtm, bounds, resolution)
         validate_heights(heights)
         image = np.full((args.texture_size, args.texture_size), np.nan, dtype="float32")
         reproject(
-            source=rasterio.band(ortho, 1), destination=image,
-            src_transform=ortho.transform, src_crs=ortho.crs,
+            # Pass an array so GDAL cannot silently reuse the JP2's bad CRS keys.
+            source=ortho.read(1) if region == "Jezero" else rasterio.band(ortho, 1), destination=image,
+            src_transform=ortho.transform, src_crs=ortho_crs,
             # This product's PDS label declares CORE_NULL=0; some JP2 drivers
             # omit the detached label's nodata value.
             src_nodata=ortho.nodata if ortho.nodata is not None else 0,
@@ -110,23 +127,23 @@ def prepare(args):
         height_path = prepared / "heights.f32"
         # Unity indexes [z,x]: first row south, +X east, +Z north.
         np.flipud(heights).astype("<f4").tofile(height_path)
-        texture_path = textures / "GaleOrtho.png"
+        texture_path = textures / f"{region}Ortho.png"
         grayscale_path = prepared / "ortho-monochrome.png"
         Image.fromarray(grayscale).save(grayscale_path)
         # Stage outside Assets so a live Editor cannot import a partially written PNG.
         staged_texture = prepared / "ortho-color.tmp.png"
         Image.fromarray(tint_imagery(grayscale)).save(staged_texture)
         staged_texture.replace(texture_path)
-        dz, dx = np.gradient(heights, args.extent / 2048)
+        dz, dx = np.gradient(heights, args.extent / (resolution - 1))
         slopes = np.degrees(np.arctan(np.hypot(dx, dz)))
         metadata = {
-            "schemaVersion": 1, "region": "Gale MSL landing-site region",
-            "sourcePage": SOURCE_PAGE, "dtmProduct": DTM, "orthoProduct": ORTHO,
+            "schemaVersion": 1, "region": "Jezero western delta front" if region == "Jezero" else "Gale MSL landing-site region",
+            "sourcePage": source_page, "dtmProduct": dtm_product, "orthoProduct": ortho_product,
             "credit": "NASA/JPL-Caltech/University of Arizona; DTM produced by USGS",
             "heightFile": "heights.f32", "heightSha256": digest(height_path),
             "textureAssetPath": texture_path.relative_to(ROOT).as_posix(),
             "textureSha256": digest(texture_path),
-            "resolution": 2049, "sizeMeters": args.extent,
+            "resolution": resolution, "sizeMeters": args.extent,
             "minimumElevationMeters": float(heights.min()),
             "maximumElevationMeters": float(heights.max()),
             "projectedBounds": list(bounds), "crsWkt": dtm.crs.to_wkt(),
@@ -139,6 +156,7 @@ def prepare(args):
             "slopeMedianDegrees": float(np.median(slopes)),
             "slope90Degrees": float(np.percentile(slopes, 90)),
             "sourceDtmSha256": digest(dtm_path), "sourceOrthoSha256": digest(ortho_path),
+            "orthoProjectionNote": "Jezero JP2 projection corrected from companion PDS label to match source DTM; affine transform retained" if region == "Jezero" else "Dataset projection",
         }
         (prepared / "manifest.json").write_text(json.dumps(metadata, indent=2) + "\n")
         print(json.dumps(metadata, indent=2), flush=True)
@@ -146,6 +164,8 @@ def prepare(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--region", choices=["Gale", "Jezero"], default="Gale")
+    parser.add_argument("--resolution", type=int, choices=[513, 1025, 2049, 4097], default=2049)
     parser.add_argument("--inspect", action="store_true")
     parser.add_argument("--extent", type=float, default=2048.0)
     parser.add_argument("--center", type=float, nargs=2, metavar=("EASTING", "NORTHING"))

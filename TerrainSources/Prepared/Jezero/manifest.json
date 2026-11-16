@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "region": "Jezero western delta front",
+  "sourcePage": "https://www.uahirise.org/dtm/ESP_045994_1985",
+  "dtmProduct": "DTEEC_045994_1985_046060_1985_U01",
+  "orthoProduct": "ESP_045994_1985_RED_C_01_ORTHO",
+  "credit": "NASA/JPL-Caltech/University of Arizona; DTM produced by USGS",
+  "heightFile": "heights.f32",
+  "heightSha256": "804f4f0d5bada8d50cbca583ee508faaa1f4fe372089a01b3e5afb588bbf5f16",
+  "textureAssetPath": "Assets/Textures/HiRISE/JezeroOrtho.png",
+  "textureSha256": "f7425e8e92cb36277da1a089deff2ead33c9c6a7552a629b2c270215c671e074",
+  "resolution": 4097,
+  "sizeMeters": 4096.0,
+  "minimumElevationMeters": -2613.93017578125,
+  "maximumElevationMeters": -2422.822265625,
+  "projectedBounds": [
+    -2048.0,
+    1092452.0,
+    2048.0,
+    1096548.0
+  ],
+  "crsWkt": "PROJCS[\"EQUIRECTANGULAR MARS\",GEOGCS[\"GCS_MARS\",DATUM[\"D_MARS\",SPHEROID[\"MARS_localRadius\",3394839.8133163,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Equirectangular\"],PARAMETER[\"standard_parallel_1\",15],PARAMETER[\"central_meridian\",77.44],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+  "orientation": "+X=east,+Z=north; float32 LE rows south-to-north",
+  "imagery": "RED monochrome; percentile contrast stretch and artistic Mars tint, not true color",
+  "monochromeFile": "ortho-monochrome.png",
+  "monochromeSha256": "27c9554c4adfe8003fccc2dc72381c76632746ce8477649ffb92b2a199d6e312",
+  "artisticPalette": {
+    "shadowSrgb8": [
+      54,
+      35,
+      23
+    ],
+    "highlightSrgb8": [
+      218,
+      166,
+      119
+    ]
+  },
+  "imageContrastMinimum": 27.690474557876588,
+  "imageContrastMaximum": 197.0058620452882,
+  "slopeMedianDegrees": 2.7492783069610596,
+  "slope90Degrees": 10.347871780395508,
+  "sourceDtmSha256": "b40739b4d32516ef9b3cd849f519a6a20df9720b5369a9c141047ced27c57654",
+  "sourceOrthoSha256": "4606bfa40070cee5bf869682ff5f1de14a4be797fc18523b3cc7effae4f1d418",
+  "orthoProjectionNote": "Jezero JP2 projection corrected from companion PDS label to match source DTM; affine transform retained"
+}
